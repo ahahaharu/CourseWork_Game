@@ -1,0 +1,35 @@
+#include "player.h"
+
+Player::Player(QString name, int gamePlayed, int winGames) {
+    this->name = name;
+    this->gamePlayed = gamePlayed;
+    this->winGames = winGames;
+}
+
+void Player::setName(QString name) {
+    this->name = name;
+}
+
+void Player::setGamePLayed(int gamePlayed) {
+    this->gamePlayed = gamePlayed;
+}
+
+void Player::setWinGames(int winGames) {
+    this->winGames = winGames;
+}
+
+QString Player::getName() {
+    return this->name;
+}
+
+int Player::getGamePlayed() {
+    return this->gamePlayed;
+}
+int Player::getWinGames() {
+    return this->winGames;
+}
+
+QString Player::winRate() {
+    double winRate = (double)(int)winGames / gamePlayed;
+    return QString::number(winRate) + "%";
+}
