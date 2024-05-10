@@ -21,7 +21,7 @@ private:
     Ability* abilities = new Ability[3];
 
 public:
-    Hero(QString name, QDir image, int health, int mana, Ability abilities[3]);
+    Hero(QString name, QDir image, int health, int mana, Ability* abilities);
 
     QString getName();
     QDir getImage();

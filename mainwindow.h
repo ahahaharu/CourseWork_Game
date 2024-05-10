@@ -6,7 +6,7 @@
 #include <QRegularExpression>
 #include <QFile>
 
-#include "player.h"
+#include "player/player.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
