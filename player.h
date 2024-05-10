@@ -5,7 +5,6 @@
 
 class Player {
 private:
-    int id;
     QString name;
     int gamePlayed;
     int winGames;

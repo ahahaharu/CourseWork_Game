@@ -47,12 +47,33 @@ private slots:
     bool isPlayerNameCorrect(QString);
 
     void readFromFile();
+    void rewriteFile();
+
+    void on_profilesTable_cellClicked(int row, int column);
+
+    void on_deleteProfile_button_clicked();
+
+
+
+    void on_createProfile_button_clicked();
+
+    void on_playersProfiles_addButton_clicked();
+
+    void on_playersProfiles_addCancel_clicked();
+
+    void on_editProfile_button_clicked();
+
+    void on_playersProfiles_editButton_clicked();
+
+    void on_playersProfiles_editCancel_clicked();
 
 private:
     Ui::MainWindow *ui;
 
     Player* players[100];
 
+
+    int selectedProfile;
     int playersCount = 0;
 };
 #endif // MAINWINDOW_H
