@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -20,6 +21,36 @@ MainWindow::MainWindow(QWidget *parent)
     ui->profilesTable->setSelectionMode(QAbstractItemView::SingleSelection);
 
     readFromFile();
+
+
+    // гифки
+
+    QMovie *lina = new QMovie("../../heroes/images/Lina.gif");
+    ui->LinaGif->setScaledContents(true);
+    ui->LinaGif->setMovie(lina);
+    lina->start();
+
+    QMovie *phoenix = new QMovie("../../heroes/images/Phoenix.gif");
+    ui->PhoenixGif->setScaledContents(true);
+    ui->PhoenixGif->setMovie(phoenix);
+    phoenix->start();
+
+    QMovie *venomancer = new QMovie("../../heroes/images/Venomancer.gif");
+    ui->VenomancerGif->setScaledContents(true);
+    ui->VenomancerGif->setMovie(venomancer);
+    venomancer->start();
+
+    QMovie *drowRanger = new QMovie("../../heroes/images/DrowRanger.gif");
+    ui->DrowRangerGif->setScaledContents(true);
+    ui->DrowRangerGif->setMovie(drowRanger);
+    drowRanger->start();
+
+    QMovie *dragonKnight = new QMovie("../../heroes/images/DragonKnight.gif");
+    ui->DragonKnightGif->setScaledContents(true);
+    ui->DragonKnightGif->setMovie(dragonKnight);
+    dragonKnight->start();
+
+
 
 }
 
@@ -449,8 +480,6 @@ void MainWindow::on_pushButton_5_clicked()
     if (currentChoosing == 2) {
         ui->stackedWidget->setCurrentWidget(ui->selectHeroes);
         currentChoosing = 0;
-        selectedProfilesForGame[0] = "";
-        selectedProfilesForGame[1] = "";
 
         int rowCount = ui->tableWidget_2->rowCount();
         int columnCount = ui->tableWidget_2->columnCount();
@@ -463,14 +492,15 @@ void MainWindow::on_pushButton_5_clicked()
 
                 if (item != nullptr)
                 {
-                    // Включите элемент
                     item->setFlags(item->flags() | Qt::ItemIsEnabled);
-
-                    // Установите цвет текста на черный
                     item->setForeground(Qt::black);
                 }
             }
         }
+
+        ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[0]+"' выбирает персонажа");
+
+
     }
 
 }
@@ -479,7 +509,7 @@ void MainWindow::on_pushButton_5_clicked()
 void MainWindow::on_endGame_button_clicked()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Подтверждение", "Вы уверены, что хотите завершить игру?",
+    reply = QMessageBox::question(this, "Подтверждение", "Вы уверены, что хотите завершить игру? Игра не будет засчитана.",
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         ui->stackedWidget->setCurrentWidget(ui->startMenu);

@@ -6,6 +6,7 @@
 #include <QRegularExpression>
 #include <QFile>
 #include <vector>
+#include <QMovie>
 
 #include "player/player.h"
 
