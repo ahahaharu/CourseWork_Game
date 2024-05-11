@@ -1,8 +1,7 @@
 #include "phoenixdetails.h"
 #include "ui_phoenixdetails.h"
 
-#include <QMovie>
-#include <QMessageBox>
+
 
 PhoenixDetails::PhoenixDetails(QWidget *parent)
     : QDialog(parent)

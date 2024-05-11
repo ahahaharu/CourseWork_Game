@@ -2,6 +2,8 @@
 #define PHOENIXDETAILS_H
 
 #include <QDialog>
+#include <QMovie>
+#include <QMessageBox>
 
 namespace Ui {
 class PhoenixDetails;

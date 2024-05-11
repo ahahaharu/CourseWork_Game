@@ -79,10 +79,16 @@ MainWindow::MainWindow(QWidget *parent)
     effect2->setYOffset(5);
     effect2->setColor(QColor(0, 0, 0, 255));
 
+    QGraphicsDropShadowEffect *effect3 = new QGraphicsDropShadowEffect;
+    effect3->setBlurRadius(50);
+    effect3->setXOffset(5);
+    effect3->setYOffset(5);
+    effect3->setColor(QColor(0, 0, 0, 255));
+
     ui->LinaChoosed->setGraphicsEffect(effect1);
     ui->PhoenixChoosed->setGraphicsEffect(effect2);
-    /*ui->VenomancerChoosed->setGraphicsEffect(effect);
-    ui->DRChoosed->setGraphicsEffect(effect);
+    ui->VenomancerChoosed->setGraphicsEffect(effect3);
+    /*ui->DRChoosed->setGraphicsEffect(effect);
     ui->DKChoosed->setGraphicsEffect(effect);*/
 }
 
@@ -614,5 +620,28 @@ void MainWindow::on_PhoenixChoose_button_clicked()
 void MainWindow::on_PhoenixDetails_button_clicked()
 {
     phoenixDetails.exec();
+}
+
+
+void MainWindow::on_VenomancerChoose_button_clicked()
+{
+    ui->VenomancerChoosed->show();
+    ui->VenomancerChoose_button->setEnabled(false);
+
+
+    heroes.push_back(Venomancer());
+    currentHeroChoosing++;
+
+    if (currentHeroChoosing == 2) {
+
+    } else {
+        ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
+    }
+}
+
+
+void MainWindow::on_VenomancerDetails_button_clicked()
+{
+    venomancerDetails.exec();
 }
 

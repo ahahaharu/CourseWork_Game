@@ -13,23 +13,28 @@ SOURCES += \
     heroes/Lina/linadetails.cpp \
     heroes/Phoenix/phoenix.cpp \
     heroes/Phoenix/phoenixdetails.cpp \
+    heroes/Venomancer/venomancer.cpp \
+    heroes/Venomancer/venomancerdetails.cpp \
     heroes/hero.cpp \
     main.cpp \
     mainwindow.cpp \
-    player/player.cpp
+    player/player.cpp \
 
 HEADERS += \
     heroes/Lina/lina.h \
     heroes/Lina/linadetails.h \
     heroes/Phoenix/phoenix.h \
     heroes/Phoenix/phoenixdetails.h \
+    heroes/Venomancer/venomancer.h \
+    heroes/Venomancer/venomancerdetails.h \
     heroes/hero.h \
     mainwindow.h \
-    player/player.h
+    player/player.h \
 
 FORMS += \
     heroes/Lina/linadetails.ui \
     heroes/Phoenix/phoenixdetails.ui \
+    heroes/Venomancer/venomancerdetails.ui \
     mainwindow.ui \
 
 # Default rules for deployment.
