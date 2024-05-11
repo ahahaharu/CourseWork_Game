@@ -194,6 +194,7 @@ void MainWindow::on_addPlayer_cancel_clicked() // отмена +  переход
 {
     ui->profileStackedWidget->setCurrentWidget(ui->selectPLayer);
     ui->lineEdit->clear();
+    ui->label_3->show();
 
 }
 
@@ -264,6 +265,7 @@ void MainWindow::on_profiles_returnToMenu_clicked() // выход в главн�
 void MainWindow::on_tableWidget_2_cellClicked(int row, int column) // активация кнопок при нажатии на строку таблицы
 {
     ui->pushButton_5->setEnabled(true);
+    ui->label_3->setText("Выбранный профиль: "+players[row]->getName());
 }
 
 // ВКЛАДКА ПРОСМОТРА ПРОФИЛЕЙ
@@ -420,3 +422,68 @@ void MainWindow::on_playersProfiles_editCancel_clicked()
 }
 
     // конец функций для ВКЛАДКА ИЗМЕНЕНИЯ ПРОФИЛЯ
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    int selectedRow = ui->tableWidget_2->currentRow();
+
+    selectedProfilesForGame[currentChoosing] = players[selectedRow]->getName();
+    currentChoosing++;
+
+    ui->playerChoosin_label->setText("Игрок #2 выбирает профиль игрока");
+
+    for (int column = 0; column < 3; ++column)
+    {
+        QTableWidgetItem* item = ui->tableWidget_2->item(selectedRow, column);
+
+        if (item != nullptr)
+        {
+            item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+
+            item->setForeground(Qt::gray);
+        }
+    }
+
+    ui->label_3->setText("Выбранный профиль:");
+
+    if (currentChoosing == 2) {
+        ui->stackedWidget->setCurrentWidget(ui->selectHeroes);
+        currentChoosing = 0;
+        selectedProfilesForGame[0] = "";
+        selectedProfilesForGame[1] = "";
+
+        int rowCount = ui->tableWidget_2->rowCount();
+        int columnCount = ui->tableWidget_2->columnCount();
+
+        for (int row = 0; row < rowCount; ++row)
+        {
+            for (int column = 0; column < columnCount; ++column)
+            {
+                QTableWidgetItem* item = ui->tableWidget_2->item(row, column);
+
+                if (item != nullptr)
+                {
+                    // Включите элемент
+                    item->setFlags(item->flags() | Qt::ItemIsEnabled);
+
+                    // Установите цвет текста на черный
+                    item->setForeground(Qt::black);
+                }
+            }
+        }
+    }
+
+}
+
+
+void MainWindow::on_endGame_button_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Подтверждение", "Вы уверены, что хотите завершить игру?",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        ui->stackedWidget->setCurrentWidget(ui->startMenu);
+    }
+}
+
+

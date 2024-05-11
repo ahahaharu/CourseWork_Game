@@ -68,6 +68,10 @@ private slots:
 
     void on_playersProfiles_editCancel_clicked();
 
+    void on_pushButton_5_clicked();
+
+    void on_endGame_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -77,5 +81,8 @@ private:
 
     int selectedProfile;
     int playersCount = 0;
+
+    QString* selectedProfilesForGame = new QString[2];
+    int currentChoosing = 0;
 };
 #endif // MAINWINDOW_H

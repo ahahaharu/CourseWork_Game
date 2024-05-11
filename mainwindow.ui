@@ -42,7 +42,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="startMenu">
        <widget class="QWidget" name="widget" native="true">
@@ -154,7 +154,7 @@
           </rect>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="selectPLayer">
           <widget class="QPushButton" name="pushButton_4">
@@ -178,7 +178,7 @@
           <widget class="QLabel" name="label_3">
            <property name="geometry">
             <rect>
-             <x>330</x>
+             <x>420</x>
              <y>10</y>
              <width>701</width>
              <height>31</height>
@@ -818,6 +818,44 @@
         </property>
         <property name="text">
          <string>Вернуться в главное меню</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="selectHeroes">
+       <widget class="QLabel" name="label_11">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>-10</y>
+          <width>411</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>24</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>ВЫБОР ПЕРСОНАЖЕЙ</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="endGame_button">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>610</y>
+          <width>451</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Закончить игру и выйти</string>
         </property>
        </widget>
       </widget>
