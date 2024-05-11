@@ -25,31 +25,42 @@ MainWindow::MainWindow(QWidget *parent)
 
     // гифки
 
-    QMovie *lina = new QMovie("../../heroes/images/Lina.gif");
+    QMovie *lina = new QMovie("../../Resources/images/Heroes/Lina.gif");
     ui->LinaGif->setScaledContents(true);
     ui->LinaGif->setMovie(lina);
     lina->start();
 
-    QMovie *phoenix = new QMovie("../../heroes/images/Phoenix.gif");
+    QMovie *phoenix = new QMovie("../../Resources/images/Heroes/Phoenix.gif");
     ui->PhoenixGif->setScaledContents(true);
     ui->PhoenixGif->setMovie(phoenix);
     phoenix->start();
 
-    QMovie *venomancer = new QMovie("../../heroes/images/Venomancer.gif");
+    QMovie *venomancer = new QMovie("../../Resources/images/Heroes/Venomancer.gif");
     ui->VenomancerGif->setScaledContents(true);
     ui->VenomancerGif->setMovie(venomancer);
     venomancer->start();
 
-    QMovie *drowRanger = new QMovie("../../heroes/images/DrowRanger.gif");
+    QMovie *drowRanger = new QMovie("../../Resources/images/Heroes/DrowRanger.gif");
     ui->DrowRangerGif->setScaledContents(true);
     ui->DrowRangerGif->setMovie(drowRanger);
     drowRanger->start();
 
-    QMovie *dragonKnight = new QMovie("../../heroes/images/DragonKnight.gif");
+    QMovie *dragonKnight = new QMovie("../../Resources/images/Heroes/DragonKnight.gif");
     ui->DragonKnightGif->setScaledContents(true);
     ui->DragonKnightGif->setMovie(dragonKnight);
     dragonKnight->start();
 
+
+    QMovie *movie = new QMovie("../../Resources/images/wallpaper.gif");
+    QLabel *processLabel = new QLabel(this);
+    processLabel->setMovie(movie);
+    movie->start();
+
+    processLabel->setGeometry(0, 0, this->width(), this->height()); // Задает размеры label под размеры окна
+    processLabel->setScaledContents(true); // Масштабирует gif под размеры label
+ // Устанавливает label как центральный виджет
+
+    this->setCentralWidget(ui->stackedWidget);
 
 
 }

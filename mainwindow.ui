@@ -42,7 +42,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="startMenu">
        <widget class="QWidget" name="widget" native="true">
@@ -108,6 +108,9 @@
           <string>Профиля игроков</string>
          </property>
         </widget>
+        <zorder>pushButton_12</zorder>
+        <zorder>playersProfiles_button</zorder>
+        <zorder>pushButton_11</zorder>
        </widget>
       </widget>
       <widget class="QWidget" name="playersScreen">

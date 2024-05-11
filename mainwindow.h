@@ -7,6 +7,7 @@
 #include <QFile>
 #include <vector>
 #include <QMovie>
+#include <QPalette>
 
 #include "player/player.h"
 
