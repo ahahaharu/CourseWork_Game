@@ -9,6 +9,8 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    heroes/DrowRanger/drowranger.cpp \
+    heroes/DrowRanger/drowrangerdialog.cpp \
     heroes/Lina/lina.cpp \
     heroes/Lina/linadetails.cpp \
     heroes/Phoenix/phoenix.cpp \
@@ -21,6 +23,8 @@ SOURCES += \
     player/player.cpp \
 
 HEADERS += \
+    heroes/DrowRanger/drowranger.h \
+    heroes/DrowRanger/drowrangerdialog.h \
     heroes/Lina/lina.h \
     heroes/Lina/linadetails.h \
     heroes/Phoenix/phoenix.h \
@@ -32,6 +36,7 @@ HEADERS += \
     player/player.h \
 
 FORMS += \
+    heroes/DrowRanger/drowrangerdialog.ui \
     heroes/Lina/linadetails.ui \
     heroes/Phoenix/phoenixdetails.ui \
     heroes/Venomancer/venomancerdetails.ui \
