@@ -15,6 +15,7 @@
 #include "heroes/Lina/lina.h"
 
 #include "heroes/Lina/linadetails.h"
+#include "heroes/Phoenix/phoenixdetails.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -83,6 +84,10 @@ private slots:
 
     void on_LinaDetails_button_clicked();
 
+    void on_PhoenixChoose_button_clicked();
+
+    void on_PhoenixDetails_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -100,5 +105,6 @@ private:
     int currentHeroChoosing = 0;
 
     LinaDetails linaDetails;
+    PhoenixDetails phoenixDetails;
 };
 #endif // MAINWINDOW_H

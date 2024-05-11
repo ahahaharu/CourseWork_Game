@@ -30,22 +30,22 @@ MainWindow::MainWindow(QWidget *parent)
     ui->LinaGif->setMovie(lina);
     lina->start();
 
-    QMovie *phoenix = new QMovie("../../Resources/images/Heroes/Phoenix.gif");
+    QMovie *phoenix = new QMovie("../../Resources/images/Heroes/Phoenix/Phoenix.gif");
     ui->PhoenixGif->setScaledContents(true);
     ui->PhoenixGif->setMovie(phoenix);
     phoenix->start();
 
-    QMovie *venomancer = new QMovie("../../Resources/images/Heroes/Venomancer.gif");
+    QMovie *venomancer = new QMovie("../../Resources/images/Heroes/Venomancer/Venomancer.gif");
     ui->VenomancerGif->setScaledContents(true);
     ui->VenomancerGif->setMovie(venomancer);
     venomancer->start();
 
-    QMovie *drowRanger = new QMovie("../../Resources/images/Heroes/DrowRanger.gif");
+    QMovie *drowRanger = new QMovie("../../Resources/images/Heroes/DrowRanger/DrowRanger.gif");
     ui->DrowRangerGif->setScaledContents(true);
     ui->DrowRangerGif->setMovie(drowRanger);
     drowRanger->start();
 
-    QMovie *dragonKnight = new QMovie("../../Resources/images/Heroes/DragonKnight.gif");
+    QMovie *dragonKnight = new QMovie("../../Resources/images/Heroes/DragonKnight/DragonKnight.gif");
     ui->DragonKnightGif->setScaledContents(true);
     ui->DragonKnightGif->setMovie(dragonKnight);
     dragonKnight->start();
@@ -67,13 +67,23 @@ MainWindow::MainWindow(QWidget *parent)
     ui->DRChoosed->hide();
     ui->DKChoosed->hide();
 
-    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-    effect->setBlurRadius(50);
-    effect->setXOffset(5);
-    effect->setYOffset(5);
-    effect->setColor(QColor(0, 0, 0, 255));
+    QGraphicsDropShadowEffect *effect1 = new QGraphicsDropShadowEffect;
+    effect1->setBlurRadius(50);
+    effect1->setXOffset(5);
+    effect1->setYOffset(5);
+    effect1->setColor(QColor(0, 0, 0, 255));
 
-    ui->LinaChoosed->setGraphicsEffect(effect);
+    QGraphicsDropShadowEffect *effect2 = new QGraphicsDropShadowEffect;
+    effect2->setBlurRadius(50);
+    effect2->setXOffset(5);
+    effect2->setYOffset(5);
+    effect2->setColor(QColor(0, 0, 0, 255));
+
+    ui->LinaChoosed->setGraphicsEffect(effect1);
+    ui->PhoenixChoosed->setGraphicsEffect(effect2);
+    /*ui->VenomancerChoosed->setGraphicsEffect(effect);
+    ui->DRChoosed->setGraphicsEffect(effect);
+    ui->DKChoosed->setGraphicsEffect(effect);*/
 }
 
 MainWindow::~MainWindow()
@@ -581,5 +591,28 @@ void MainWindow::on_pushButton_3_clicked()
 void MainWindow::on_LinaDetails_button_clicked()
 {
     linaDetails.exec();
+}
+
+
+void MainWindow::on_PhoenixChoose_button_clicked()
+{
+    ui->PhoenixChoosed->show();
+    ui->PhoenixChoose_button->setEnabled(false);
+
+
+    heroes.push_back(Phoenix());
+    currentHeroChoosing++;
+
+    if (currentHeroChoosing == 2) {
+
+    } else {
+        ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
+    }
+}
+
+
+void MainWindow::on_PhoenixDetails_button_clicked()
+{
+    phoenixDetails.exec();
 }
 

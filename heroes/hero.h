@@ -15,6 +15,7 @@ struct Ability {
     int silence;
     int stan;
     int periodic;
+    int periodicFor;
 };
 
 class Hero {
@@ -26,6 +27,9 @@ private:
     int mana;
 
     Ability* abilities = new Ability[3];
+
+    int currentHP;
+    int currentMana;
 
     int isSilenced = 0;
     int isStanned = 0;

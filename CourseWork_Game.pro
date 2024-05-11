@@ -11,6 +11,8 @@ CONFIG += c++17
 SOURCES += \
     heroes/Lina/lina.cpp \
     heroes/Lina/linadetails.cpp \
+    heroes/Phoenix/phoenix.cpp \
+    heroes/Phoenix/phoenixdetails.cpp \
     heroes/hero.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -19,13 +21,16 @@ SOURCES += \
 HEADERS += \
     heroes/Lina/lina.h \
     heroes/Lina/linadetails.h \
+    heroes/Phoenix/phoenix.h \
+    heroes/Phoenix/phoenixdetails.h \
     heroes/hero.h \
     mainwindow.h \
     player/player.h
 
 FORMS += \
     heroes/Lina/linadetails.ui \
-    mainwindow.ui
+    heroes/Phoenix/phoenixdetails.ui \
+    mainwindow.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

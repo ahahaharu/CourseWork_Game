@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LinaDetails</class>
- <widget class="QWidget" name="LinaDetails">
+ <class>PhoenixDetails</class>
+ <widget class="QDialog" name="PhoenixDetails">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,29 +11,8 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Подробнее о Lina</string>
+   <string>Подробнее о Phoenix</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>861</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>24</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>LINA</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
@@ -49,7 +28,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QLabel" name="LinaGif">
+   <widget class="QLabel" name="PhoenixGif">
     <property name="geometry">
      <rect>
       <x>630</x>
@@ -80,7 +59,7 @@
      </font>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Опасная и хрупкая Lina легко свалит любого одинокого врага. Она поражает противников огнём и молнией, а каждое произнесённое ей заклинание увеличивает скорость её атаки, не давая выжить никому.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>Влетев в битву, Phoenix поражает врагов и излечивает союзников солнечным лучом, а в нужный момент может превратиться в звезду, обжигающую всех противников вокруг, чтобы после её оглушающего взрыва возродиться с полным запасом сил.</string>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
@@ -170,7 +149,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Gragon Slave</string>
+     <string>Icarus Dive</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
@@ -204,7 +183,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Light Strike</string>
+     <string>Fire Spirits</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Ab_3">
@@ -217,7 +196,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Laguna Blade</string>
+     <string>Supernova</string>
     </property>
    </widget>
    <widget class="QLabel" name="Ab_2_img">
@@ -252,6 +231,27 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>861</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>24</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>PHOENIX</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QPushButton" name="close_button">
    <property name="geometry">
