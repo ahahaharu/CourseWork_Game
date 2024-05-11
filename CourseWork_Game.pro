@@ -9,17 +9,22 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    heroes/Lina/lina.cpp \
     heroes/hero.cpp \
+    linadetails.cpp \
     main.cpp \
     mainwindow.cpp \
     player/player.cpp
 
 HEADERS += \
+    heroes/Lina/lina.h \
     heroes/hero.h \
+    linadetails.h \
     mainwindow.h \
     player/player.h
 
 FORMS += \
+    linadetails.ui \
     mainwindow.ui
 
 # Default rules for deployment.

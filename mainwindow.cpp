@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // гифки
 
-    QMovie *lina = new QMovie("../../Resources/images/Heroes/Lina.gif");
+    QMovie *lina = new QMovie("../../Resources/images/Heroes/Lina/Lina.gif");
     ui->LinaGif->setScaledContents(true);
     ui->LinaGif->setMovie(lina);
     lina->start();
@@ -58,11 +58,22 @@ MainWindow::MainWindow(QWidget *parent)
 
     processLabel->setGeometry(0, 0, this->width(), this->height()); // Задает размеры label под размеры окна
     processLabel->setScaledContents(true); // Масштабирует gif под размеры label
- // Устанавливает label как центральный виджет
 
     this->setCentralWidget(ui->stackedWidget);
 
+    ui->LinaChoosed->hide();
+    ui->PhoenixChoosed->hide();
+    ui->VenomancerChoosed->hide();
+    ui->DRChoosed->hide();
+    ui->DKChoosed->hide();
 
+    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+    effect->setBlurRadius(50);
+    effect->setXOffset(5);
+    effect->setYOffset(5);
+    effect->setColor(QColor(0, 0, 0, 255));
+
+    ui->LinaChoosed->setGraphicsEffect(effect);
 }
 
 MainWindow::~MainWindow()
@@ -306,6 +317,11 @@ void MainWindow::on_profiles_returnToMenu_clicked() // выход в главн�
 
 void MainWindow::on_tableWidget_2_cellClicked(int row, int column) // активация кнопок при нажатии на строку таблицы
 {
+    QTableWidgetItem* item = ui->tableWidget_2->item(row, column);
+
+    if (item != nullptr && !(item->flags() & Qt::ItemIsEnabled))
+        return;
+
     ui->pushButton_5->setEnabled(true);
     ui->label_3->setText("Выбранный профиль: "+players[row]->getName());
 }
@@ -487,6 +503,7 @@ void MainWindow::on_pushButton_5_clicked()
     }
 
     ui->label_3->setText("Выбранный профиль:");
+    ui->pushButton_5->setEnabled(false);
 
     if (currentChoosing == 2) {
         ui->stackedWidget->setCurrentWidget(ui->selectHeroes);
@@ -525,6 +542,44 @@ void MainWindow::on_endGame_button_clicked()
     if (reply == QMessageBox::Yes) {
         ui->stackedWidget->setCurrentWidget(ui->startMenu);
     }
+
+    ui->LinaChoosed->hide();
+    ui->PhoenixChoosed->hide();
+    ui->VenomancerChoosed->hide();
+    ui->DRChoosed->hide();
+    ui->DKChoosed->hide();
+
+    ui->pushButton_3->setEnabled(true);
+    ui->PhoenixChoose_button->setEnabled(true);
+    ui->VenomancerChoose_button->setEnabled(true);
+    ui->DRChoose_button->setEnabled(true);
+    ui->DKChoose_button->setEnabled(true);
+
+    heroes.clear();
+    currentHeroChoosing = 0;
 }
 
+
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    ui->LinaChoosed->show();
+    ui->pushButton_3->setEnabled(false);
+
+
+    heroes.push_back(Lina());
+    currentHeroChoosing++;
+
+    if (currentHeroChoosing == 2) {
+
+    } else {
+        ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
+    }
+}
+
+
+void MainWindow::on_LinaDetails_button_clicked()
+{
+    linaDetails.exec();
+}
 

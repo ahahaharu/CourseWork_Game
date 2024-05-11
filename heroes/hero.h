@@ -3,11 +3,14 @@
 
 #include <QString>
 #include <QFileDialog>
+#include <QPixmap>
 
 struct Ability {
     QString name;
-    QDir image;
+    QPixmap image;
+    int cooldown;
     int manaCost;
+    int damage;
 };
 
 class Hero {
@@ -29,7 +32,7 @@ public:
     int getMana();
     Ability* getAbilities();
 
-    void castSkill();
+    virtual void castSkill(int);
     void getDamage(int);
     void useItem();
 };

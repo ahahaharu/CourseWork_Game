@@ -8,8 +8,13 @@
 #include <vector>
 #include <QMovie>
 #include <QPalette>
+#include <QGraphicsDropShadowEffect>
 
 #include "player/player.h"
+#include "heroes/hero.h"
+#include "heroes/Lina/lina.h"
+
+#include "linadetails.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -74,6 +79,10 @@ private slots:
 
     void on_endGame_button_clicked();
 
+    void on_pushButton_3_clicked();
+
+    void on_LinaDetails_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -86,5 +95,10 @@ private:
 
     QString* selectedProfilesForGame = new QString[2];
     int currentChoosing = 0;
+
+    std::vector<Hero> heroes;
+    int currentHeroChoosing = 0;
+
+    LinaDetails linaDetails;
 };
 #endif // MAINWINDOW_H

@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Dota RPG Game</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -42,7 +42,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="startMenu">
        <widget class="QWidget" name="widget" native="true">
@@ -157,7 +157,7 @@
           </rect>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="selectPLayer">
           <widget class="QPushButton" name="pushButton_4">
@@ -828,7 +828,7 @@
        <widget class="QLabel" name="label_11">
         <property name="geometry">
          <rect>
-          <x>460</x>
+          <x>480</x>
           <y>-10</y>
           <width>411</width>
           <height>91</height>
@@ -904,7 +904,7 @@
            <string>Выбрать &quot;Lina&quot;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_6">
+         <widget class="QPushButton" name="LinaDetails_button">
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -921,13 +921,64 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>30</y>
+            <y>60</y>
             <width>191</width>
             <height>211</height>
            </rect>
           </property>
           <property name="text">
            <string>Картинка персонажа</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="LinaChoosed">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>110</y>
+            <width>191</width>
+            <height>121</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: red;
+-webkit-text-stroke: 1px black;
+text-stroke: 1px black;</string>
+          </property>
+          <property name="text">
+           <string>ГЕРОЙ ВЫБРАН</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_12">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>211</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>LINA</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -949,7 +1000,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QPushButton" name="pushButton_16">
+         <widget class="QPushButton" name="DKDetails_button">
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -962,7 +1013,7 @@
            <string>Подробности о персонаже</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_15">
+         <widget class="QPushButton" name="DKChoose_button">
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -979,13 +1030,62 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>30</y>
+            <y>60</y>
             <width>191</width>
             <height>210</height>
            </rect>
           </property>
           <property name="text">
            <string>Картинка персонажа</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="DKChoosed">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>110</y>
+            <width>191</width>
+            <height>121</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: red;</string>
+          </property>
+          <property name="text">
+           <string>ГЕРОЙ ВЫБРАН</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_16">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>211</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>DRAGON KNIGHT</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1007,7 +1107,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QPushButton" name="pushButton_13">
+         <widget class="QPushButton" name="DRDetails_button">
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -1020,7 +1120,7 @@
            <string>Подробности о персонаже</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_14">
+         <widget class="QPushButton" name="DRChoose_button">
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -1037,13 +1137,67 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>30</y>
+            <y>60</y>
             <width>191</width>
             <height>210</height>
            </rect>
           </property>
+          <property name="font">
+           <font>
+            <bold>false</bold>
+           </font>
+          </property>
           <property name="text">
            <string>Картинка персонажа</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="DRChoosed">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>110</y>
+            <width>191</width>
+            <height>121</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: red;</string>
+          </property>
+          <property name="text">
+           <string>ГЕРОЙ ВЫБРАН</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_15">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>211</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>DROW RANGER</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1065,7 +1219,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QPushButton" name="pushButton_10">
+         <widget class="QPushButton" name="VenomancerChoose_button">
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -1078,7 +1232,7 @@
            <string>Выбрать &quot;Venomancer&quot;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_9">
+         <widget class="QPushButton" name="VenomancerDetails_button">
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -1095,13 +1249,62 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>30</y>
+            <y>60</y>
             <width>191</width>
             <height>210</height>
            </rect>
           </property>
           <property name="text">
            <string>Картинка персонажа</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="VenomancerChoosed">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>110</y>
+            <width>191</width>
+            <height>121</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: red;</string>
+          </property>
+          <property name="text">
+           <string>ГЕРОЙ ВЫБРАН</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_14">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>211</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>VENOMANCER</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1123,7 +1326,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QPushButton" name="pushButton_8">
+         <widget class="QPushButton" name="PhoenixDetails_button">
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -1136,7 +1339,7 @@
            <string>Подробности о персонаже</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_7">
+         <widget class="QPushButton" name="PhoenixChoose_button">
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -1153,13 +1356,62 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>30</y>
+            <y>60</y>
             <width>191</width>
             <height>210</height>
            </rect>
           </property>
           <property name="text">
            <string>Картинка персонажа</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="PhoenixChoosed">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>110</y>
+            <width>191</width>
+            <height>121</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: red;</string>
+          </property>
+          <property name="text">
+           <string>ГЕРОЙ ВЫБРАН</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_13">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>211</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>PHOENIX</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>

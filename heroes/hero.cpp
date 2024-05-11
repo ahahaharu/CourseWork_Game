@@ -28,7 +28,7 @@ Ability* Hero::getAbilities() {
     return this->abilities;
 }
 
-void Hero::castSkill() {
+void Hero::castSkill(int ind) {
 
 }
 
