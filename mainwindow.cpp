@@ -75,7 +75,7 @@ void MainWindow::readFromFile() { // чтение информации с фай
 
         i++;
 
-        players[playersCount] = new Player(name, gamePlayed.toInt(), winGames.toInt());
+        players.push_back(new Player(name, gamePlayed.toInt(), winGames.toInt()));
 
         ui->tableWidget_2->insertRow(playersCount);
         ui->profilesTable->insertRow(playersCount);
@@ -215,7 +215,7 @@ void MainWindow::on_pushButton_2_clicked() //добавление игрока +
         ui->tableWidget_2->insertRow(playersCount);
         ui->profilesTable->insertRow(playersCount);
 
-        players[playersCount] = new Player(name, 0, 0);
+        players.push_back(new Player(name, 0, 0));
 
 
         QTableWidgetItem *col1Item1 = new QTableWidgetItem(name);
@@ -282,9 +282,7 @@ void MainWindow::on_deleteProfile_button_clicked() // удаление проф�
 {
     int selectedRow = ui->profilesTable->currentRow();
 
-    for (int i = selectedRow; i < playersCount - 1; i++) {
-        players[i] = players[i + 1];
-    }
+    players.erase(players.begin() + selectedRow);
 
     ui->profilesTable->removeRow(selectedRow);
     ui->tableWidget_2->removeRow(selectedRow);
@@ -323,7 +321,7 @@ void MainWindow::on_playersProfiles_addButton_clicked() // добавление 
         ui->tableWidget_2->insertRow(playersCount);
         ui->profilesTable->insertRow(playersCount);
 
-        players[playersCount] = new Player(name, 0, 0);
+        players.push_back(new Player(name, 0, 0));
 
 
         QTableWidgetItem *col1Item1 = new QTableWidgetItem(name);

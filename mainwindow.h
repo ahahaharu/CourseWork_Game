@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QFile>
+#include <vector>
 
 #include "player/player.h"
 
@@ -70,7 +71,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    Player* players[100];
+    //Player* players[100];
+    std::vector<Player*> players;
 
 
     int selectedProfile;
