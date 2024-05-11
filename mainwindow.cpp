@@ -553,11 +553,14 @@ void MainWindow::on_pushButton_5_clicked()
                 }
             }
         }
-
+        ui->player1_label->setText(selectedProfilesForGame[0]);
+        ui->player2_label->setText(selectedProfilesForGame[1]);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[0]+"' выбирает персонажа");
 
 
     }
+
+
 
 }
 
@@ -598,11 +601,22 @@ void MainWindow::on_pushButton_3_clicked()
     heroes.push_back(Lina());
     currentHeroChoosing++;
 
-    if (currentHeroChoosing == 2) {
+    QMovie *lina = new QMovie("../../Resources/images/Heroes/Lina/Lina.gif");
 
+
+    if (currentHeroChoosing == 2) {
+        ui->player2_hero->setText("Играет за Lina");
+        ui->player2_heroGif->setScaledContents(true);
+        ui->player2_heroGif->setMovie(lina);
+        ui->stackedWidget->setCurrentWidget(ui->preGameMenu);
     } else {
+        ui->player1_hero->setText("Играет за Lina");
+        ui->player1_heroGif->setScaledContents(true);
+        ui->player1_heroGif->setMovie(lina);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
+
+    lina->start();
 }
 
 
@@ -617,15 +631,26 @@ void MainWindow::on_PhoenixChoose_button_clicked()
     ui->PhoenixChoosed->show();
     ui->PhoenixChoose_button->setEnabled(false);
 
+    QMovie *phoenix = new QMovie("../../Resources/images/Heroes/Phoenix/Phoenix.gif");
+
+
 
     heroes.push_back(Phoenix());
     currentHeroChoosing++;
 
     if (currentHeroChoosing == 2) {
-
+        ui->player2_hero->setText("Играет за Phoenix");
+        ui->player2_heroGif->setScaledContents(true);
+        ui->player2_heroGif->setMovie(phoenix);
+        ui->stackedWidget->setCurrentWidget(ui->preGameMenu);
     } else {
+        ui->player1_hero->setText("Играет за Phoenix");
+        ui->player1_heroGif->setScaledContents(true);
+        ui->player1_heroGif->setMovie(phoenix);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
+
+    phoenix->start();
 }
 
 
@@ -640,15 +665,24 @@ void MainWindow::on_VenomancerChoose_button_clicked()
     ui->VenomancerChoosed->show();
     ui->VenomancerChoose_button->setEnabled(false);
 
+    QMovie *venomancer = new QMovie("../../Resources/images/Heroes/Venomancer/Venomancer.gif");
 
     heroes.push_back(Venomancer());
     currentHeroChoosing++;
 
     if (currentHeroChoosing == 2) {
-
+        ui->player2_hero->setText("Играет за Venomancer");
+        ui->player2_heroGif->setScaledContents(true);
+        ui->player2_heroGif->setMovie(venomancer);
+        ui->stackedWidget->setCurrentWidget(ui->preGameMenu);
     } else {
+        ui->player1_hero->setText("Играет за Venomancer");
+        ui->player1_heroGif->setScaledContents(true);
+        ui->player1_heroGif->setMovie(venomancer);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
+
+    venomancer->start();
 }
 
 
@@ -669,15 +703,24 @@ void MainWindow::on_DRChoose_button_clicked()
     ui->DRChoosed->show();
     ui->DRChoose_button->setEnabled(false);
 
+    QMovie *drowRanger = new QMovie("../../Resources/images/Heroes/DrowRanger/DrowRanger.gif");
 
     heroes.push_back(DrowRanger());
     currentHeroChoosing++;
 
     if (currentHeroChoosing == 2) {
-
+        ui->player2_hero->setText("Играет за Drow Ranger");
+        ui->player2_heroGif->setScaledContents(true);
+        ui->player2_heroGif->setMovie(drowRanger);
+        ui->stackedWidget->setCurrentWidget(ui->preGameMenu);
     } else {
+        ui->player1_hero->setText("Играет за Drow Ranger");
+        ui->player1_heroGif->setScaledContents(true);
+        ui->player1_heroGif->setMovie(drowRanger);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
+
+    drowRanger->start();
 }
 
 
@@ -686,20 +729,71 @@ void MainWindow::on_DKChoose_button_clicked()
     ui->DKChoosed->show();
     ui->DKChoose_button->setEnabled(false);
 
+    QMovie *dragonKnight = new QMovie("../../Resources/images/Heroes/DragonKnight/DragonKnight.gif");
 
     heroes.push_back(DragonKnight());
     currentHeroChoosing++;
 
     if (currentHeroChoosing == 2) {
-
+        ui->player2_hero->setText("Играет за Dragon Knight");
+        ui->player2_heroGif->setScaledContents(true);
+        ui->player2_heroGif->setMovie(dragonKnight);
+        ui->stackedWidget->setCurrentWidget(ui->preGameMenu);
     } else {
+        ui->player1_hero->setText("Играет за Dragon Knight");
+        ui->player1_heroGif->setScaledContents(true);
+        ui->player1_heroGif->setMovie(dragonKnight);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
+
+    dragonKnight->start();
 }
 
 
 void MainWindow::on_DKDetails_button_clicked()
 {
     dragonKnightDetails.exec();
+}
+
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Подтверждение", "Вы уверены, что хотите завершить игру? Игра не будет засчитана.",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        ui->stackedWidget->setCurrentWidget(ui->startMenu);
+    }
+
+    ui->LinaChoosed->hide();
+    ui->PhoenixChoosed->hide();
+    ui->VenomancerChoosed->hide();
+    ui->DRChoosed->hide();
+    ui->DKChoosed->hide();
+
+    ui->pushButton_3->setEnabled(true);
+    ui->PhoenixChoose_button->setEnabled(true);
+    ui->VenomancerChoose_button->setEnabled(true);
+    ui->DRChoose_button->setEnabled(true);
+    ui->DKChoose_button->setEnabled(true);
+
+    heroes.clear();
+    currentHeroChoosing = 0;
+}
+
+
+void MainWindow::on_pushButton_8_clicked()
+{
+    if (heroes[0].getName() == "Lina") {
+        linaDetails.exec();
+    } else if (heroes[0].getName() == "Phoenix") {
+        phoenixDetails.exec();
+    } else if (heroes[0].getName() == "Venomancer") {
+        venomancerDetails.exec();
+    } else if (heroes[0].getName() == "Drow Ranger") {
+        drowRangerDetails.exec();
+    } else {
+        dragonKnightDetails.exec();
+    }
 }
 
