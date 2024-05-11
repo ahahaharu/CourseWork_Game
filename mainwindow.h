@@ -14,7 +14,7 @@
 #include "heroes/hero.h"
 #include "heroes/Lina/lina.h"
 
-#include "linadetails.h"
+#include "heroes/Lina/linadetails.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

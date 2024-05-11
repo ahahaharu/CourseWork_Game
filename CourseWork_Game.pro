@@ -10,21 +10,21 @@ CONFIG += c++17
 
 SOURCES += \
     heroes/Lina/lina.cpp \
+    heroes/Lina/linadetails.cpp \
     heroes/hero.cpp \
-    linadetails.cpp \
     main.cpp \
     mainwindow.cpp \
     player/player.cpp
 
 HEADERS += \
     heroes/Lina/lina.h \
+    heroes/Lina/linadetails.h \
     heroes/hero.h \
-    linadetails.h \
     mainwindow.h \
     player/player.h
 
 FORMS += \
-    linadetails.ui \
+    heroes/Lina/linadetails.ui \
     mainwindow.ui
 
 # Default rules for deployment.
