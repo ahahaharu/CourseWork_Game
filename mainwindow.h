@@ -17,11 +17,13 @@
 #include "heroes/Phoenix/phoenix.h"
 #include "heroes/Venomancer/venomancer.h"
 #include "heroes/DrowRanger/drowranger.h"
+#include "heroes/DragonKnight/dragonknight.h"
 
 #include "heroes/Lina/linadetails.h"
 #include "heroes/Phoenix/phoenixdetails.h"
 #include "heroes/Venomancer/venomancerdetails.h"
 #include "heroes/DrowRanger/drowrangerdialog.h"
+#include "heroes/DragonKnight/dragonknightdetails.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -102,6 +104,10 @@ private slots:
 
     void on_DRChoose_button_clicked();
 
+    void on_DKChoose_button_clicked();
+
+    void on_DKDetails_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -122,5 +128,6 @@ private:
     PhoenixDetails phoenixDetails;
     VenomancerDetails venomancerDetails;
     DrowRangerDialog drowRangerDetails;
+    DragonKnightDetails dragonKnightDetails;
 };
 #endif // MAINWINDOW_H

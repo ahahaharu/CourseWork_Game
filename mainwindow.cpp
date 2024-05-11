@@ -91,11 +91,17 @@ MainWindow::MainWindow(QWidget *parent)
     effect4->setYOffset(5);
     effect4->setColor(QColor(0, 0, 0, 255));
 
+    QGraphicsDropShadowEffect *effect5 = new QGraphicsDropShadowEffect;
+    effect5->setBlurRadius(50);
+    effect5->setXOffset(5);
+    effect5->setYOffset(5);
+    effect5->setColor(QColor(0, 0, 0, 255));
+
     ui->LinaChoosed->setGraphicsEffect(effect1);
     ui->PhoenixChoosed->setGraphicsEffect(effect2);
     ui->VenomancerChoosed->setGraphicsEffect(effect3);
     ui->DRChoosed->setGraphicsEffect(effect4);
-    /*ui->DKChoosed->setGraphicsEffect(effect);*/
+    ui->DKChoosed->setGraphicsEffect(effect5);
 }
 
 MainWindow::~MainWindow()
@@ -672,5 +678,28 @@ void MainWindow::on_DRChoose_button_clicked()
     } else {
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
+}
+
+
+void MainWindow::on_DKChoose_button_clicked()
+{
+    ui->DKChoosed->show();
+    ui->DKChoose_button->setEnabled(false);
+
+
+    heroes.push_back(DragonKnight());
+    currentHeroChoosing++;
+
+    if (currentHeroChoosing == 2) {
+
+    } else {
+        ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
+    }
+}
+
+
+void MainWindow::on_DKDetails_button_clicked()
+{
+    dragonKnightDetails.exec();
 }
 

@@ -9,6 +9,8 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    heroes/DragonKnight/dragonknight.cpp \
+    heroes/DragonKnight/dragonknightdetails.cpp \
     heroes/DrowRanger/drowranger.cpp \
     heroes/DrowRanger/drowrangerdialog.cpp \
     heroes/Lina/lina.cpp \
@@ -23,6 +25,8 @@ SOURCES += \
     player/player.cpp \
 
 HEADERS += \
+    heroes/DragonKnight/dragonknight.h \
+    heroes/DragonKnight/dragonknightdetails.h \
     heroes/DrowRanger/drowranger.h \
     heroes/DrowRanger/drowrangerdialog.h \
     heroes/Lina/lina.h \
@@ -36,6 +40,7 @@ HEADERS += \
     player/player.h \
 
 FORMS += \
+    heroes/DragonKnight/dragonknightdetails.ui \
     heroes/DrowRanger/drowrangerdialog.ui \
     heroes/Lina/linadetails.ui \
     heroes/Phoenix/phoenixdetails.ui \
