@@ -11,6 +11,10 @@ struct Ability {
     int cooldown;
     int manaCost;
     int damage;
+
+    int silence;
+    int stan;
+    int periodic;
 };
 
 class Hero {
@@ -22,6 +26,11 @@ private:
     int mana;
 
     Ability* abilities = new Ability[3];
+
+    int isSilenced = 0;
+    int isStanned = 0;
+    int isPereodic = 0;
+    int pereodicDamage = 0;
 
 public:
     Hero(QString name, QDir image, int health, int mana, Ability* abilities);
