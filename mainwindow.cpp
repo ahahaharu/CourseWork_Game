@@ -112,6 +112,21 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(timer, &QTimer::timeout, this, &MainWindow::countdown);
 
+    items.push_back({"Healing salve", QPixmap("../../Resources/images/Items/Healing_salve.jpg"), 100, "Восстанавливает здоровье на 100"});
+    items.push_back({"Enchanted mango", QPixmap("../../Resources/images/Items/Enchanted_mango.png"), 100, "Восстанавливает ману на 100"});
+    items.push_back({"Bracer", QPixmap("../../Resources/images/Items/Bracer.jpg"), 250, "Увеличивает максимальное здоровье на 75 и восстанавливает его"});
+    items.push_back({"Null talisman", QPixmap("../../Resources/images/Items/Null_talisman.jpg"), 250, "Увеличивает максимальное количество маны на 75 и восстанавливает её"});
+    items.push_back({"Diffusal blade", QPixmap("../../Resources/images/Items/Diffusal_blade.jpg"), 450, "Сжигает 100 маны у противника"});
+    items.push_back({"Dagon", QPixmap("../../Resources/images/Items/Dagon.jpg"), 500, "Наносит противнику 100 урона"});
+    items.push_back({"Aether lense", QPixmap("../../Resources/images/Items/Aether_lens.png"), 800, "Увеличивает максимальное количество маны на 250 и восстанавливает её"});
+    items.push_back({"Heart of tarrasque", QPixmap("../../Resources/images/Items/Heart_of_tarrasque.jpg"), 800, "Увеличивает максимальное здоровье на 250 и восстанавливает его"});
+    items.push_back({"Linkens sphere", QPixmap("../../Resources/images/Items/Linkens_sphere.jpg"), 900, "Следующее заклинание противника не наносит вам урон"});
+    items.push_back({"Kaya", QPixmap("../../Resources/images/Items/Kaya.jpg"), 400, "Увеличивает урон от способностей на 15%"});
+    items.push_back({"Manta style", QPixmap("../../Resources/images/Items/Manta_style.jpg"), 500, "Развеивает все отрицательные эффекты"});
+
+    ui->item1sold->hide();
+    ui->item2sold->hide();
+    ui->item3sold->hide();
 }
 
 MainWindow::~MainWindow()
@@ -819,7 +834,7 @@ void MainWindow::on_startGame_clicked()
     ui->player2Name->setText(selectedProfilesForGame[1]);
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event) // добавьте этот метод
+void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (isStageAnnouncement) {
         if (event->text() == "w" || event->text() == "W" || event->text() == "ц" || event->text() == "Ц") {
@@ -835,20 +850,47 @@ void MainWindow::keyPressEvent(QKeyEvent *event) // добавьте этот м
         }
 
         if (isPlayer1Ready && isPlayer2Ready) {
-            farmStages = 0;
-            farmStageFinished = false;
-            ui->stackedWidget->setCurrentWidget(ui->farmStage);
-            isStageAnnouncement = false;
-            processLabel->clear();
+            if (stageCount % 3 == 1) {
+                farmStages = 0;
+                farmStageFinished = false;
+                ui->stackedWidget->setCurrentWidget(ui->farmStage);
+                isStageAnnouncement = false;
+                processLabel->clear();
 
-            ui->farm_player1->setText(selectedProfilesForGame[0]);
-            ui->farm_player2->setText(selectedProfilesForGame[1]);
+                ui->farm_player1->setText(selectedProfilesForGame[0]);
+                ui->farm_player2->setText(selectedProfilesForGame[1]);
 
 
-            ui->gold->setText("Золото за попадание: " + QString::number(goldFarm));
+                ui->gold->setText("Золото за попадание: " + QString::number(goldFarm));
 
-            count = 3;
-            timer->start(1000);
+                count = 3;
+                timer->start(1000);
+            } else if (stageCount % 3 == 2) {
+                std::vector<int> numbers {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+                std::random_shuffle(numbers.begin(), numbers.end());
+
+                currentShop.push_back(numbers[0]);
+                currentShop.push_back(numbers[1]);
+                currentShop.push_back(numbers[2]);
+
+                ui->shopBuying->setText(selectedProfilesForGame[0]+" выбирает, что купить");
+                ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[0]+": "+QString::number(heroes[0].getGold()));
+
+                QPixmap item1(items[numbers[0]].image);
+                ui->shop_item1img->setPixmap(item1);
+
+                QPixmap item2(items[numbers[1]].image);
+                ui->shop_item2img->setPixmap(item2);
+
+                QPixmap item3(items[numbers[2]].image);
+                ui->shop_item3img->setPixmap(item3);
+
+                ui->player1Items->setText("Предметы "+selectedProfilesForGame[0]);
+                ui->player2Items->setText("Предметы "+selectedProfilesForGame[1]);
+
+                ui->stackedWidget->setCurrentWidget(ui->shopStage);
+            }
         }
     } else if (isFarmStage) {
         if ((event->text() == "w" || event->text() == "W" || event->text() == "ц" || event->text() == "Ц") && !isFinished1) {
@@ -924,8 +966,10 @@ void MainWindow::countdown()
         ui->player2Ready->setText("НЕ ГОТОВ");
         ui->player2Ready->setStyleSheet("QLabel { color : red; }");
 
+        stageCount++;
         ui->nextStage->setText("Cтадия "+QString::number(stageCount)+": МАГАЗИН");
         farmStages = 0;
+
         QTimer::singleShot(3000, this, &MainWindow::delay);
 
         return;
@@ -1124,3 +1168,431 @@ void MainWindow::delay() {
 
     ui->stackedWidget->setCurrentWidget(ui->stageAnnouncement);
 }
+
+void MainWindow::on_shop_item1info_clicked()
+{
+    QMessageBox details;
+
+    details.setWindowTitle(items[currentShop[0]].name);
+
+    QPixmap pixmap(items[currentShop[0]].image);
+    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
+
+    details.setText(items[currentShop[0]].desc+"\nСтоимость: "+QString::number(items[currentShop[0]].cost));
+
+    details.exec();
+}
+
+
+void MainWindow::on_shop_item2info_clicked()
+{
+    QMessageBox details;
+
+    details.setWindowTitle(items[currentShop[1]].name);
+
+    QPixmap pixmap(items[currentShop[1]].image);
+    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
+
+    details.setText(items[currentShop[1]].desc+"\nСтоимость: "+QString::number(items[currentShop[1]].cost));
+
+    details.exec();
+}
+
+
+void MainWindow::on_shop_item3info_clicked()
+{
+    QMessageBox details;
+
+    details.setWindowTitle(items[currentShop[2]].name);
+
+    QPixmap pixmap(items[currentShop[2]].image);
+    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
+
+    details.setText(items[currentShop[2]].desc+"\nСтоимость: "+QString::number(items[currentShop[2]].cost));
+
+    details.exec();
+}
+
+
+void MainWindow::on_pushButton_6_clicked()
+{
+    if (currentlyBuying == 1) {
+        currentlyBuying = 0;
+
+        ui->player1Gold->setText("Золото: "+QString::number(heroes[0].getGold()));
+        ui->player2Gold->setText("Золото: "+QString::number(heroes[1].getGold()));
+
+        isStageAnnouncement = true;
+
+        isPlayer1Ready = false;
+        ui->player1Ready->setText("НЕ ГОТОВ");
+        ui->player1Ready->setStyleSheet("QLabel { color : red; }");
+
+        isPlayer2Ready = false;
+        ui->player2Ready->setText("НЕ ГОТОВ");
+        ui->player2Ready->setStyleSheet("QLabel { color : red; }");
+
+        stageCount++;
+        ui->nextStage->setText("Cтадия "+QString::number(stageCount)+": БИТВА");
+
+        ui->stackedWidget->setCurrentWidget(ui->stageAnnouncement);
+    } else {
+        currentShop.clear();
+        currentlyBuying++;
+        std::vector<int> numbers {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+        std::random_shuffle(numbers.begin(), numbers.end());
+
+        currentShop.push_back(numbers[0]);
+        currentShop.push_back(numbers[1]);
+        currentShop.push_back(numbers[2]);
+
+        ui->shopBuying->setText(selectedProfilesForGame[1]+" выбирает, что купить");
+        ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[1]+": "+QString::number(heroes[1].getGold()));
+
+        QPixmap item1(items[numbers[0]].image);
+        ui->shop_item1img->setPixmap(item1);
+
+        QPixmap item2(items[numbers[1]].image);
+        ui->shop_item2img->setPixmap(item2);
+
+        QPixmap item3(items[numbers[2]].image);
+        ui->shop_item3img->setPixmap(item3);
+
+        ui->shop_item1buy->setEnabled(true);
+        ui->shop_item2buy->setEnabled(true);
+        ui->shop_item3buy->setEnabled(true);
+
+        ui->item1sold->hide();
+        ui->item2sold->hide();
+        ui->item3sold->hide();
+    }
+}
+
+
+void MainWindow::on_shop_item1buy_clicked()
+{
+    int ind = currentShop[0];
+    if (currentlyBuying == 0) {
+        int sz = heroes[0].items.size();
+        if (sz == 3) {
+            QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
+        } else {
+            if (items[ind].cost < heroes[0].getGold()) {
+                heroes[0].removeGold(items[ind].cost);
+                ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[0]+": "+QString::number(heroes[0].getGold()));
+
+                heroes[0].items.push_back(ind);
+                sz++;
+
+                if (sz == 1) {
+                    ui->player1_item1inShop->setPixmap(items[ind].image);
+                    ui->player1_item1->setPixmap(items[ind].image);
+                    ui->player1_about1_buttonInShop->setEnabled(true);
+                    ui->player1_about1_button->setEnabled(true);
+                } else if (sz == 2) {
+                    ui->player1_item2inShop->setPixmap(items[ind].image);
+                    ui->player1_item2->setPixmap(items[ind].image);
+                    ui->player1_about2_buttonInShop->setEnabled(true);
+                    ui->player1_about2_button->setEnabled(true);
+                } else {
+                    ui->player1_item3inShop->setPixmap(items[ind].image);
+                    ui->player1_item3->setPixmap(items[ind].image);
+                    ui->player1_about3_buttonInShop->setEnabled(true);
+                    ui->player1_about3_button->setEnabled(true);
+                }
+
+                ui->item1sold->show();
+                ui->shop_item1buy->setEnabled(false);
+            } else {
+                QMessageBox::critical(this, "Недостаточно денег", "Недостаточно денег для данной покупки");
+            }
+        }
+    } else {
+        int sz = heroes[1].items.size();
+        if (sz == 3) {
+            QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
+        } else {
+            if (items[ind].cost < heroes[1].getGold()) {
+                heroes[1].removeGold(items[ind].cost);
+                ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[1]+": "+QString::number(heroes[1].getGold()));
+
+                heroes[1].items.push_back(ind);
+                sz++;
+
+                if (sz == 1) {
+                    ui->player2_item1inShop->setPixmap(items[ind].image);
+                    ui->player2_item1->setPixmap(items[ind].image);
+                    ui->player2_about1_buttonInShop->setEnabled(true);
+                    ui->player2_about1_button->setEnabled(true);
+                } else if (sz == 2) {
+                    ui->player2_item2inShop->setPixmap(items[ind].image);
+                    ui->player2_item2->setPixmap(items[ind].image);
+                    ui->player2_about2_buttonInShop->setEnabled(true);
+                    ui->player2_about2_button->setEnabled(true);
+                } else {
+                    ui->player2_item3inShop->setPixmap(items[ind].image);
+                    ui->player2_item3->setPixmap(items[ind].image);
+                    ui->player2_about3_buttonInShop->setEnabled(true);
+                    ui->player2_about3_button->setEnabled(true);
+                }
+
+                ui->item1sold->show();
+                ui->shop_item1buy->setEnabled(false);
+            } else {
+                QMessageBox::critical(this, "Недостаточно денег", "Недостаточно денег для данной покупки");
+            }
+        }
+    }
+}
+
+
+void MainWindow::on_player1_about1_buttonInShop_clicked()
+{
+    int ind = heroes[0].items[0];
+    QMessageBox details;
+
+    details.setWindowTitle(items[ind].name);
+
+    QPixmap pixmap(items[ind].image);
+    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
+
+    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
+
+    details.exec();
+}
+
+
+void MainWindow::on_shop_item2buy_clicked()
+{
+    int ind = currentShop[1];
+    if (currentlyBuying == 0) {
+        int sz = heroes[0].items.size();
+        if (sz == 3) {
+            QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
+        } else {
+            if (items[ind].cost < heroes[0].getGold()) {
+                heroes[0].removeGold(items[ind].cost);
+                ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[0]+": "+QString::number(heroes[0].getGold()));
+
+                heroes[0].items.push_back(ind);
+                sz++;
+
+                if (sz == 1) {
+                    ui->player1_item1inShop->setPixmap(items[ind].image);
+                    ui->player1_item1->setPixmap(items[ind].image);
+                    ui->player1_about1_buttonInShop->setEnabled(true);
+                    ui->player1_about1_button->setEnabled(true);
+                } else if (sz == 2) {
+                    ui->player1_item2inShop->setPixmap(items[ind].image);
+                    ui->player1_item2->setPixmap(items[ind].image);
+                    ui->player1_about2_buttonInShop->setEnabled(true);
+                     ui->player1_about2_button->setEnabled(true);
+                } else {
+                    ui->player1_item3inShop->setPixmap(items[ind].image);
+                    ui->player1_item3->setPixmap(items[ind].image);
+                    ui->player1_about3_buttonInShop->setEnabled(true);
+                    ui->player1_about3_button->setEnabled(true);
+                }
+
+                ui->item2sold->show();
+                ui->shop_item2buy->setEnabled(false);
+            } else {
+                QMessageBox::critical(this, "Недостаточно денег", "Недостаточно денег для данной покупки");
+            }
+        }
+    } else {
+        int sz = heroes[1].items.size();
+        if (sz == 3) {
+            QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
+        } else {
+            if (items[ind].cost < heroes[1].getGold()) {
+                heroes[1].removeGold(items[ind].cost);
+                ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[1]+": "+QString::number(heroes[1].getGold()));
+
+                heroes[1].items.push_back(ind);
+                sz++;
+
+                if (sz == 1) {
+                    ui->player2_item1inShop->setPixmap(items[ind].image);
+                    ui->player2_item1->setPixmap(items[ind].image);
+                    ui->player2_about1_buttonInShop->setEnabled(true);
+                    ui->player2_about1_button->setEnabled(true);
+                } else if (sz == 2) {
+                    ui->player2_item2inShop->setPixmap(items[ind].image);
+                    ui->player2_item2->setPixmap(items[ind].image);
+                    ui->player2_about2_buttonInShop->setEnabled(true);
+                    ui->player2_about2_button->setEnabled(true);
+                } else {
+                    ui->player2_item3inShop->setPixmap(items[ind].image);
+                    ui->player2_item3->setPixmap(items[ind].image);
+                    ui->player2_about3_buttonInShop->setEnabled(true);
+                    ui->player2_about3_button->setEnabled(true);
+                }
+
+                ui->item2sold->show();
+                ui->shop_item2buy->setEnabled(false);
+            } else {
+                QMessageBox::critical(this, "Недостаточно денег", "Недостаточно денег для данной покупки");
+            }
+        }
+    }
+}
+
+
+void MainWindow::on_shop_item3buy_clicked()
+{
+    int ind = currentShop[2];
+    if (currentlyBuying == 0) {
+        int sz = heroes[0].items.size();
+        if (sz == 3) {
+            QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
+        } else {
+            if (items[ind].cost < heroes[0].getGold()) {
+                heroes[0].removeGold(items[ind].cost);
+                ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[0]+": "+QString::number(heroes[0].getGold()));
+
+                heroes[0].items.push_back(ind);
+                sz++;
+
+                if (sz == 1) {
+                    ui->player1_item1inShop->setPixmap(items[ind].image);
+                    ui->player1_item1->setPixmap(items[ind].image);
+                    ui->player1_about1_buttonInShop->setEnabled(true);
+                    ui->player1_about1_button->setEnabled(true);
+                } else if (sz == 2) {
+                    ui->player1_item2inShop->setPixmap(items[ind].image);
+                    ui->player1_item2->setPixmap(items[ind].image);
+                    ui->player1_about2_buttonInShop->setEnabled(true);
+                    ui->player1_about2_button->setEnabled(true);
+                } else {
+                    ui->player1_item3inShop->setPixmap(items[ind].image);
+                    ui->player1_item3->setPixmap(items[ind].image);
+                    ui->player1_about3_buttonInShop->setEnabled(true);
+                    ui->player1_about3_button->setEnabled(true);
+                }
+
+                ui->item3sold->show();
+                ui->shop_item3buy->setEnabled(false);
+            } else {
+                QMessageBox::critical(this, "Недостаточно денег", "Недостаточно денег для данной покупки");
+            }
+        }
+    } else {
+        int sz = heroes[1].items.size();
+        if (sz == 3) {
+            QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
+        } else {
+            if (items[ind].cost < heroes[1].getGold()) {
+                heroes[1].removeGold(items[ind].cost);
+                ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[1]+": "+QString::number(heroes[1].getGold()));
+
+                heroes[1].items.push_back(ind);
+                sz++;
+
+                if (sz == 1) {
+                    ui->player2_item1inShop->setPixmap(items[ind].image);
+                    ui->player2_item1->setPixmap(items[ind].image);
+                    ui->player2_about1_buttonInShop->setEnabled(true);
+                    ui->player2_about1_button->setEnabled(true);
+                } else if (sz == 2) {
+                    ui->player2_item2inShop->setPixmap(items[ind].image);
+                    ui->player2_item2->setPixmap(items[ind].image);
+                    ui->player2_about2_buttonInShop->setEnabled(true);
+                    ui->player2_about2_button->setEnabled(true);
+                } else {
+                    ui->player2_item3inShop->setPixmap(items[ind].image);
+                    ui->player2_item3->setPixmap(items[ind].image);
+                    ui->player2_about3_buttonInShop->setEnabled(true);
+                    ui->player2_about3_button->setEnabled(true);
+                }
+
+                ui->item3sold->show();
+                ui->shop_item3buy->setEnabled(false);
+            } else {
+                QMessageBox::critical(this, "Недостаточно денег", "Недостаточно денег для данной покупки");
+            }
+        }
+    }
+}
+
+
+void MainWindow::on_player1_about2_buttonInShop_clicked()
+{
+    int ind = heroes[0].items[1];
+    QMessageBox details;
+
+    details.setWindowTitle(items[ind].name);
+
+    QPixmap pixmap(items[ind].image);
+    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
+
+    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
+
+    details.exec();
+}
+
+
+void MainWindow::on_player1_about3_buttonInShop_clicked()
+{
+    int ind = heroes[0].items[2];
+    QMessageBox details;
+
+    details.setWindowTitle(items[ind].name);
+
+    QPixmap pixmap(items[ind].image);
+    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
+
+    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
+
+    details.exec();
+}
+
+
+void MainWindow::on_player2_about1_buttonInShop_clicked()
+{
+    int ind = heroes[1].items[0];
+    QMessageBox details;
+
+    details.setWindowTitle(items[ind].name);
+
+    QPixmap pixmap(items[ind].image);
+    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
+
+    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
+
+    details.exec();
+}
+
+
+void MainWindow::on_player2_about2_buttonInShop_clicked()
+{
+    int ind = heroes[1].items[1];
+    QMessageBox details;
+
+    details.setWindowTitle(items[ind].name);
+
+    QPixmap pixmap(items[ind].image);
+    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
+
+    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
+
+    details.exec();
+}
+
+
+void MainWindow::on_player2_about3_buttonInShop_clicked()
+{
+    int ind = heroes[1].items[2];
+    QMessageBox details;
+
+    details.setWindowTitle(items[ind].name);
+
+    QPixmap pixmap(items[ind].image);
+    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
+
+    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
+
+    details.exec();
+}
+

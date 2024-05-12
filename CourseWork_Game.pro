@@ -38,6 +38,7 @@ HEADERS += \
     heroes/Venomancer/venomancer.h \
     heroes/Venomancer/venomancerdetails.h \
     heroes/hero.h \
+    item.h \
     mainwindow.h \
     player/player.h \
 

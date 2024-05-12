@@ -22,6 +22,7 @@
 #include "player/player.h"
 #include "heroes/hero.h"
 #include "Stages/Farm/AnimatedRect.h"
+#include "item.h"
 
 #include "heroes/Lina/lina.h"
 #include "heroes/Phoenix/phoenix.h"
@@ -138,6 +139,32 @@ private slots:
     void stop_rect1();
     void stop_rect2();
 
+    void on_shop_item1info_clicked();
+
+    void on_shop_item2info_clicked();
+
+    void on_shop_item3info_clicked();
+
+    void on_pushButton_6_clicked();
+
+    void on_shop_item1buy_clicked();
+
+    void on_player1_about1_buttonInShop_clicked();
+
+    void on_shop_item2buy_clicked();
+
+    void on_shop_item3buy_clicked();
+
+    void on_player1_about2_buttonInShop_clicked();
+
+    void on_player1_about3_buttonInShop_clicked();
+
+    void on_player2_about1_buttonInShop_clicked();
+
+    void on_player2_about2_buttonInShop_clicked();
+
+    void on_player2_about3_buttonInShop_clicked();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
@@ -202,6 +229,10 @@ private:
     int yellowRectSize = 70;
 
     void delay();
+
+    std::vector<Item> items;
+    std::vector<int> currentShop;
+    int currentlyBuying = 0;
 };
 
 

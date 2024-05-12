@@ -52,6 +52,8 @@ public:
     void useItem();
     void addGold(int);
     void removeGold(int);
+
+    std::vector<int>items;
 };
 
 
