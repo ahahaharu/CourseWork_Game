@@ -28,8 +28,9 @@ private:
 
     Ability* abilities = new Ability[3];
 
-    int currentHP;
-    int currentMana;
+    int currentHP = health;
+    int currentMana = mana;
+    int currentGold = 500;
 
     int isSilenced = 0;
     int isStanned = 0;
@@ -44,10 +45,13 @@ public:
     int getHealth();
     int getMana();
     Ability* getAbilities();
+    int getGold();
 
     virtual void castSkill(int);
     void getDamage(int);
     void useItem();
+    void addGold(int);
+    void removeGold(int);
 };
 
 

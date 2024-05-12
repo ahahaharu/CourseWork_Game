@@ -42,7 +42,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>4</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="startMenu">
        <widget class="QWidget" name="widget" native="true">
@@ -1440,7 +1440,7 @@
        </widget>
       </widget>
       <widget class="QWidget" name="preGameMenu">
-       <widget class="QPushButton" name="pushButton_6">
+       <widget class="QPushButton" name="startGame">
         <property name="geometry">
          <rect>
           <x>430</x>
@@ -1661,6 +1661,795 @@
         </property>
        </widget>
       </widget>
+      <widget class="QWidget" name="stageAnnouncement">
+       <widget class="QFrame" name="frame_12">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>470</y>
+          <width>424</width>
+          <height>218</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QPushButton" name="player1_about1_button">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>180</y>
+           <width>128</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Подробнее</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="player1_about2_button">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>148</x>
+           <y>180</y>
+           <width>128</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Подробнее</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="player1_about3_button">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>286</x>
+           <y>180</y>
+           <width>128</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Подробнее</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="player1_item1">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>40</y>
+           <width>128</width>
+           <height>128</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Пусто</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="player1_item2">
+         <property name="geometry">
+          <rect>
+           <x>148</x>
+           <y>40</y>
+           <width>128</width>
+           <height>128</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Пусто</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="player1_item3">
+         <property name="geometry">
+          <rect>
+           <x>286</x>
+           <y>40</y>
+           <width>128</width>
+           <height>128</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Пусто</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_18">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>0</y>
+           <width>401</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Предметы</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QFrame" name="frame_13">
+        <property name="geometry">
+         <rect>
+          <x>820</x>
+          <y>470</y>
+          <width>424</width>
+          <height>218</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QPushButton" name="player2_about1_button">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>180</y>
+           <width>128</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Подробнее</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="player2_about2_button">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>148</x>
+           <y>180</y>
+           <width>128</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Подробнее</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="player2_about3_button">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>286</x>
+           <y>180</y>
+           <width>128</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Подробнее</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="player2_item1">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>40</y>
+           <width>128</width>
+           <height>128</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Пусто</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="player2_item2">
+         <property name="geometry">
+          <rect>
+           <x>148</x>
+           <y>40</y>
+           <width>128</width>
+           <height>128</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Пусто</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="player2_item3">
+         <property name="geometry">
+          <rect>
+           <x>286</x>
+           <y>40</y>
+           <width>128</width>
+           <height>128</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Пусто</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_19">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>0</y>
+           <width>401</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Предметы</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QLabel" name="player1Gif">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>80</y>
+          <width>191</width>
+          <height>211</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Перс</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="player1Name">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>300</y>
+          <width>241</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: blue;</string>
+        </property>
+        <property name="text">
+         <string>Имя перса</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="player2Name">
+        <property name="geometry">
+         <rect>
+          <x>930</x>
+          <y>310</y>
+          <width>241</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: red;
+text-shadow: -1px 0 black;</string>
+        </property>
+        <property name="text">
+         <string>Имя перса</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="player2Gif">
+        <property name="geometry">
+         <rect>
+          <x>950</x>
+          <y>80</y>
+          <width>191</width>
+          <height>211</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Перс</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="nextStage">
+        <property name="geometry">
+         <rect>
+          <x>420</x>
+          <y>10</y>
+          <width>421</width>
+          <height>161</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>24</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Следующая стадия:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="player2Ready">
+        <property name="geometry">
+         <rect>
+          <x>920</x>
+          <y>30</y>
+          <width>251</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: red;</string>
+        </property>
+        <property name="text">
+         <string>НЕ ГОТОВ</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="player1Ready">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>30</y>
+          <width>251</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: red;</string>
+        </property>
+        <property name="text">
+         <string>НЕ ГОТОВ</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_21">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>0</y>
+          <width>291</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Нажмите 'Q', для готовности</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_22">
+        <property name="geometry">
+         <rect>
+          <x>920</x>
+          <y>0</y>
+          <width>291</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Нажмите 'O', для готовности</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_23">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>340</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>HP</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_24">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>380</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Мана</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QFrame" name="frame_14">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>340</y>
+          <width>311</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: red;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="label_25">
+         <property name="geometry">
+          <rect>
+           <x>12</x>
+           <y>5</y>
+           <width>291</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>500 / 500</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QFrame" name="frame_15">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>380</y>
+          <width>311</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: blue</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="label_26">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>5</y>
+           <width>291</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>500 / 500</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QFrame" name="frame_16">
+        <property name="geometry">
+         <rect>
+          <x>920</x>
+          <y>380</y>
+          <width>311</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: blue;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="label_27">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>5</y>
+           <width>291</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>500 / 500</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QFrame" name="frame_17">
+        <property name="geometry">
+         <rect>
+          <x>920</x>
+          <y>340</y>
+          <width>311</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: red;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="label_28">
+         <property name="geometry">
+          <rect>
+           <x>12</x>
+           <y>5</y>
+           <width>291</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>500 / 500</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QLabel" name="label_29">
+        <property name="geometry">
+         <rect>
+          <x>820</x>
+          <y>340</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>HP</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_30">
+        <property name="geometry">
+         <rect>
+          <x>820</x>
+          <y>380</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Мана</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="player2Gold">
+        <property name="geometry">
+         <rect>
+          <x>820</x>
+          <y>420</y>
+          <width>421</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: gold;</string>
+        </property>
+        <property name="text">
+         <string>Золото: 500</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="player2Gold_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>420</y>
+          <width>421</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: gold;</string>
+        </property>
+        <property name="text">
+         <string>Золото: 500</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="player1Sur">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>470</y>
+          <width>151</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Сдаться</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="player2Sur">
+        <property name="geometry">
+         <rect>
+          <x>652</x>
+          <y>470</y>
+          <width>151</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Сдаться</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="farmStage"/>
      </widget>
     </item>
    </layout>

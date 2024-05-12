@@ -39,3 +39,15 @@ void Hero::getDamage(int damage) {
 void Hero::useItem() {
 
 }
+
+void Hero::addGold(int gold) {
+    this->currentGold += gold;
+}
+
+void Hero::removeGold(int gold) {
+    this->currentGold -= gold;
+}
+
+int Hero::getGold() {
+    return this->currentGold;
+}

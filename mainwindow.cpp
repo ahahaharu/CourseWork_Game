@@ -56,10 +56,10 @@ MainWindow::MainWindow(QWidget *parent)
     processLabel->setMovie(movie);
     movie->start();
 
-    processLabel->setGeometry(0, 0, this->width(), this->height()); // Задает размеры label под размеры окна
-    processLabel->setScaledContents(true); // Масштабирует gif под размеры label
+    processLabel->setGeometry(0, 0, this->width(), this->height());
+    processLabel->setScaledContents(true);
 
-    this->setCentralWidget(ui->stackedWidget);
+    this->setCentralWidget(ui->stackedWidget); // чтобы stackedWidget был наверху
 
     ui->LinaChoosed->hide();
     ui->PhoenixChoosed->hide();
@@ -102,6 +102,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->VenomancerChoosed->setGraphicsEffect(effect3);
     ui->DRChoosed->setGraphicsEffect(effect4);
     ui->DKChoosed->setGraphicsEffect(effect5);
+
+    ui->player2_heroGif->setScaledContents(true);
+    ui->player2Gif->setScaledContents(true);
+    ui->player1_heroGif->setScaledContents(true);
+    ui->player1Gif->setScaledContents(true);
 }
 
 MainWindow::~MainWindow()
@@ -606,13 +611,13 @@ void MainWindow::on_pushButton_3_clicked()
 
     if (currentHeroChoosing == 2) {
         ui->player2_hero->setText("Играет за Lina");
-        ui->player2_heroGif->setScaledContents(true);
         ui->player2_heroGif->setMovie(lina);
+        ui->player2Gif->setMovie(lina);
         ui->stackedWidget->setCurrentWidget(ui->preGameMenu);
     } else {
         ui->player1_hero->setText("Играет за Lina");
-        ui->player1_heroGif->setScaledContents(true);
         ui->player1_heroGif->setMovie(lina);
+        ui->player1Gif->setMovie(lina);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
 
@@ -640,13 +645,13 @@ void MainWindow::on_PhoenixChoose_button_clicked()
 
     if (currentHeroChoosing == 2) {
         ui->player2_hero->setText("Играет за Phoenix");
-        ui->player2_heroGif->setScaledContents(true);
         ui->player2_heroGif->setMovie(phoenix);
+        ui->player2Gif->setMovie(phoenix);
         ui->stackedWidget->setCurrentWidget(ui->preGameMenu);
     } else {
         ui->player1_hero->setText("Играет за Phoenix");
-        ui->player1_heroGif->setScaledContents(true);
         ui->player1_heroGif->setMovie(phoenix);
+        ui->player1Gif->setMovie(phoenix);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
 
@@ -672,13 +677,13 @@ void MainWindow::on_VenomancerChoose_button_clicked()
 
     if (currentHeroChoosing == 2) {
         ui->player2_hero->setText("Играет за Venomancer");
-        ui->player2_heroGif->setScaledContents(true);
         ui->player2_heroGif->setMovie(venomancer);
+        ui->player2Gif->setMovie(venomancer);
         ui->stackedWidget->setCurrentWidget(ui->preGameMenu);
     } else {
         ui->player1_hero->setText("Играет за Venomancer");
-        ui->player1_heroGif->setScaledContents(true);
         ui->player1_heroGif->setMovie(venomancer);
+        ui->player1Gif->setMovie(venomancer);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
 
@@ -710,13 +715,13 @@ void MainWindow::on_DRChoose_button_clicked()
 
     if (currentHeroChoosing == 2) {
         ui->player2_hero->setText("Играет за Drow Ranger");
-        ui->player2_heroGif->setScaledContents(true);
         ui->player2_heroGif->setMovie(drowRanger);
+        ui->player2Gif->setMovie(drowRanger);
         ui->stackedWidget->setCurrentWidget(ui->preGameMenu);
     } else {
         ui->player1_hero->setText("Играет за Drow Ranger");
-        ui->player1_heroGif->setScaledContents(true);
         ui->player1_heroGif->setMovie(drowRanger);
+        ui->player1Gif->setMovie(drowRanger);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
 
@@ -736,13 +741,13 @@ void MainWindow::on_DKChoose_button_clicked()
 
     if (currentHeroChoosing == 2) {
         ui->player2_hero->setText("Играет за Dragon Knight");
-        ui->player2_heroGif->setScaledContents(true);
         ui->player2_heroGif->setMovie(dragonKnight);
+        ui->player2Gif->setMovie(dragonKnight);
         ui->stackedWidget->setCurrentWidget(ui->preGameMenu);
     } else {
         ui->player1_hero->setText("Играет за Dragon Knight");
-        ui->player1_heroGif->setScaledContents(true);
         ui->player1_heroGif->setMovie(dragonKnight);
+        ui->player1Gif->setMovie(dragonKnight);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[1]+"' выбирает персонажа");
     }
 
@@ -794,6 +799,39 @@ void MainWindow::on_pushButton_8_clicked()
         drowRangerDetails.exec();
     } else {
         dragonKnightDetails.exec();
+    }
+}
+
+
+
+
+void MainWindow::on_startGame_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->stageAnnouncement);
+    isStageAnnouncement = true;
+    ui->nextStage->setText("Cтадия "+QString::number(stageCount)+": ФАРМ");
+    ui->player1Name->setText(selectedProfilesForGame[0]);
+    ui->player2Name->setText(selectedProfilesForGame[1]);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event) // добавьте этот метод
+{
+    if (isStageAnnouncement) {
+        if (event->text() == "w" || event->text() == "W" || event->text() == "ц" || event->text() == "Ц") {
+            isPlayer1Ready = true;
+            ui->player1Ready->setText("ГОТОВ");
+            ui->player1Ready->setStyleSheet("QLabel { color : green; }");
+        }
+
+        if (event->text() == "o" || event->text() == "O" || event->text() == "щ" || event->text() == "Щ") {
+            isPlayer2Ready = true;
+            ui->player2Ready->setText("ГОТОВ");
+            ui->player2Ready->setStyleSheet("QLabel { color : green; }");
+        }
+
+        if (isPlayer1Ready && isPlayer1Ready) {
+
+        }
     }
 }
 

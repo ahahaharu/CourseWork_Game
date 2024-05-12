@@ -9,6 +9,7 @@
 #include <QMovie>
 #include <QPalette>
 #include <QGraphicsDropShadowEffect>
+#include <QKeyEvent>
 
 #include "player/player.h"
 #include "heroes/hero.h"
@@ -24,6 +25,7 @@
 #include "heroes/Venomancer/venomancerdetails.h"
 #include "heroes/DrowRanger/drowrangerdialog.h"
 #include "heroes/DragonKnight/dragonknightdetails.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -112,6 +114,11 @@ private slots:
 
     void on_pushButton_8_clicked();
 
+    void on_startGame_clicked();
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
 private:
     Ui::MainWindow *ui;
 
@@ -133,5 +140,12 @@ private:
     VenomancerDetails venomancerDetails;
     DrowRangerDialog drowRangerDetails;
     DragonKnightDetails dragonKnightDetails;
+
+    bool isStageAnnouncement = false;
+    bool isPlayer1Ready = false;
+    bool isPlayer2Ready = false;
+
+    int stageCount = 1;
+
 };
 #endif // MAINWINDOW_H
