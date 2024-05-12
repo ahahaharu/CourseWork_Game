@@ -10,15 +10,25 @@
 #include <QPalette>
 #include <QGraphicsDropShadowEffect>
 #include <QKeyEvent>
+#include <QGraphicsScene>
+#include <QPropertyAnimation>
+#include <QSequentialAnimationGroup>
+#include <QGraphicsView>
+#include <QPainter>
+#include <QTime>
+#include <QKeyEvent>
+#include <QTimer>
 
 #include "player/player.h"
 #include "heroes/hero.h"
+#include "AnimatedRect.h"
 
 #include "heroes/Lina/lina.h"
 #include "heroes/Phoenix/phoenix.h"
 #include "heroes/Venomancer/venomancer.h"
 #include "heroes/DrowRanger/drowranger.h"
 #include "heroes/DragonKnight/dragonknight.h"
+
 
 #include "heroes/Lina/linadetails.h"
 #include "heroes/Phoenix/phoenixdetails.h"
@@ -32,6 +42,8 @@ namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+
 
 class MainWindow : public QMainWindow
 {
@@ -116,8 +128,19 @@ private slots:
 
     void on_startGame_clicked();
 
+    void startAnimation1();
+    void startAnimation2();
+    void countdown();
+
+    void onAnimationFinished1();
+    void onAnimationFinished2();
+
+    void stop_rect1();
+    void stop_rect2();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 private:
     Ui::MainWindow *ui;
@@ -145,7 +168,41 @@ private:
     bool isPlayer1Ready = false;
     bool isPlayer2Ready = false;
 
+    bool isFarmStage = false;
+
     int stageCount = 1;
 
+    QMovie *movie;
+    QLabel *processLabel;
+
+    AnimatedRect *rect1 = nullptr;
+    AnimatedRect *rect2 = nullptr;
+    QSequentialAnimationGroup *animationGroup1 = nullptr;
+    QSequentialAnimationGroup *animationGroup2 = nullptr;
+    QPoint yellowRectPos1;
+    QPoint yellowRectPos2;
+    int count;
+    QTimer *timer = new QTimer(this);
+    bool isFinished1 = false;
+    bool isFinished2 = false;
+
+    int finishedBoth = 0;
+
+    int farmStages = 0;
+
+    double speed = 1.0;
+
+    bool farmStageFinished = false;
+
+    int goldFarm = 100;
+
+    int player1Received = 0;
+    int player2Received = 0;
+
+    int yellowRectSize = 70;
+
 };
+
+
+
 #endif // MAINWINDOW_H

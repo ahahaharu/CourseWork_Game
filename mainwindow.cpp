@@ -51,8 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     dragonKnight->start();
 
 
-    QMovie *movie = new QMovie("../../Resources/images/wallpaper.gif");
-    QLabel *processLabel = new QLabel(this);
+    movie = new QMovie("../../Resources/images/wallpaper.gif");
+    processLabel = new QLabel(this);
     processLabel->setMovie(movie);
     movie->start();
 
@@ -107,6 +107,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->player2Gif->setScaledContents(true);
     ui->player1_heroGif->setScaledContents(true);
     ui->player1Gif->setScaledContents(true);
+
+    //connect(animationGroup1, &QSequentialAnimationGroup::finished, this, &MainWindow::onAnimationFinished1);
+
+    /*if(animationGroup2 != nullptr) {
+        connect(animationGroup2, &QSequentialAnimationGroup::finished, this, &MainWindow::onAnimationFinished2);
+    }*/
 }
 
 MainWindow::~MainWindow()
@@ -829,9 +835,280 @@ void MainWindow::keyPressEvent(QKeyEvent *event) // добавьте этот м
             ui->player2Ready->setStyleSheet("QLabel { color : green; }");
         }
 
-        if (isPlayer1Ready && isPlayer1Ready) {
+        if (isPlayer1Ready && isPlayer2Ready) {
+            ui->stackedWidget->setCurrentWidget(ui->farmStage);
+            isStageAnnouncement = false;
+            processLabel->clear();
 
+            ui->farm_player1->setText(selectedProfilesForGame[0]);
+            ui->farm_player2->setText(selectedProfilesForGame[1]);
+
+
+
+            ui->gold->setText("Золото за попадание: " + QString::number(goldFarm));
+
+            count = 3;
+            timer = new QTimer(this);
+            connect(timer, &QTimer::timeout, this, &MainWindow::countdown);
+            timer->start(1000);
         }
+    } else if (isFarmStage) {
+        if ((event->text() == "w" || event->text() == "W" || event->text() == "ц" || event->text() == "Ц") && !isFinished1) {
+            stop_rect1();
+            isFinished1 = true;
+            finishedBoth++;
+        }
+
+        if ((event->text() == "o" || event->text() == "O" || event->text() == "щ" || event->text() == "Щ") && !isFinished2) {
+            stop_rect2();
+            isFinished2 = true;
+            finishedBoth++;
+        }
+
+        if (finishedBoth == 2) {
+            finishedBoth = 0;
+            count = 3; // начальное значение обратного отсчёта
+            timer = new QTimer(this);
+            // Подключение сигнала timeout к слоту
+            connect(timer, &QTimer::timeout, this, &MainWindow::countdown);
+
+            // Запуск таймера с интервалом в 1 секунду
+            timer->start(1000);
+        }
+    }
+}
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    if (isFarmStage) {
+
+        painter.drawRect(10, 210, 500, 300);
+        painter.drawRect(770, 210, 500, 300);
+
+        painter.setBrush(Qt::black);
+
+        painter.drawRect(10, 310, 500, 100);
+        painter.drawRect(770, 310, 500, 100);
+
+        // Установка жёлтого цвета для прямоугольника
+        painter.setBrush(Qt::yellow);
+
+        painter.drawRect(yellowRectPos1.x(), yellowRectPos1.y(), yellowRectSize, 100);
+        painter.drawRect(yellowRectPos2.x(), yellowRectPos2.y(), yellowRectSize, 100);
+    }
+}
+
+void MainWindow::countdown()
+{
+    if (farmStages == 3) {
+        farmStageFinished = true;
+        ui->labelTimer->clear();
+        ui->farmStarting->setText("ФАРМ ОКОНЧЕН!");
+        ui->farmGoldPlayer1->setText(selectedProfilesForGame[0]+" заработал "+QString::number(player1Received)+" золота");
+        ui->farmGoldPlayer2->setText(selectedProfilesForGame[1]+" заработал "+QString::number(player2Received)+" золота");
+        goldFarm += 50;
+        speed = 1.0;
+        timer->start(2000);
+        if (yellowRectSize != 30) {
+            yellowRectSize -= 5;
+        }
+        return;
+    }
+    if (count != 0) {
+        ui->labelTimer->setText(QString::number(count));
+    } else {
+        ui->labelTimer->setText("GO!");
+    }
+    count--;
+    if (count < 0) {
+        timer->stop();
+        isFarmStage = true;
+        farmStages++;
+        ui->player1Status->clear();
+        ui->player2Status->clear();
+        startAnimation1();
+        startAnimation2();
+        speed +=0.5;
+    }
+}
+
+void MainWindow::stop_rect1()
+{
+    if (animationGroup1->state() == QAbstractAnimation::Running) {
+        animationGroup1->stop();
+        QPoint currentPos = rect1->pos();
+        if (currentPos.x() > yellowRectPos1.x()-20 && currentPos.x() < yellowRectPos1.x()+yellowRectSize) {
+            ui->player1Status->setText("ОТЛИЧНО!");
+            heroes[0].addGold(goldFarm);
+            player1Received += goldFarm;
+        } else {
+            ui->player1Status->setText("ПРОМАХ");
+        }
+
+        /*// Создание таймера для обратного отсчёта
+        */
+    }
+}
+
+void MainWindow::stop_rect2()
+{
+    if (animationGroup2->state() == QAbstractAnimation::Running) {
+        animationGroup2->stop();
+        QPoint currentPos = rect2->pos();
+        if (currentPos.x() > yellowRectPos2.x()-20 && currentPos.x() < yellowRectPos2.x()+yellowRectSize) {
+            ui->player2Status->setText("ОТЛИЧНО!");
+            heroes[1].addGold(goldFarm);
+            player2Received += goldFarm;
+        } else {
+            ui->player2Status->setText("ПРОМАХ");
+        }
+
+        /* // Создание таймера для обратного отсчёта
+        count = 3; // начальное значение обратного отсчёта
+        timer = new QTimer(this);
+        // Подключение сигнала timeout к слоту
+        connect(timer, &QTimer::timeout, this, &MainWindow::countdown);
+
+        // Запуск таймера с интервалом в 1 секунду
+        timer->start(1000);*/
+    }
+}
+
+void MainWindow::startAnimation1()
+{
+
+    isFinished1 = false;
+
+    if (rect1 != nullptr) {
+        delete rect1;
+    }
+
+    rect1 = new AnimatedRect(this);
+    rect1->move(10, 110);
+    rect1->show();
+
+
+    // Создание анимации для движения вперед
+    QPropertyAnimation *animation1 = new QPropertyAnimation(rect1, "pos");
+    animation1->setDuration(1000/speed); // продолжительность анимации в миллисекундах
+    animation1->setStartValue(QPoint(10, 310)); // начальная позиция
+    animation1->setEndValue(QPoint(480, 310)); // конечная позиция
+
+    // Создание анимации для движения назад
+    QPropertyAnimation *animation2 = new QPropertyAnimation(rect1, "pos");
+    animation2->setDuration(1000/speed); // продолжительность анимации в миллисекундах
+    animation2->setStartValue(QPoint(480, 310)); // начальная позиция
+    animation2->setEndValue(QPoint(10, 310)); // конечная позиция
+
+    QPropertyAnimation *animation3 = new QPropertyAnimation(rect1, "pos");
+    animation3->setDuration(1000/speed); // продолжительность анимации в миллисекундах
+    animation3->setStartValue(QPoint(10, 310)); // начальная позиция
+    animation3->setEndValue(QPoint(480, 310)); // конечная позиция
+
+    // Создание группы анимаций
+    animationGroup1 = new QSequentialAnimationGroup;
+    animationGroup1->addAnimation(animation1);
+    animationGroup1->addAnimation(animation2);
+    animationGroup1->addAnimation(animation3);
+
+    connect(animationGroup1, &QSequentialAnimationGroup::finished, this, &MainWindow::onAnimationFinished1);
+    // Запуск анимации
+    animationGroup1->start(QAbstractAnimation::DeleteWhenStopped);
+
+    QTime time = QTime::currentTime();
+    srand((uint)time.msec());
+
+    // Генерация случайной позиции для прямоугольника
+    int randomX = rand() % (430 - 10 + 1) + 10; // случайное число в диапазоне от 10 до 480
+    yellowRectPos1 = QPoint(randomX, 310);
+
+
+    // Перерисовка окна
+    update();
+
+}
+
+void MainWindow::startAnimation2()
+{
+
+    isFinished2 = false;
+
+    if (rect2 != nullptr) {
+        delete rect2;
+    }
+
+    rect2 = new AnimatedRect(this);
+    rect2->move(10, 110);
+    rect2->show();
+
+    // Создание анимации для движения вперед
+    QPropertyAnimation *animation1 = new QPropertyAnimation(rect2, "pos");
+    animation1->setDuration(1000/speed); // продолжительность анимации в миллисекундах
+    animation1->setStartValue(QPoint(770, 310)); // начальная позиция
+    animation1->setEndValue(QPoint(1240, 310)); // конечная позиция
+
+    // Создание анимации для движения назад
+    QPropertyAnimation *animation2 = new QPropertyAnimation(rect2, "pos");
+    animation2->setDuration(1000/speed); // продолжительность анимации в миллисекундах
+    animation2->setStartValue(QPoint(1240, 310)); // начальная позиция
+    animation2->setEndValue(QPoint(770, 310)); // конечная позиция
+
+    QPropertyAnimation *animation3 = new QPropertyAnimation(rect2, "pos");
+    animation3->setDuration(1000/speed); // продолжительность анимации в миллисекундах
+    animation3->setStartValue(QPoint(770, 310)); // начальная позиция
+    animation3->setEndValue(QPoint(1240, 310)); // конечная позиция
+
+    // Создание группы анимаций
+    animationGroup2 = new QSequentialAnimationGroup;
+    animationGroup2->addAnimation(animation1);
+    animationGroup2->addAnimation(animation2);
+    animationGroup2->addAnimation(animation3);
+
+    connect(animationGroup2, &QSequentialAnimationGroup::finished, this, &MainWindow::onAnimationFinished2);
+    // Запуск анимации
+    animationGroup2->start(QAbstractAnimation::DeleteWhenStopped);
+
+    QTime time = QTime::currentTime();
+    srand((uint)time.msec());
+
+    // Генерация случайной позиции для прямоугольника
+    int randomX = rand() % (430 - 10 + 1) + 770; // случайное число в диапазоне от 10 до 480
+    yellowRectPos2 = QPoint(randomX, 310);
+
+
+    // Перерисовка окна
+    update();
+}
+
+void MainWindow::onAnimationFinished1() {
+        isFinished1=true;
+        ui->player1Status->setText("ПРОМАХ");
+
+        count = 3; // начальное значение обратного отсчёта
+        timer = new QTimer(this);
+        // Подключение сигнала timeout к слоту
+        finishedBoth = 0;
+        connect(timer, &QTimer::timeout, this, &MainWindow::countdown);
+
+        // Запуск таймера с интервалом в 1 секунду
+        timer->start(1000);
+}
+
+
+void MainWindow::onAnimationFinished2() {
+    if (isFinished1) {
+        isFinished2=true;
+        ui->player2Status->setText("ПРОМАХ");
+
+        count = 3; // начальное значение обратного отсчёта
+        timer = new QTimer(this);
+        // Подключение сигнала timeout к слоту
+        finishedBoth = 0;
+        connect(timer, &QTimer::timeout, this, &MainWindow::countdown);
+
+        // Запуск таймера с интервалом в 1 секунду
+        timer->start(1000);
     }
 }
 
