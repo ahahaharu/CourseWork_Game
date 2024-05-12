@@ -12,11 +12,14 @@ public:
     AnimatedRect(QWidget *parent = nullptr);
     ~AnimatedRect();
 
+    void stopPaint();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
     QPoint m_pos;
+    bool isPaint = true;
 };
 
 #endif // ANIMATEDRECT_H

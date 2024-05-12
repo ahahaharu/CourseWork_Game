@@ -201,6 +201,7 @@ private:
 
     int yellowRectSize = 70;
 
+    void delay();
 };
 
 

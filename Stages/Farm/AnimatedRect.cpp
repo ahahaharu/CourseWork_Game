@@ -9,7 +9,13 @@ AnimatedRect::~AnimatedRect() {}
 
 void AnimatedRect::paintEvent(QPaintEvent *event)
 {
-    QPainter painter(this);
-    painter.setBrush(Qt::blue);
-    painter.drawRect(rect());
+    if (isPaint) {
+        QPainter painter(this);
+        painter.setBrush(Qt::blue);
+        painter.drawRect(rect());
+    }
+}
+
+void AnimatedRect::stopPaint() {
+    isPaint = false;
 }
