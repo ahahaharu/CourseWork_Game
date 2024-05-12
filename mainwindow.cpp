@@ -836,6 +836,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) // добавьте этот м
 
         if (isPlayer1Ready && isPlayer2Ready) {
             farmStages = 0;
+            farmStageFinished = false;
             ui->stackedWidget->setCurrentWidget(ui->farmStage);
             isStageAnnouncement = false;
             processLabel->clear();
@@ -904,7 +905,6 @@ void MainWindow::countdown()
         ui->farmStarting->setText("ФАРМ ОКОНЧЕН!");
         ui->farmGoldPlayer1->setText(selectedProfilesForGame[0]+" заработал "+QString::number(player1Received)+" золота");
         ui->farmGoldPlayer2->setText(selectedProfilesForGame[1]+" заработал "+QString::number(player2Received)+" золота");
-        //QApplication::processEvents();
         goldFarm += 50;
         speed = 1.0;
         if (yellowRectSize != 30) {
@@ -925,11 +925,12 @@ void MainWindow::countdown()
         ui->player2Ready->setStyleSheet("QLabel { color : red; }");
 
         ui->nextStage->setText("Cтадия "+QString::number(stageCount)+": МАГАЗИН");
-
+        farmStages = 0;
         QTimer::singleShot(3000, this, &MainWindow::delay);
 
         return;
     }
+    if (!farmStageFinished) {
     if (count != 0) {
         ui->labelTimer->setText(QString::number(count));
     } else {
@@ -945,6 +946,7 @@ void MainWindow::countdown()
         startAnimation1();
         startAnimation2();
         speed +=0.5;
+    }
     }
 }
 
@@ -1115,6 +1117,10 @@ void MainWindow::delay() {
 
     processLabel->setMovie(movie);
     movie->start();
+
+    ui->farmGoldPlayer1->clear();
+    ui->farmGoldPlayer2->clear();
+    ui->farmStarting->setText("ДО НАЧАЛА ФАРМА");
 
     ui->stackedWidget->setCurrentWidget(ui->stageAnnouncement);
 }
