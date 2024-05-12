@@ -21,7 +21,7 @@
 
 #include "player/player.h"
 #include "heroes/hero.h"
-#include "AnimatedRect.h"
+#include "Stages/Farm/AnimatedRect.h"
 
 #include "heroes/Lina/lina.h"
 #include "heroes/Phoenix/phoenix.h"

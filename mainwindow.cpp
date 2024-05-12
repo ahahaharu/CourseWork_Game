@@ -108,11 +108,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->player1_heroGif->setScaledContents(true);
     ui->player1Gif->setScaledContents(true);
 
-    //connect(animationGroup1, &QSequentialAnimationGroup::finished, this, &MainWindow::onAnimationFinished1);
-
-    /*if(animationGroup2 != nullptr) {
-        connect(animationGroup2, &QSequentialAnimationGroup::finished, this, &MainWindow::onAnimationFinished2);
-    }*/
 }
 
 MainWindow::~MainWindow()
@@ -945,9 +940,6 @@ void MainWindow::stop_rect1()
         } else {
             ui->player1Status->setText("ПРОМАХ");
         }
-
-        /*// Создание таймера для обратного отсчёта
-        */
     }
 }
 
@@ -963,15 +955,6 @@ void MainWindow::stop_rect2()
         } else {
             ui->player2Status->setText("ПРОМАХ");
         }
-
-        /* // Создание таймера для обратного отсчёта
-        count = 3; // начальное значение обратного отсчёта
-        timer = new QTimer(this);
-        // Подключение сигнала timeout к слоту
-        connect(timer, &QTimer::timeout, this, &MainWindow::countdown);
-
-        // Запуск таймера с интервалом в 1 секунду
-        timer->start(1000);*/
     }
 }
 
