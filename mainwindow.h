@@ -267,9 +267,17 @@ private:
     int P1ab2CD = 0;
     int P1ab3CD = 0;
 
+    bool P1ab1used = false;
+    bool P1ab2used = false;
+    bool P1ab3used = false;
+
     int P2ab1CD = 0;
     int P2ab2CD = 0;
     int P2ab3CD = 0;
+
+    bool P2ab1used = false;
+    bool P2ab2used = false;
+    bool P2ab3used = false;
 
     int battleOrder = 0;
 

@@ -923,7 +923,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                     heroes[0].decreasePeriodic();
                 }
 
-                if (P1ab1CD) {
+                /*if (P1ab1CD) {
                     P1ab1CD--;
                     if (!P1ab1CD) {
                         ui->player1_ab1CD->clear();
@@ -948,7 +948,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                     } else {
                         ui->player1_ab3CD->setText(QString::number(P1ab3CD));
                     }
-                }
+                }*/
 
                 if (!(heroes[0].getIsSilenced() || heroes[0].getIsStanned())) {
                     if (!P1ab1CD){
@@ -1832,6 +1832,8 @@ void MainWindow::on_player1_useAb1_clicked()
         ui->player1_useAb2->setEnabled(false);
         ui->player1_useAb3->setEnabled(false);
 
+        P1ab1used = true;
+
         heroes[0].removeMana(ab.manaCost);
         heroes[1].getDamage(ab.damage);
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[1]+"\n");
@@ -1879,6 +1881,8 @@ void MainWindow::on_player1_useAb2_clicked()
         ui->player1_useAb1->setEnabled(false);
         ui->player1_useAb2->setEnabled(false);
         ui->player1_useAb3->setEnabled(false);
+
+        P1ab2used = true;
 
         heroes[0].removeMana(ab.manaCost);
         heroes[1].getDamage(ab.damage);
@@ -1930,6 +1934,8 @@ void MainWindow::on_player1_useAb3_clicked()
         ui->player1_useAb2->setEnabled(false);
         ui->player1_useAb3->setEnabled(false);
 
+        P1ab3used = true;
+
         heroes[0].removeMana(ab.manaCost);
         heroes[1].getDamage(ab.damage);
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[1]+"\n");
@@ -1977,6 +1983,8 @@ void MainWindow::on_player2_useAb1_clicked()
         ui->player2_useAb1->setEnabled(false);
         ui->player2_useAb2->setEnabled(false);
         ui->player2_useAb3->setEnabled(false);
+
+        P2ab1used = true;
 
         heroes[1].removeMana(ab.manaCost);
         heroes[0].getDamage(ab.damage);
@@ -2028,6 +2036,8 @@ void MainWindow::on_player2_useAb2_clicked()
         ui->player2_useAb2->setEnabled(false);
         ui->player2_useAb3->setEnabled(false);
 
+        P2ab2used = true;
+
         heroes[1].removeMana(ab.manaCost);
         heroes[0].getDamage(ab.damage);
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[0]+"\n");
@@ -2073,6 +2083,8 @@ void MainWindow::on_player2_useAb3_clicked()
         ui->player2_useAb1->setEnabled(false);
         ui->player2_useAb2->setEnabled(false);
         ui->player2_useAb3->setEnabled(false);
+
+        P2ab3used = true;
 
         heroes[1].removeMana(ab.manaCost);
         heroes[0].getDamage(ab.damage);
@@ -2127,6 +2139,39 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
             ui->player2_Status->clear();
         }
 
+        if (P2ab1CD && !P2ab1used) {
+            P2ab1CD--;
+            if (!P2ab1CD) {
+                ui->player2_ab1CD->clear();
+            } else {
+                ui->player2_ab1CD->setText(QString::number(P2ab1CD));
+            }
+        } else {
+            P2ab1used = false;
+        }
+
+        if (P2ab2CD && !P2ab2used) {
+            P2ab2CD--;
+            if (!P2ab2CD) {
+                ui->player2_ab2CD->clear();
+            } else {
+                ui->player2_ab2CD->setText(QString::number(P2ab2CD));
+            }
+        } else {
+            P2ab2used = false;
+        }
+
+        if (P2ab3CD && !P2ab3used) {
+            P2ab3CD--;
+            if (!P2ab3CD) {
+                ui->player2_ab3CD->clear();
+            } else {
+                ui->player2_ab3CD->setText(QString::number(P2ab3CD));
+            }
+        } else {
+            P2ab3used = false;
+        }
+
         ui->player1Gold->setText("Золото: "+QString::number(heroes[0].getGold()));
         ui->player2Gold->setText("Золото: "+QString::number(heroes[1].getGold()));
 
@@ -2171,8 +2216,44 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
                 ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" получает периодический урон в размере "+QString::number(heroes[1].getPeriodicDamage())+"\n");
                 heroes[1].decreasePeriodic();
             }
+            // ########## TEST
 
-            if (P2ab1CD) {
+            if (P1ab1CD && !P1ab1used) {
+                P1ab1CD--;
+                if (!P1ab1CD) {
+                    ui->player1_ab1CD->clear();
+                } else {
+                    ui->player1_ab1CD->setText(QString::number(P1ab1CD));
+                }
+            } else {
+                P1ab1used = false;
+            }
+
+            if (P1ab2CD && !P1ab2used) {
+                P1ab2CD--;
+                if (!P1ab2CD) {
+                    ui->player1_ab2CD->clear();
+                } else {
+                    ui->player1_ab2CD->setText(QString::number(P1ab2CD));
+                }
+            } else {
+                P1ab2used = false;
+            }
+
+            if (P1ab3CD && !P1ab3used) {
+                P1ab3CD--;
+                if (!P1ab3CD) {
+                    ui->player1_ab3CD->clear();
+                } else {
+                    ui->player1_ab3CD->setText(QString::number(P1ab3CD));
+                }
+            } else {
+                P1ab3used = false;
+            }
+
+            // ##########
+
+            /*if (P2ab1CD) {
                 P2ab1CD--;
                 if (!P2ab1CD) {
                     ui->player2_ab1CD->clear();
@@ -2197,7 +2278,7 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
                 } else {
                     ui->player2_ab3CD->setText(QString::number(P2ab3CD));
                 }
-            }
+            }*/
 
             if (!(heroes[1].getIsSilenced() || heroes[1].getIsStanned())) {
                 if (!P2ab1CD){
@@ -2251,7 +2332,42 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
                 heroes[0].decreasePeriodic();
             }
 
-            if (P1ab1CD) {
+            //########### TEST
+
+            if (P2ab1CD && !P2ab1used) {
+                P2ab1CD--;
+                if (!P2ab1CD) {
+                    ui->player2_ab1CD->clear();
+                } else {
+                    ui->player2_ab1CD->setText(QString::number(P2ab1CD));
+                }
+            } else {
+                P2ab1used = false;
+            }
+
+            if (P2ab2CD && !P2ab2used) {
+                P2ab2CD--;
+                if (!P2ab2CD) {
+                    ui->player2_ab2CD->clear();
+                } else {
+                    ui->player2_ab2CD->setText(QString::number(P2ab2CD));
+                }
+            } else {
+                P2ab2used = false;
+            }
+
+            if (P2ab3CD && !P2ab3used) {
+                P2ab3CD--;
+                if (!P2ab3CD) {
+                    ui->player2_ab3CD->clear();
+                } else {
+                    ui->player2_ab3CD->setText(QString::number(P2ab3CD));
+                }
+            } else {
+                P2ab3used = false;
+            }
+
+            /*if (P1ab1CD) {
                 P1ab1CD--;
                 if (!P1ab1CD) {
                     ui->player1_ab1CD->clear();
@@ -2276,7 +2392,7 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
                 } else {
                     ui->player1_ab3CD->setText(QString::number(P1ab3CD));
                 }
-            }
+            }*/
 
             if (!(heroes[0].getIsSilenced() || heroes[0].getIsStanned())) {
                 if (!P1ab1CD){
