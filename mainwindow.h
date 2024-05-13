@@ -191,6 +191,20 @@ private slots:
 
     void on_pushButton_14_clicked();
 
+    void on_player1_useItem1_clicked();
+
+    void useItem(int player, int item, int enemy, int);
+
+    void on_player1_useItem2_clicked();
+
+    void on_player1_useItem3_clicked();
+
+    void on_player2_useItem1_clicked();
+
+    void on_player2_useItem2_clicked();
+
+    void on_player2_useItem3_clicked();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
@@ -284,6 +298,8 @@ private:
     void winner(int);
 
     void updateInvent();
+
+
 };
 
 

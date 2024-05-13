@@ -120,6 +120,10 @@ void Hero::addPeriodicDamage(int perDam) {
     }
 }
 
+void Hero::setPeriodicDamage(int pd) {
+    this->periodicDamage = pd;
+}
+
 void Hero::decreasePeriodic() {
     this->isPeriodic--;
     if (!isPeriodic) {
@@ -127,3 +131,15 @@ void Hero::decreasePeriodic() {
     }
 }
 
+void Hero::turnLinked() {
+    this->linked = true;
+}
+void Hero::offLinked() {
+    this->linked = false;
+}
+
+void Hero::useKaya() {
+    for (int i = 0; i < 3; i++) {
+        abilities[i].damage += abilities[i].damage*0.15;
+    }
+}

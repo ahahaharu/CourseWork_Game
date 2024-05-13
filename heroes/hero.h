@@ -37,6 +37,8 @@ private:
     int isPeriodic = 0;
     int periodicDamage = 0;
 
+    bool linked = false;
+
 public:
     Hero(QString name, QDir image, int health, int mana, Ability* abilities);
 
@@ -70,9 +72,15 @@ public:
     void setSilence(int);
     void setStanned(int);
     void setPeriodic(int);
+    void setPeriodicDamage(int);
     void addPeriodicDamage(int);
 
     void decreasePeriodic();
+
+    void turnLinked();
+    void offLinked();
+
+    void useKaya();
 
     std::vector<int>items;
 };

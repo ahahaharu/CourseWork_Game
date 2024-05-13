@@ -866,6 +866,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 count = 3;
                 timer->start(1000);
             } else if (stageCount % 3 == 2) {
+                isStageAnnouncement = false;
+
                 std::vector<int> numbers {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
                 std::random_shuffle(numbers.begin(), numbers.end());
@@ -891,6 +893,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
                 ui->stackedWidget->setCurrentWidget(ui->shopStage);
             } else if (stageCount % 3 == 0){
+                isStageAnnouncement = false;
+
                 ui->player1NameInBattle->setText(selectedProfilesForGame[0]+" ("+heroes[0].getName()+")");
                 ui->player2NameInBattle->setText(selectedProfilesForGame[1]+" ("+heroes[1].getName()+")");
 
@@ -1256,6 +1260,8 @@ void MainWindow::delay() {
     ui->farmGoldPlayer2->clear();
     ui->farmStarting->setText("ДО НАЧАЛА ФАРМА");
 
+    isStageAnnouncement = true;
+
     ui->stackedWidget->setCurrentWidget(ui->stageAnnouncement);
 }
 
@@ -1309,6 +1315,16 @@ void MainWindow::on_pushButton_6_clicked()
     if (currentlyBuying == 1) {
         currentlyBuying = 0;
 
+        currentShop.clear();
+
+        ui->shop_item1buy->setEnabled(true);
+        ui->shop_item2buy->setEnabled(true);
+        ui->shop_item3buy->setEnabled(true);
+
+        ui->item1sold->hide();
+        ui->item2sold->hide();
+        ui->item3sold->hide();
+
         ui->player1Gold->setText("Золото: "+QString::number(heroes[0].getGold()));
         ui->player2Gold->setText("Золото: "+QString::number(heroes[1].getGold()));
 
@@ -1324,6 +1340,7 @@ void MainWindow::on_pushButton_6_clicked()
 
         stageCount++;
         ui->nextStage->setText("Cтадия "+QString::number(stageCount)+": БИТВА");
+
 
         ui->stackedWidget->setCurrentWidget(ui->stageAnnouncement);
     } else {
@@ -1365,6 +1382,7 @@ void MainWindow::on_shop_item1buy_clicked()
     int ind = currentShop[0];
     if (currentlyBuying == 0) {
         int sz = heroes[0].items.size();
+        qDebug() << sz;
         if (sz == 3) {
             QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
         } else {
@@ -1997,12 +2015,12 @@ void MainWindow::on_player2_useAb1_clicked()
         ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
         if (ab.silence != 0) {
             heroes[0].setSilence(ab.silence);
-            ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
+            ui->player1_Status->setText("Наложено безмолвие на 1 раунд");
             ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" наложил безмолвие на "+selectedProfilesForGame[0]+" на один раунд\n");
         }
         if (ab.stan != 0) {
             heroes[0].setStanned(ab.stan);
-            ui->player2_Status->setText("Оглушён на 1 раунд");
+            ui->player1_Status->setText("Оглушён на 1 раунд");
             ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" оглушил "+selectedProfilesForGame[0]+" на один раунд\n");
         }
 
@@ -2049,12 +2067,12 @@ void MainWindow::on_player2_useAb2_clicked()
         ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
         if (ab.silence != 0) {
             heroes[0].setSilence(ab.silence);
-            ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
+            ui->player1_Status->setText("Наложено безмолвие на 1 раунд");
             ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" наложил безмолвие на "+selectedProfilesForGame[0]+" на один раунд\n");
         }
         if (ab.stan != 0) {
             heroes[0].setStanned(ab.stan);
-            ui->player2_Status->setText("Оглушён на 1 раунд");
+            ui->player1_Status->setText("Оглушён на 1 раунд");
             ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" оглушил "+selectedProfilesForGame[0]+" на один раунд\n");
         }
 
@@ -2097,12 +2115,12 @@ void MainWindow::on_player2_useAb3_clicked()
         ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
         if (ab.silence) {
             heroes[0].setSilence(ab.silence);
-            ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
+            ui->player1_Status->setText("Наложено безмолвие на 1 раунд");
             ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" наложил безмолвие на "+selectedProfilesForGame[0]+" на один раунд\n");
         }
         if (ab.stan) {
             heroes[0].setStanned(ab.stan);
-            ui->player2_Status->setText("Оглушён на 1 раунд");
+            ui->player1_Status->setText("Оглушён на 1 раунд");
             ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" оглушил "+selectedProfilesForGame[0]+" на один раунд\n");
         }
 
@@ -2428,5 +2446,367 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
             }
         }
     }
+}
+
+void MainWindow::useItem(int player, int item, int enemy, int button) {
+    int ind = heroes[player].items[item];
+
+    if (ind == 0) {
+        heroes[player].addHP(100);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" восстановил 100 HP\n");
+        if (player == 0) {
+            ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+        } else {
+            ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+        }
+    } else if (ind == 1) {
+        heroes[player].addMana(100);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" восстановил 100 маны\n");
+        if (player == 0) {
+            ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+        } else {
+            ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+        }
+    } else if (ind == 2) {
+        heroes[player].addHP(75);
+        heroes[player].addMaxHP(75);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" увеличил максимальное здоровье на 75\n");
+        if (player == 0) {
+            ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+        } else {
+            ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+        }
+    } else if (ind == 3) {
+        heroes[player].addMana(75);
+        heroes[player].addMaxMana(75);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" увеличил максимальную ману на 75\n");
+        if (player == 0) {
+            ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+        } else {
+            ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+        }
+    } else if (ind == 4) {
+        heroes[enemy].removeMana(100);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" сжёг "+selectedProfilesForGame[enemy]+" 100 маны\n");
+        if (heroes[enemy].getCurrentMana() < 0) {
+            heroes[enemy].setCurrentMana(0);
+        }
+        if (enemy == 0) {
+            ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+        } else {
+            ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+        }
+    } else if (ind == 5) {
+        heroes[enemy].getDamage(100);
+         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" нанёс "+selectedProfilesForGame[enemy]+" 100 урона\n");
+        if (heroes[enemy].getCurrentHP() < 0) {
+            heroes[enemy].setCurrentHP(0);
+            // Обработать победу челика
+        }
+
+        if (enemy == 0) {
+            ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+        } else {
+            ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+        }
+
+    } else if (ind == 6) {
+        heroes[player].addMana(250);
+        heroes[player].addMaxMana(250);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" увеличил максимальную ману на 250\n");
+        if (player == 0) {
+            ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+        } else {
+            ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+        }
+    } else if (ind == 7) {
+        heroes[player].addHP(250);
+        heroes[player].addMaxHP(250);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" увеличил максимальное здоровье на 250\n");
+        if (player == 0) {
+            ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+        } else {
+            ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+        }
+    } else if (ind == 8) {
+        heroes[player].turnLinked();
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" использовал Linked sphere, следующее заклинание противника будет поглащено\n");
+    } else if (ind == 9) {
+        heroes[player].useKaya();
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" увеличил урон заклинаний на 15%\n");
+    } else if (ind == 10) {
+        heroes[player].setSilence(0);
+        heroes[player].setStanned(0);
+        heroes[player].setPeriodic(0);
+        heroes[player].setPeriodicDamage(0);
+        if (player == 0) {
+            ui->player1_Status->clear();
+            if (!P1ab1CD) {
+                ui->player1_useAb1->setEnabled(true);
+            }
+            if (!P1ab2CD) {
+                ui->player1_useAb2->setEnabled(true);
+            }
+            if (!P1ab3CD) {
+                ui->player1_useAb3->setEnabled(true);
+            }
+        } else {
+            ui->player2_Status->clear();
+            if (!P2ab1CD) {
+                ui->player2_useAb1->setEnabled(true);
+            }
+            if (!P2ab2CD) {
+                ui->player2_useAb2->setEnabled(true);
+            }
+            if (!P2ab3CD) {
+                ui->player2_useAb3->setEnabled(true);
+            }
+        }
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" сбросил все отрицательные эффекты\n");
+    }
+
+    if (ind != 8) {
+        if (button == 1) {
+            if (player == 0) {
+                heroes[0].items.erase(heroes[0].items.begin());
+                ui->player1_item3inBattle->setText("Пусто");
+                ui->player1_useItem3->setEnabled(false);
+                ui->player1_aboutItem3->setEnabled(false);
+                if (heroes[0].items.size() >= 1) {
+                    ui->player1_item1inBattle->setPixmap(ui->player1_item2inBattle->pixmap());
+                } else {
+                    ui->player1_item1inBattle->setText("Пусто");
+                    ui->player1_useItem1->setEnabled(false);
+                    ui->player1_aboutItem1->setEnabled(false);
+                }
+                if (heroes[0].items.size() == 2) {
+                    ui->player1_item1inBattle->setPixmap(ui->player1_item3inBattle->pixmap());
+                } else {
+                    ui->player1_item2inBattle->setText("Пусто");
+                    ui->player1_useItem2->setEnabled(false);
+                    ui->player1_aboutItem2->setEnabled(false);
+                }
+            } else {
+                heroes[1].items.erase(heroes[1].items.begin());
+                ui->player2_item3inBattle->setText("Пусто");
+                ui->player2_useItem3->setEnabled(false);
+                ui->player2_aboutItem3->setEnabled(false);
+                if (heroes[1].items.size() >= 1) {
+                    ui->player2_item1inBattle->setPixmap(ui->player2_item2inBattle->pixmap());
+                } else {
+                    ui->player2_item1inBattle->setText("Пусто");
+                    ui->player2_useItem1->setEnabled(false);
+                    ui->player2_aboutItem1->setEnabled(false);
+                }
+                if (heroes[1].items.size() == 2) {
+                    ui->player2_item1inBattle->setPixmap(ui->player2_item3inBattle->pixmap());
+                } else {
+                    ui->player2_item2inBattle->setText("Пусто");
+                    ui->player2_useItem2->setEnabled(false);
+                    ui->player2_aboutItem2->setEnabled(false);
+                }
+            }
+        } else if (button == 2) {
+            if (player == 0) {
+                heroes[0].items.erase(heroes[0].items.begin() + 1);
+                ui->player1_item3inBattle->setText("Пусто");
+                ui->player1_useItem3->setEnabled(false);
+                ui->player1_aboutItem3->setEnabled(false);
+                if (heroes[0].items.size() == 1) {
+                    ui->player1_item2inBattle->setText("Пусто");
+                    ui->player1_useItem2->setEnabled(false);
+                    ui->player1_aboutItem2->setEnabled(false);
+                } else {
+                    ui->player1_item2inBattle->setPixmap(ui->player1_item3inBattle->pixmap());
+                }
+            } else {
+                heroes[1].items.erase(heroes[1].items.begin() + 1);
+                ui->player2_item3inBattle->setText("Пусто");
+                ui->player2_useItem3->setEnabled(false);
+                ui->player2_aboutItem3->setEnabled(false);
+                if (heroes[1].items.size() == 1) {
+                    ui->player2_item2inBattle->setText("Пусто");
+                    ui->player2_useItem2->setEnabled(false);
+                    ui->player2_aboutItem2->setEnabled(false);
+                } else {
+                    ui->player2_item2inBattle->setPixmap(ui->player1_item3inBattle->pixmap());
+                }
+            }
+        } else {
+            if (player == 0) {
+                heroes[0].items.erase(heroes[0].items.begin() + 2);
+                ui->player1_item3inBattle->setText("Пусто");
+                ui->player1_useItem3->setEnabled(false);
+                ui->player1_aboutItem3->setEnabled(false);
+            } else {
+                heroes[1].items.erase(heroes[1].items.begin() + 2);
+                ui->player2_item3inBattle->setText("Пусто");
+                ui->player2_useItem3->setEnabled(false);
+                ui->player2_aboutItem3->setEnabled(false);
+            }
+        }
+    }
+}
+
+
+void MainWindow::on_player1_useItem1_clicked()
+{
+    useItem(0, 0, 1, 1);
+}
+
+
+void MainWindow::on_player1_useItem2_clicked()
+{
+    useItem(0, 1, 1, 2);
+}
+
+
+void MainWindow::on_player1_useItem3_clicked()
+{
+    useItem(0, 2, 1, 3);
+}
+
+
+void MainWindow::on_player2_useItem1_clicked()
+{
+    useItem(1, 0, 0, 1);
+}
+
+
+void MainWindow::on_player2_useItem2_clicked()
+{
+    useItem(1, 1, 0, 2);
+}
+
+
+void MainWindow::on_player2_useItem3_clicked()
+{
+    useItem(1, 2, 0, 3);
+}
+
+void MainWindow::updateInvent() {
+    int sz = heroes[0].items.size();
+
+    int ind = heroes[0].items[2];
+    if (2 < sz) {
+        ui->player1_item3inShop->setPixmap(items[ind].image);
+        ui->player1_about3_buttonInShop->setEnabled(true);
+        ui->player1_item3->setPixmap(items[ind].image);
+        ui->player1_about3_button->setEnabled(true);
+        ui->player1_item3inBattle->setPixmap(items[ind].image);
+        ui->player1_useItem3->setEnabled(true);
+        ui->player1_aboutItem3->setEnabled(true);
+    } else {
+        ui->player1_item3inShop->setText("Пусто");
+        ui->player1_about3_buttonInShop->setEnabled(false);
+        ui->player1_item3->setText("Пусто");
+        ui->player1_about3_button->setEnabled(false);
+        ui->player1_item3inBattle->setText("Пусто");
+        ui->player1_useItem3->setEnabled(false);
+        ui->player1_aboutItem3->setEnabled(false);
+    }
+
+    ind = heroes[0].items[1];
+    if (1 < sz) {
+        ui->player1_item2inShop->setPixmap(items[ind].image);
+        ui->player1_about2_buttonInShop->setEnabled(true);
+        ui->player1_item2->setPixmap(items[ind].image);
+        ui->player1_about2_button->setEnabled(true);
+        ui->player1_item2inBattle->setPixmap(items[ind].image);
+        ui->player1_useItem2->setEnabled(true);
+        ui->player1_aboutItem2->setEnabled(true);
+    } else {
+        ui->player1_item2inShop->setText("Пусто");
+        ui->player1_about2_buttonInShop->setEnabled(false);
+        ui->player1_item2->setText("Пусто");
+        ui->player1_about2_button->setEnabled(false);
+        ui->player1_item2inBattle->setText("Пусто");
+        ui->player1_useItem2->setEnabled(false);
+        ui->player1_aboutItem2->setEnabled(false);
+    }
+
+    ind = heroes[0].items[0];
+    if (0 < sz) {
+        ui->player1_item1inShop->setPixmap(items[ind].image);
+        ui->player1_about1_buttonInShop->setEnabled(true);
+        ui->player1_item1->setPixmap(items[ind].image);
+        ui->player1_about1_button->setEnabled(true);
+        ui->player1_item1inBattle->setPixmap(items[ind].image);
+        ui->player1_useItem1->setEnabled(true);
+        ui->player1_aboutItem1->setEnabled(true);
+    } else {
+        ui->player1_item1inShop->setText("Пусто");
+        ui->player1_about1_buttonInShop->setEnabled(false);
+        ui->player1_item1->setText("Пусто");
+        ui->player1_about1_button->setEnabled(false);
+        ui->player1_item1inBattle->setText("Пусто");
+        ui->player1_useItem1->setEnabled(false);
+        ui->player1_aboutItem1->setEnabled(false);
+    }
+
+
+    // для второго игрока
+
+    sz = heroes[1].items.size();
+
+    ind = heroes[1].items[2];
+    if (2 < sz) {
+        ui->player2_item3inShop->setPixmap(items[ind].image);
+        ui->player2_about3_buttonInShop->setEnabled(true);
+        ui->player2_item3->setPixmap(items[ind].image);
+        ui->player2_about3_button->setEnabled(true);
+        ui->player2_item3inBattle->setPixmap(items[ind].image);
+        ui->player2_useItem3->setEnabled(true);
+        ui->player2_aboutItem3->setEnabled(true);
+    } else {
+        ui->player2_item3inShop->setText("Пусто");
+        ui->player2_about3_buttonInShop->setEnabled(false);
+        ui->player2_item3->setText("Пусто");
+        ui->player2_about3_button->setEnabled(false);
+        ui->player2_item3inBattle->setText("Пусто");
+        ui->player2_useItem3->setEnabled(false);
+        ui->player2_aboutItem3->setEnabled(false);
+    }
+
+    ind = heroes[1].items[1];
+    if (1 < sz) {
+        ui->player2_item2inShop->setPixmap(items[ind].image);
+        ui->player2_about2_buttonInShop->setEnabled(true);
+        ui->player2_item2->setPixmap(items[ind].image);
+        ui->player2_about2_button->setEnabled(true);
+        ui->player2_item2inBattle->setPixmap(items[ind].image);
+        ui->player2_useItem2->setEnabled(true);
+        ui->player2_aboutItem2->setEnabled(true);
+    } else {
+        ui->player2_item2inShop->setText("Пусто");
+        ui->player2_about2_buttonInShop->setEnabled(false);
+        ui->player2_item2->setText("Пусто");
+        ui->player2_about2_button->setEnabled(false);
+        ui->player2_item2inBattle->setText("Пусто");
+        ui->player2_useItem2->setEnabled(false);
+        ui->player2_aboutItem2->setEnabled(false);
+    }
+
+    ind = heroes[1].items[0];
+    if (0 < sz) {
+        ui->player2_item1inShop->setPixmap(items[ind].image);
+        ui->player2_about1_buttonInShop->setEnabled(true);
+        ui->player2_item1->setPixmap(items[ind].image);
+        ui->player2_about1_button->setEnabled(true);
+        ui->player2_item1inBattle->setPixmap(items[ind].image);
+        ui->player2_useItem1->setEnabled(true);
+        ui->player2_aboutItem1->setEnabled(true);
+    } else {
+        ui->player2_item1inShop->setText("Пусто");
+        ui->player2_about1_buttonInShop->setEnabled(false);
+        ui->player2_item1->setText("Пусто");
+        ui->player2_about1_button->setEnabled(false);
+        ui->player2_item1inBattle->setText("Пусто");
+        ui->player2_useItem1->setEnabled(false);
+        ui->player2_aboutItem1->setEnabled(false);
+    }
+
+
+
 }
 
