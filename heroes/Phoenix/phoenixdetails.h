@@ -17,7 +17,7 @@ public:
     explicit PhoenixDetails(QWidget *parent = nullptr);
     ~PhoenixDetails();
 
-private slots:
+public slots:
     void on_close_button_clicked();
 
     void on_Ab_1_clicked();

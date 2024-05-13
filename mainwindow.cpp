@@ -890,6 +890,92 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 ui->player2Items->setText("Предметы "+selectedProfilesForGame[1]);
 
                 ui->stackedWidget->setCurrentWidget(ui->shopStage);
+            } else if (stageCount % 3 == 0){
+                ui->player1NameInBattle->setText(selectedProfilesForGame[0]+" ("+heroes[0].getName()+")");
+                ui->player2NameInBattle->setText(selectedProfilesForGame[1]+" ("+heroes[1].getName()+")");
+
+                currentRound = 1;
+
+                ui->rounds->setText("Раунд "+QString::number(currentRound)+" / "+QString::number(rounds));
+
+                ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+                ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+
+                ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+                ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+
+                ui->player1_ab1inBattle->setPixmap(heroes[0].getAbilities()[0].image);
+                ui->player1_ab2inBattle->setPixmap(heroes[0].getAbilities()[1].image);
+                ui->player1_ab3inBattle->setPixmap(heroes[0].getAbilities()[2].image);
+
+                ui->player2_ab1inBattle->setPixmap(heroes[1].getAbilities()[0].image);
+                ui->player2_ab2inBattle->setPixmap(heroes[1].getAbilities()[1].image);
+                ui->player2_ab3inBattle->setPixmap(heroes[1].getAbilities()[2].image);
+
+                ui->queue->setText("Очередь "+selectedProfilesForGame[0]);
+
+                ui->logs->clear();
+                ui->logs->setText(ui->logs->text()+"# РАУНД "+QString::number(currentRound)+" #\n");
+
+                if (heroes[0].getIsPeriodic()) {
+                    heroes[0].getDamage(heroes[0].getPeriodicDamage());
+                    ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" получает периодический урон в размере "+QString::number(heroes[0].getPeriodicDamage())+"\n");
+                    heroes[0].decreasePeriodic();
+                }
+
+                if (P1ab1CD) {
+                    P1ab1CD--;
+                    if (!P1ab1CD) {
+                        ui->player1_ab1CD->clear();
+                    } else {
+                        ui->player1_ab1CD->setText(QString::number(P1ab1CD));
+                    }
+                }
+
+                if (P1ab2CD) {
+                    P1ab2CD--;
+                    if (!P1ab2CD) {
+                        ui->player1_ab2CD->clear();
+                    } else {
+                        ui->player1_ab2CD->setText(QString::number(P1ab2CD));
+                    }
+                }
+
+                if (P1ab3CD) {
+                    P1ab3CD--;
+                    if (!P1ab3CD) {
+                        ui->player1_ab3CD->clear();
+                    } else {
+                        ui->player1_ab3CD->setText(QString::number(P1ab3CD));
+                    }
+                }
+
+                if (!(heroes[0].getIsSilenced() || heroes[0].getIsStanned())) {
+                    if (!P1ab1CD){
+                        ui->player1_useAb1->setEnabled(true);
+                    }
+                    if (!P1ab2CD) {
+                        ui->player1_useAb2->setEnabled(true);
+                    }
+                    if (!P1ab3CD) {
+                        ui->player1_useAb3->setEnabled(true);
+                    }
+                }
+
+                if (heroes[0].items.size() >= 1) {
+                    ui->player1_useItem1->setEnabled(true);
+                    ui->player1_aboutItem1->setEnabled(true);
+                }
+                if (heroes[0].items.size() >= 2) {
+                    ui->player1_useItem2->setEnabled(true);
+                    ui->player1_aboutItem2->setEnabled(true);
+                }
+                if (heroes[0].items.size() == 3)  {
+                    ui->player1_useItem3->setEnabled(true);
+                    ui->player1_aboutItem3->setEnabled(true);
+                }
+
+                ui->stackedWidget->setCurrentWidget(ui->battleStage);
             }
         }
     } else if (isFarmStage) {
@@ -967,6 +1053,10 @@ void MainWindow::countdown()
         ui->player2Ready->setStyleSheet("QLabel { color : red; }");
 
         stageCount++;
+
+        player1Received = 0;
+        player2Received = 0;
+
         ui->nextStage->setText("Cтадия "+QString::number(stageCount)+": МАГАЗИН");
         farmStages = 0;
 
@@ -1278,7 +1368,7 @@ void MainWindow::on_shop_item1buy_clicked()
         if (sz == 3) {
             QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
         } else {
-            if (items[ind].cost < heroes[0].getGold()) {
+            if (items[ind].cost <= heroes[0].getGold()) {
                 heroes[0].removeGold(items[ind].cost);
                 ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[0]+": "+QString::number(heroes[0].getGold()));
 
@@ -1288,18 +1378,24 @@ void MainWindow::on_shop_item1buy_clicked()
                 if (sz == 1) {
                     ui->player1_item1inShop->setPixmap(items[ind].image);
                     ui->player1_item1->setPixmap(items[ind].image);
+                    ui->player1_item1inBattle->setPixmap(items[ind].image);
                     ui->player1_about1_buttonInShop->setEnabled(true);
                     ui->player1_about1_button->setEnabled(true);
+                    ui->player1_aboutItem1->setEnabled(true);
                 } else if (sz == 2) {
                     ui->player1_item2inShop->setPixmap(items[ind].image);
                     ui->player1_item2->setPixmap(items[ind].image);
+                    ui->player1_item2inBattle->setPixmap(items[ind].image);
                     ui->player1_about2_buttonInShop->setEnabled(true);
                     ui->player1_about2_button->setEnabled(true);
+                    ui->player1_aboutItem2->setEnabled(true);
                 } else {
                     ui->player1_item3inShop->setPixmap(items[ind].image);
                     ui->player1_item3->setPixmap(items[ind].image);
+                    ui->player1_item3inBattle->setPixmap(items[ind].image);
                     ui->player1_about3_buttonInShop->setEnabled(true);
                     ui->player1_about3_button->setEnabled(true);
+                    ui->player1_aboutItem3->setEnabled(true);
                 }
 
                 ui->item1sold->show();
@@ -1313,7 +1409,7 @@ void MainWindow::on_shop_item1buy_clicked()
         if (sz == 3) {
             QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
         } else {
-            if (items[ind].cost < heroes[1].getGold()) {
+            if (items[ind].cost <= heroes[1].getGold()) {
                 heroes[1].removeGold(items[ind].cost);
                 ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[1]+": "+QString::number(heroes[1].getGold()));
 
@@ -1323,18 +1419,24 @@ void MainWindow::on_shop_item1buy_clicked()
                 if (sz == 1) {
                     ui->player2_item1inShop->setPixmap(items[ind].image);
                     ui->player2_item1->setPixmap(items[ind].image);
+                    ui->player2_item1inBattle->setPixmap(items[ind].image);
                     ui->player2_about1_buttonInShop->setEnabled(true);
                     ui->player2_about1_button->setEnabled(true);
+                    ui->player2_aboutItem1->setEnabled(true);
                 } else if (sz == 2) {
                     ui->player2_item2inShop->setPixmap(items[ind].image);
                     ui->player2_item2->setPixmap(items[ind].image);
+                    ui->player2_item2inBattle->setPixmap(items[ind].image);
                     ui->player2_about2_buttonInShop->setEnabled(true);
                     ui->player2_about2_button->setEnabled(true);
+                    ui->player2_aboutItem2->setEnabled(true);
                 } else {
                     ui->player2_item3inShop->setPixmap(items[ind].image);
                     ui->player2_item3->setPixmap(items[ind].image);
+                    ui->player2_item3inBattle->setPixmap(items[ind].image);
                     ui->player2_about3_buttonInShop->setEnabled(true);
                     ui->player2_about3_button->setEnabled(true);
+                    ui->player2_aboutItem3->setEnabled(true);
                 }
 
                 ui->item1sold->show();
@@ -1371,7 +1473,7 @@ void MainWindow::on_shop_item2buy_clicked()
         if (sz == 3) {
             QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
         } else {
-            if (items[ind].cost < heroes[0].getGold()) {
+            if (items[ind].cost <= heroes[0].getGold()) {
                 heroes[0].removeGold(items[ind].cost);
                 ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[0]+": "+QString::number(heroes[0].getGold()));
 
@@ -1381,18 +1483,24 @@ void MainWindow::on_shop_item2buy_clicked()
                 if (sz == 1) {
                     ui->player1_item1inShop->setPixmap(items[ind].image);
                     ui->player1_item1->setPixmap(items[ind].image);
+                    ui->player1_item1inBattle->setPixmap(items[ind].image);
                     ui->player1_about1_buttonInShop->setEnabled(true);
                     ui->player1_about1_button->setEnabled(true);
+                    ui->player1_aboutItem1->setEnabled(true);
                 } else if (sz == 2) {
                     ui->player1_item2inShop->setPixmap(items[ind].image);
                     ui->player1_item2->setPixmap(items[ind].image);
+                    ui->player1_item2inBattle->setPixmap(items[ind].image);
                     ui->player1_about2_buttonInShop->setEnabled(true);
-                     ui->player1_about2_button->setEnabled(true);
+                    ui->player1_about2_button->setEnabled(true);
+                    ui->player1_aboutItem2->setEnabled(true);
                 } else {
                     ui->player1_item3inShop->setPixmap(items[ind].image);
                     ui->player1_item3->setPixmap(items[ind].image);
+                    ui->player1_item3inBattle->setPixmap(items[ind].image);
                     ui->player1_about3_buttonInShop->setEnabled(true);
                     ui->player1_about3_button->setEnabled(true);
+                    ui->player1_aboutItem3->setEnabled(true);
                 }
 
                 ui->item2sold->show();
@@ -1406,7 +1514,7 @@ void MainWindow::on_shop_item2buy_clicked()
         if (sz == 3) {
             QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
         } else {
-            if (items[ind].cost < heroes[1].getGold()) {
+            if (items[ind].cost <= heroes[1].getGold()) {
                 heroes[1].removeGold(items[ind].cost);
                 ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[1]+": "+QString::number(heroes[1].getGold()));
 
@@ -1416,18 +1524,24 @@ void MainWindow::on_shop_item2buy_clicked()
                 if (sz == 1) {
                     ui->player2_item1inShop->setPixmap(items[ind].image);
                     ui->player2_item1->setPixmap(items[ind].image);
+                    ui->player2_item1inBattle->setPixmap(items[ind].image);
                     ui->player2_about1_buttonInShop->setEnabled(true);
                     ui->player2_about1_button->setEnabled(true);
+                    ui->player2_aboutItem1->setEnabled(true);
                 } else if (sz == 2) {
                     ui->player2_item2inShop->setPixmap(items[ind].image);
                     ui->player2_item2->setPixmap(items[ind].image);
+                    ui->player2_item2inBattle->setPixmap(items[ind].image);
                     ui->player2_about2_buttonInShop->setEnabled(true);
                     ui->player2_about2_button->setEnabled(true);
+                    ui->player2_aboutItem2->setEnabled(true);
                 } else {
                     ui->player2_item3inShop->setPixmap(items[ind].image);
                     ui->player2_item3->setPixmap(items[ind].image);
+                    ui->player2_item3inBattle->setPixmap(items[ind].image);
                     ui->player2_about3_buttonInShop->setEnabled(true);
                     ui->player2_about3_button->setEnabled(true);
+                    ui->player2_aboutItem3->setEnabled(true);
                 }
 
                 ui->item2sold->show();
@@ -1448,7 +1562,7 @@ void MainWindow::on_shop_item3buy_clicked()
         if (sz == 3) {
             QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
         } else {
-            if (items[ind].cost < heroes[0].getGold()) {
+            if (items[ind].cost <= heroes[0].getGold()) {
                 heroes[0].removeGold(items[ind].cost);
                 ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[0]+": "+QString::number(heroes[0].getGold()));
 
@@ -1458,18 +1572,24 @@ void MainWindow::on_shop_item3buy_clicked()
                 if (sz == 1) {
                     ui->player1_item1inShop->setPixmap(items[ind].image);
                     ui->player1_item1->setPixmap(items[ind].image);
+                    ui->player1_item1inBattle->setPixmap(items[ind].image);
                     ui->player1_about1_buttonInShop->setEnabled(true);
                     ui->player1_about1_button->setEnabled(true);
+                    ui->player1_aboutItem1->setEnabled(true);
                 } else if (sz == 2) {
                     ui->player1_item2inShop->setPixmap(items[ind].image);
                     ui->player1_item2->setPixmap(items[ind].image);
+                    ui->player1_item2inBattle->setPixmap(items[ind].image);
                     ui->player1_about2_buttonInShop->setEnabled(true);
                     ui->player1_about2_button->setEnabled(true);
+                    ui->player1_aboutItem2->setEnabled(true);
                 } else {
                     ui->player1_item3inShop->setPixmap(items[ind].image);
                     ui->player1_item3->setPixmap(items[ind].image);
+                    ui->player1_item3inBattle->setPixmap(items[ind].image);
                     ui->player1_about3_buttonInShop->setEnabled(true);
                     ui->player1_about3_button->setEnabled(true);
+                    ui->player1_aboutItem3->setEnabled(true);
                 }
 
                 ui->item3sold->show();
@@ -1483,7 +1603,7 @@ void MainWindow::on_shop_item3buy_clicked()
         if (sz == 3) {
             QMessageBox::critical(this, "Недостаточно места", "Недостаточно места в инвентаре");
         } else {
-            if (items[ind].cost < heroes[1].getGold()) {
+            if (items[ind].cost <= heroes[1].getGold()) {
                 heroes[1].removeGold(items[ind].cost);
                 ui->shopGold->setText("Количество золота у "+selectedProfilesForGame[1]+": "+QString::number(heroes[1].getGold()));
 
@@ -1493,18 +1613,24 @@ void MainWindow::on_shop_item3buy_clicked()
                 if (sz == 1) {
                     ui->player2_item1inShop->setPixmap(items[ind].image);
                     ui->player2_item1->setPixmap(items[ind].image);
+                    ui->player2_item1inBattle->setPixmap(items[ind].image);
                     ui->player2_about1_buttonInShop->setEnabled(true);
                     ui->player2_about1_button->setEnabled(true);
+                    ui->player2_aboutItem1->setEnabled(true);
                 } else if (sz == 2) {
                     ui->player2_item2inShop->setPixmap(items[ind].image);
                     ui->player2_item2->setPixmap(items[ind].image);
+                    ui->player2_item2inBattle->setPixmap(items[ind].image);
                     ui->player2_about2_buttonInShop->setEnabled(true);
                     ui->player2_about2_button->setEnabled(true);
+                    ui->player2_aboutItem2->setEnabled(true);
                 } else {
                     ui->player2_item3inShop->setPixmap(items[ind].image);
                     ui->player2_item3->setPixmap(items[ind].image);
+                    ui->player2_item3inBattle->setPixmap(items[ind].image);
                     ui->player2_about3_buttonInShop->setEnabled(true);
                     ui->player2_about3_button->setEnabled(true);
+                    ui->player2_aboutItem3->setEnabled(true);
                 }
 
                 ui->item3sold->show();
@@ -1594,5 +1720,597 @@ void MainWindow::on_player2_about3_buttonInShop_clicked()
     details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
 
     details.exec();
+}
+
+
+
+
+void MainWindow::on_player1_aboutAb1_clicked()
+{
+    if (heroes[0].getName() == "Lina") {
+        linaDetails.on_Ab_1_clicked();
+    } else if (heroes[0].getName() == "Phoenix") {
+        phoenixDetails.on_Ab_1_clicked();
+    } else if (heroes[0].getName() == "Venomancer") {
+        venomancerDetails.on_Ab_1_clicked();
+    } else if (heroes[0].getName() == "Drow Ranger") {
+        drowRangerDetails.on_Ab_1_clicked();
+    } else {
+        dragonKnightDetails.on_Ab_1_clicked();
+    }
+}
+
+
+void MainWindow::on_player1_aboutAb2_clicked()
+{
+    if (heroes[0].getName() == "Lina") {
+        linaDetails.on_Ab_2_clicked();
+    } else if (heroes[0].getName() == "Phoenix") {
+        phoenixDetails.on_Ab_2_clicked();
+    } else if (heroes[0].getName() == "Venomancer") {
+        venomancerDetails.on_Ab_2_clicked();
+    } else if (heroes[0].getName() == "Drow Ranger") {
+        drowRangerDetails.on_Ab_2_clicked();
+    } else {
+        dragonKnightDetails.on_Ab_2_clicked();
+    }
+}
+
+
+void MainWindow::on_player1_aboutAb3_clicked()
+{
+    if (heroes[0].getName() == "Lina") {
+        linaDetails.on_Ab_3_clicked();
+    } else if (heroes[0].getName() == "Phoenix") {
+        phoenixDetails.on_Ab_3_clicked();
+    } else if (heroes[0].getName() == "Venomancer") {
+        venomancerDetails.on_Ab_3_clicked();
+    } else if (heroes[0].getName() == "Drow Ranger") {
+        drowRangerDetails.on_Ab_3_clicked();
+    } else {
+        dragonKnightDetails.on_Ab_3_clicked();
+    }
+}
+
+
+void MainWindow::on_player2_aboutAb1_clicked()
+{
+    if (heroes[1].getName() == "Lina") {
+        linaDetails.on_Ab_1_clicked();
+    } else if (heroes[1].getName() == "Phoenix") {
+        phoenixDetails.on_Ab_1_clicked();
+    } else if (heroes[1].getName() == "Venomancer") {
+        venomancerDetails.on_Ab_1_clicked();
+    } else if (heroes[1].getName() == "Drow Ranger") {
+        drowRangerDetails.on_Ab_1_clicked();
+    } else {
+        dragonKnightDetails.on_Ab_1_clicked();
+    }
+}
+
+
+void MainWindow::on_player2_aboutAb2_clicked()
+{
+    if (heroes[1].getName() == "Lina") {
+        linaDetails.on_Ab_2_clicked();
+    } else if (heroes[1].getName() == "Phoenix") {
+        phoenixDetails.on_Ab_2_clicked();
+    } else if (heroes[1].getName() == "Venomancer") {
+        venomancerDetails.on_Ab_2_clicked();
+    } else if (heroes[1].getName() == "Drow Ranger") {
+        drowRangerDetails.on_Ab_2_clicked();
+    } else {
+        dragonKnightDetails.on_Ab_2_clicked();
+    }
+}
+
+
+void MainWindow::on_player2_aboutAb3_clicked()
+{
+    if (heroes[1].getName() == "Lina") {
+        linaDetails.on_Ab_3_clicked();
+    } else if (heroes[1].getName() == "Phoenix") {
+        phoenixDetails.on_Ab_3_clicked();
+    } else if (heroes[1].getName() == "Venomancer") {
+        venomancerDetails.on_Ab_3_clicked();
+    } else if (heroes[1].getName() == "Drow Ranger") {
+        drowRangerDetails.on_Ab_3_clicked();
+    } else {
+        dragonKnightDetails.on_Ab_3_clicked();
+    }
+}
+
+
+void MainWindow::on_player1_useAb1_clicked()
+{
+
+
+    Ability ab = heroes[0].getAbilities()[0];
+
+    if (ab.manaCost <= heroes[0].getCurrentMana()) {
+        ui->player1_useAb1->setEnabled(false);
+        ui->player1_useAb2->setEnabled(false);
+        ui->player1_useAb3->setEnabled(false);
+
+        heroes[0].removeMana(ab.manaCost);
+        heroes[1].getDamage(ab.damage);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[1]+"\n");
+        if (heroes[1].getCurrentHP() <= 0) {
+            heroes[1].setCurrentHP(0);
+            // TODO: сделать штуку, что челик победил
+        }
+        ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+        ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+        if (ab.silence != 0) {
+            heroes[1].setSilence(ab.silence);
+            ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил безмолвие на "+selectedProfilesForGame[1]+" на один раунд\n");
+        }
+        if (ab.stan != 0) {
+            heroes[1].setStanned(ab.stan);
+            ui->player2_Status->setText("Оглушён на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" оглушил "+selectedProfilesForGame[1]+" на один раунд\n");
+        }
+
+        if (ab.periodic != 0) {
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил периодический урон в размере"+QString::number(ab.periodic)+" на "+selectedProfilesForGame[1]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
+            heroes[1].setPeriodic(ab.periodicFor);
+            heroes[1].addPeriodicDamage(ab.periodic);
+        }
+
+        P1ab1CD = ab.cooldown;
+
+        if (P1ab1CD != 0) {
+            ui->player1_ab1CD->setText(QString::number(P1ab1CD));
+        }
+    } else {
+        QMessageBox::critical(this, "Недостаточно маны", "Недостаточно маны, чтобы применить способность");
+    }
+}
+
+
+void MainWindow::on_player1_useAb2_clicked()
+{
+
+
+    Ability ab = heroes[0].getAbilities()[1];
+
+    if (ab.manaCost <= heroes[0].getCurrentMana()) {
+        ui->player1_useAb1->setEnabled(false);
+        ui->player1_useAb2->setEnabled(false);
+        ui->player1_useAb3->setEnabled(false);
+
+        heroes[0].removeMana(ab.manaCost);
+        heroes[1].getDamage(ab.damage);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[1]+"\n");
+        if (heroes[1].getCurrentHP() <= 0) {
+            heroes[1].setCurrentHP(0);
+            // TODO: сделать штуку, что челик победил
+        }
+        ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+        ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+        if (ab.silence != 0) {
+            heroes[1].setSilence(ab.silence);
+            ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил безмолвие на "+selectedProfilesForGame[1]+" на один раунд\n");
+        }
+        if (ab.stan != 0) {
+            heroes[1].setStanned(ab.stan);
+            ui->player2_Status->setText("Оглушён на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" оглушил "+selectedProfilesForGame[1]+" на один раунд\n");
+        }
+
+        if (ab.periodic != 0) {
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил периодический урон в размере"+QString::number(ab.periodic)+" на "+selectedProfilesForGame[1]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
+            heroes[1].setPeriodic(ab.periodicFor);
+            heroes[1].addPeriodicDamage(ab.periodic);
+        }
+
+        P1ab2CD = ab.cooldown;
+
+        if (P1ab2CD != 0) {
+            ui->player1_ab2CD->setText(QString::number(P1ab2CD));
+        }
+    } else {
+        QMessageBox::critical(this, "Недостаточно маны", "Недостаточно маны, чтобы применить способность");
+    }
+
+
+}
+
+
+void MainWindow::on_player1_useAb3_clicked()
+{
+
+
+    Ability ab = heroes[0].getAbilities()[2];
+
+    if (ab.manaCost <= heroes[0].getCurrentMana()) {
+        ui->player1_useAb1->setEnabled(false);
+        ui->player1_useAb2->setEnabled(false);
+        ui->player1_useAb3->setEnabled(false);
+
+        heroes[0].removeMana(ab.manaCost);
+        heroes[1].getDamage(ab.damage);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[1]+"\n");
+        if (heroes[1].getCurrentHP() <= 0) {
+            heroes[1].setCurrentHP(0);
+            // TODO: сделать штуку, что челик победил
+        }
+        ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+        ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+        if (ab.silence != 0) {
+            heroes[1].setSilence(ab.silence);
+            ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил безмолвие на "+selectedProfilesForGame[1]+" на один раунд\n");
+        }
+        if (ab.stan != 0) {
+            heroes[1].setStanned(ab.stan);
+            ui->player2_Status->setText("Оглушён на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" оглушил "+selectedProfilesForGame[1]+" на один раунд\n");
+        }
+
+        if (ab.periodic != 0) {
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил периодический урон в размере"+QString::number(ab.periodic)+" на "+selectedProfilesForGame[1]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
+            heroes[1].setPeriodic(ab.periodicFor);
+            heroes[1].addPeriodicDamage(ab.periodic);
+        }
+
+        P1ab3CD = ab.cooldown;
+
+        if (P1ab3CD != 0) {
+            ui->player1_ab3CD->setText(QString::number(P1ab3CD));
+        }
+    } else {
+        QMessageBox::critical(this, "Недостаточно маны", "Недостаточно маны, чтобы применить способность");
+    }
+
+
+}
+
+
+void MainWindow::on_player2_useAb1_clicked()
+{
+    Ability ab = heroes[1].getAbilities()[0];
+
+    if (ab.manaCost <= heroes[1].getCurrentMana()) {
+        ui->player2_useAb1->setEnabled(false);
+        ui->player2_useAb2->setEnabled(false);
+        ui->player2_useAb3->setEnabled(false);
+
+        heroes[1].removeMana(ab.manaCost);
+        heroes[0].getDamage(ab.damage);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[0]+"\n");
+        if (heroes[0].getCurrentHP() <= 0) {
+            heroes[0].setCurrentHP(0);
+            // TODO: сделать штуку, что челик победил
+        }
+        ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+        ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+        if (ab.silence != 0) {
+            heroes[0].setSilence(ab.silence);
+            ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" наложил безмолвие на "+selectedProfilesForGame[0]+" на один раунд\n");
+        }
+        if (ab.stan != 0) {
+            heroes[0].setStanned(ab.stan);
+            ui->player2_Status->setText("Оглушён на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" оглушил "+selectedProfilesForGame[0]+" на один раунд\n");
+        }
+
+        if (ab.periodic != 0) {
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" наложил периодический урон в размере "+QString::number(ab.periodic)+" на "+selectedProfilesForGame[0]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
+            heroes[0].setPeriodic(ab.periodicFor);
+            heroes[0].addPeriodicDamage(ab.periodic);
+        }
+
+        P2ab1CD = ab.cooldown;
+
+        if (P2ab1CD != 0) {
+            ui->player2_ab1CD->setText(QString::number(P2ab1CD));
+        }
+    } else {
+        QMessageBox::critical(this, "Недостаточно маны", "Недостаточно маны, чтобы применить способность");
+    }
+
+
+}
+
+
+void MainWindow::on_player2_useAb2_clicked()
+{
+
+
+    Ability ab = heroes[1].getAbilities()[1];
+
+    if (ab.manaCost <= heroes[1].getCurrentMana()) {
+        ui->player2_useAb1->setEnabled(false);
+        ui->player2_useAb2->setEnabled(false);
+        ui->player2_useAb3->setEnabled(false);
+
+        heroes[1].removeMana(ab.manaCost);
+        heroes[0].getDamage(ab.damage);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[0]+"\n");
+        if (heroes[0].getCurrentHP() <= 0) {
+            heroes[0].setCurrentHP(0);
+            // TODO: сделать штуку, что челик победил
+        }
+        ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+        ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+        if (ab.silence != 0) {
+            heroes[0].setSilence(ab.silence);
+            ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" наложил безмолвие на "+selectedProfilesForGame[0]+" на один раунд\n");
+        }
+        if (ab.stan != 0) {
+            heroes[0].setStanned(ab.stan);
+            ui->player2_Status->setText("Оглушён на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" оглушил "+selectedProfilesForGame[0]+" на один раунд\n");
+        }
+
+        if (ab.periodic != 0) {
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" наложил периодический урон в размере"+QString::number(ab.periodic)+" на "+selectedProfilesForGame[0]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
+            heroes[0].setPeriodic(ab.periodicFor);
+            heroes[0].addPeriodicDamage(ab.periodic);
+        }
+
+        P2ab2CD = ab.cooldown;
+
+        if (P2ab2CD != 0) {
+            ui->player2_ab2CD->setText(QString::number(P2ab2CD));
+        }
+    } else {
+        QMessageBox::critical(this, "Недостаточно маны", "Недостаточно маны, чтобы применить способность");
+    }
+}
+
+
+void MainWindow::on_player2_useAb3_clicked()
+{
+    Ability ab = heroes[1].getAbilities()[2];
+
+    if (ab.manaCost <= heroes[1].getCurrentMana()) {
+        ui->player2_useAb1->setEnabled(false);
+        ui->player2_useAb2->setEnabled(false);
+        ui->player2_useAb3->setEnabled(false);
+
+        heroes[1].removeMana(ab.manaCost);
+        heroes[0].getDamage(ab.damage);
+        ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[0]+"\n");
+        if (heroes[0].getCurrentHP() <= 0) {
+            heroes[0].setCurrentHP(0);
+            // TODO: сделать штуку, что челик победил
+        }
+        ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+        ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+        if (ab.silence) {
+            heroes[0].setSilence(ab.silence);
+            ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" наложил безмолвие на "+selectedProfilesForGame[0]+" на один раунд\n");
+        }
+        if (ab.stan) {
+            heroes[0].setStanned(ab.stan);
+            ui->player2_Status->setText("Оглушён на 1 раунд");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" оглушил "+selectedProfilesForGame[0]+" на один раунд\n");
+        }
+
+        if (ab.periodic) {
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" наложил периодический урон в размере"+QString::number(ab.periodic)+" на "+selectedProfilesForGame[0]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
+            heroes[0].setPeriodic(ab.periodicFor);
+            heroes[0].addPeriodicDamage(ab.periodic);
+        }
+
+        P2ab3CD = ab.cooldown;
+
+        if (P2ab3CD != 0) {
+            ui->player2_ab3CD->setText(QString::number(P2ab3CD));
+        }
+    } else {
+        QMessageBox::critical(this, "Недостаточно маны", "Недостаточно маны, чтобы применить способность");
+    }
+}
+
+
+void MainWindow::on_pushButton_14_clicked() // закончить ход
+{
+    if (currentRound == rounds) {
+
+        rounds += 2;
+        currentRound = 1;
+
+        if (heroes[1].getIsSilenced()) {
+            heroes[1].setSilence(0);
+            ui->player2_Status->clear();
+        }
+        if (heroes[1].getIsStanned()) {
+            heroes[1].setStanned(0);
+            ui->player2_Status->clear();
+        }
+
+        ui->player1Gold->setText("Золото: "+QString::number(heroes[0].getGold()));
+        ui->player2Gold->setText("Золото: "+QString::number(heroes[1].getGold()));
+
+        isStageAnnouncement = true;
+
+        isPlayer1Ready = false;
+        ui->player1Ready->setText("НЕ ГОТОВ");
+        ui->player1Ready->setStyleSheet("QLabel { color : red; }");
+
+        isPlayer2Ready = false;
+        ui->player2Ready->setText("НЕ ГОТОВ");
+        ui->player2Ready->setStyleSheet("QLabel { color : red; }");
+
+        stageCount++;
+        ui->nextStage->setText("Cтадия "+QString::number(stageCount)+": ФАРМ");
+
+        battleOrder = 0;
+
+        ui->stackedWidget->setCurrentWidget(ui->stageAnnouncement);
+
+    } else {
+        currentRound++;
+        ui->logs->setText(ui->logs->text()+"# РАУНД "+QString::number(currentRound)+" #\n");
+        ui->rounds->setText("Раунд "+QString::number(currentRound)+" / "+QString::number(rounds));
+
+        if (battleOrder == 0) { // переключение очереди на второго игрока
+            battleOrder = 1;
+
+            if (heroes[0].getIsSilenced()) {
+                heroes[0].setSilence(0);
+                ui->player1_Status->clear();
+            }
+            if (heroes[0].getIsStanned()) {
+                heroes[0].setStanned(0);
+                ui->player1_Status->clear();
+            }
+
+            ui->queue->setText("Очередь " + selectedProfilesForGame[1]);
+
+            if (heroes[1].getIsPeriodic()) {
+                heroes[1].getDamage(heroes[1].getPeriodicDamage());
+                ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" получает периодический урон в размере "+QString::number(heroes[1].getPeriodicDamage())+"\n");
+                heroes[1].decreasePeriodic();
+            }
+
+            if (P2ab1CD) {
+                P2ab1CD--;
+                if (!P2ab1CD) {
+                    ui->player2_ab1CD->clear();
+                } else {
+                    ui->player2_ab1CD->setText(QString::number(P2ab1CD));
+                }
+            }
+
+            if (P2ab2CD) {
+                P2ab2CD--;
+                if (!P2ab2CD) {
+                    ui->player2_ab2CD->clear();
+                } else {
+                    ui->player2_ab2CD->setText(QString::number(P2ab2CD));
+                }
+            }
+
+            if (P2ab3CD) {
+                P2ab3CD--;
+                if (!P2ab3CD) {
+                    ui->player2_ab3CD->clear();
+                } else {
+                    ui->player2_ab3CD->setText(QString::number(P2ab3CD));
+                }
+            }
+
+            if (!(heroes[1].getIsSilenced() || heroes[1].getIsStanned())) {
+                if (!P2ab1CD){
+                    ui->player2_useAb1->setEnabled(true);
+                }
+                if (!P2ab2CD) {
+                    ui->player2_useAb2->setEnabled(true);
+                }
+                if (!P2ab3CD) {
+                    ui->player2_useAb3->setEnabled(true);
+                }
+            }
+
+            ui->player1_useAb1->setEnabled(false);
+            ui->player1_useAb2->setEnabled(false);
+            ui->player1_useAb3->setEnabled(false);
+
+            ui->player1_useItem1->setEnabled(false);
+            ui->player1_useItem2->setEnabled(false);
+            ui->player1_useItem3->setEnabled(false);
+
+            if (heroes[1].items.size() >= 1) {
+                ui->player2_useItem1->setEnabled(true);
+                ui->player2_aboutItem1->setEnabled(true);
+            }
+            if (heroes[1].items.size() >= 2) {
+                ui->player2_useItem2->setEnabled(true);
+                ui->player2_aboutItem2->setEnabled(true);
+            }
+            if (heroes[1].items.size() == 3)  {
+                ui->player2_useItem3->setEnabled(true);
+                ui->player2_aboutItem3->setEnabled(true);
+            }
+        } else { // переключение очереди на первого игрока
+            battleOrder = 0;
+
+            if (heroes[1].getIsSilenced()) {
+                heroes[1].setSilence(0);
+                ui->player2_Status->clear();
+            }
+            if (heroes[1].getIsStanned()) {
+                heroes[1].setStanned(0);
+                ui->player2_Status->clear();
+            }
+
+            ui->queue->setText("Очередь " + selectedProfilesForGame[0]);
+
+            if (heroes[0].getIsPeriodic()) {
+                heroes[0].getDamage(heroes[0].getPeriodicDamage());
+                ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" получает периодический урон в размере "+QString::number(heroes[0].getPeriodicDamage())+"\n");
+                heroes[0].decreasePeriodic();
+            }
+
+            if (P1ab1CD) {
+                P1ab1CD--;
+                if (!P1ab1CD) {
+                    ui->player1_ab1CD->clear();
+                } else {
+                    ui->player1_ab1CD->setText(QString::number(P1ab1CD));
+                }
+            }
+
+            if (P1ab2CD) {
+                P1ab2CD--;
+                if (!P1ab2CD) {
+                    ui->player1_ab2CD->clear();
+                } else {
+                    ui->player1_ab2CD->setText(QString::number(P1ab2CD));
+                }
+            }
+
+            if (P1ab3CD) {
+                P1ab3CD--;
+                if (!P1ab3CD) {
+                    ui->player1_ab3CD->clear();
+                } else {
+                    ui->player1_ab3CD->setText(QString::number(P1ab3CD));
+                }
+            }
+
+            if (!(heroes[0].getIsSilenced() || heroes[0].getIsStanned())) {
+                if (!P1ab1CD){
+                    ui->player1_useAb1->setEnabled(true);
+                }
+                if (!P1ab2CD) {
+                    ui->player1_useAb2->setEnabled(true);
+                }
+                if (!P1ab3CD) {
+                    ui->player1_useAb3->setEnabled(true);
+                }
+            }
+
+            ui->player2_useAb1->setEnabled(false);
+            ui->player2_useAb2->setEnabled(false);
+            ui->player2_useAb3->setEnabled(false);
+
+            ui->player2_useItem1->setEnabled(false);
+            ui->player2_useItem2->setEnabled(false);
+            ui->player2_useItem3->setEnabled(false);
+
+            if (heroes[0].items.size() >= 1) {
+                ui->player1_useItem1->setEnabled(true);
+                ui->player1_aboutItem1->setEnabled(true);
+            }
+            if (heroes[0].items.size() >= 2) {
+                ui->player1_useItem2->setEnabled(true);
+                ui->player1_aboutItem2->setEnabled(true);
+            }
+            if (heroes[0].items.size() == 3)  {
+                ui->player1_useItem3->setEnabled(true);
+                ui->player1_aboutItem3->setEnabled(true);
+            }
+        }
+    }
 }
 

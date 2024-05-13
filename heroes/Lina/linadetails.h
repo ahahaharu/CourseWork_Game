@@ -17,7 +17,7 @@ public:
     explicit LinaDetails(QWidget *parent = nullptr);
     ~LinaDetails();
 
-private slots:
+public slots:
     void on_Ab_1_clicked();
 
     void on_Ab_2_clicked();

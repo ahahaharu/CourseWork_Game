@@ -165,6 +165,32 @@ private slots:
 
     void on_player2_about3_buttonInShop_clicked();
 
+    void on_player1_aboutAb1_clicked();
+
+    void on_player1_useAb1_clicked();
+
+    void on_player1_aboutAb2_clicked();
+
+    void on_player1_aboutAb3_clicked();
+
+    void on_player2_aboutAb1_clicked();
+
+    void on_player2_aboutAb2_clicked();
+
+    void on_player2_aboutAb3_clicked();
+
+    void on_player1_useAb2_clicked();
+
+    void on_player1_useAb3_clicked();
+
+    void on_player2_useAb1_clicked();
+
+    void on_player2_useAb2_clicked();
+
+    void on_player2_useAb3_clicked();
+
+    void on_pushButton_14_clicked();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
@@ -233,6 +259,23 @@ private:
     std::vector<Item> items;
     std::vector<int> currentShop;
     int currentlyBuying = 0;
+
+    int currentRound = 1;
+    int rounds = 2;
+
+    int P1ab1CD = 0;
+    int P1ab2CD = 0;
+    int P1ab3CD = 0;
+
+    int P2ab1CD = 0;
+    int P2ab2CD = 0;
+    int P2ab3CD = 0;
+
+    int battleOrder = 0;
+
+    void winner(int);
+
+    void updateInvent();
 };
 
 

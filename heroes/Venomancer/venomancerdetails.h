@@ -17,7 +17,7 @@ public:
     explicit VenomancerDetails(QWidget *parent = nullptr);
     ~VenomancerDetails();
 
-private slots:
+public slots:
     void on_Ab_1_clicked();
 
     void on_Ab_2_clicked();
