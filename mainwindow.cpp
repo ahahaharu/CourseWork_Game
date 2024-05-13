@@ -2566,83 +2566,52 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
     }
 
     if (ind != 8) {
+        int sz1 = heroes[0].items.size();
+        int sz2 = heroes[1].items.size();
         if (button == 1) {
             if (player == 0) {
                 heroes[0].items.erase(heroes[0].items.begin());
-                ui->player1_item3inBattle->setText("Пусто");
-                ui->player1_useItem3->setEnabled(false);
-                ui->player1_aboutItem3->setEnabled(false);
-                if (heroes[0].items.size() >= 1) {
-                    ui->player1_item1inBattle->setPixmap(ui->player1_item2inBattle->pixmap());
-                } else {
-                    ui->player1_item1inBattle->setText("Пусто");
-                    ui->player1_useItem1->setEnabled(false);
-                    ui->player1_aboutItem1->setEnabled(false);
-                }
-                if (heroes[0].items.size() == 2) {
-                    ui->player1_item1inBattle->setPixmap(ui->player1_item3inBattle->pixmap());
-                } else {
-                    ui->player1_item2inBattle->setText("Пусто");
-                    ui->player1_useItem2->setEnabled(false);
-                    ui->player1_aboutItem2->setEnabled(false);
-                }
+                updateInvent();
             } else {
                 heroes[1].items.erase(heroes[1].items.begin());
-                ui->player2_item3inBattle->setText("Пусто");
-                ui->player2_useItem3->setEnabled(false);
-                ui->player2_aboutItem3->setEnabled(false);
-                if (heroes[1].items.size() >= 1) {
-                    ui->player2_item1inBattle->setPixmap(ui->player2_item2inBattle->pixmap());
-                } else {
-                    ui->player2_item1inBattle->setText("Пусто");
-                    ui->player2_useItem1->setEnabled(false);
-                    ui->player2_aboutItem1->setEnabled(false);
-                }
-                if (heroes[1].items.size() == 2) {
-                    ui->player2_item1inBattle->setPixmap(ui->player2_item3inBattle->pixmap());
-                } else {
-                    ui->player2_item2inBattle->setText("Пусто");
-                    ui->player2_useItem2->setEnabled(false);
-                    ui->player2_aboutItem2->setEnabled(false);
-                }
+                updateInvent();
             }
         } else if (button == 2) {
             if (player == 0) {
                 heroes[0].items.erase(heroes[0].items.begin() + 1);
-                ui->player1_item3inBattle->setText("Пусто");
-                ui->player1_useItem3->setEnabled(false);
-                ui->player1_aboutItem3->setEnabled(false);
-                if (heroes[0].items.size() == 1) {
-                    ui->player1_item2inBattle->setText("Пусто");
-                    ui->player1_useItem2->setEnabled(false);
-                    ui->player1_aboutItem2->setEnabled(false);
-                } else {
-                    ui->player1_item2inBattle->setPixmap(ui->player1_item3inBattle->pixmap());
-                }
+                updateInvent();
             } else {
                 heroes[1].items.erase(heroes[1].items.begin() + 1);
-                ui->player2_item3inBattle->setText("Пусто");
-                ui->player2_useItem3->setEnabled(false);
-                ui->player2_aboutItem3->setEnabled(false);
-                if (heroes[1].items.size() == 1) {
-                    ui->player2_item2inBattle->setText("Пусто");
-                    ui->player2_useItem2->setEnabled(false);
-                    ui->player2_aboutItem2->setEnabled(false);
-                } else {
-                    ui->player2_item2inBattle->setPixmap(ui->player1_item3inBattle->pixmap());
-                }
+                updateInvent();
             }
         } else {
             if (player == 0) {
                 heroes[0].items.erase(heroes[0].items.begin() + 2);
-                ui->player1_item3inBattle->setText("Пусто");
-                ui->player1_useItem3->setEnabled(false);
-                ui->player1_aboutItem3->setEnabled(false);
+                updateInvent();
             } else {
                 heroes[1].items.erase(heroes[1].items.begin() + 2);
-                ui->player2_item3inBattle->setText("Пусто");
+                updateInvent();
+            }
+        }
+        if (player == 0) {
+            if (2 >= sz1) {
+                ui->player1_useItem3->setEnabled(false);
+            }
+            if (1 >= sz1) {
+                ui->player1_useItem2->setEnabled(false);
+            }
+            if (0 >= sz1) {
+                ui->player2_useItem1->setEnabled(false);
+            }
+        } else {
+            if (2 >= sz2) {
                 ui->player2_useItem3->setEnabled(false);
-                ui->player2_aboutItem3->setEnabled(false);
+            }
+            if (1 >= sz2) {
+                ui->player2_useItem2->setEnabled(false);
+            }
+            if (0 >= sz2) {
+                ui->player2_useItem1->setEnabled(false);
             }
         }
     }
@@ -2694,7 +2663,6 @@ void MainWindow::updateInvent() {
         ui->player1_item3->setPixmap(items[ind].image);
         ui->player1_about3_button->setEnabled(true);
         ui->player1_item3inBattle->setPixmap(items[ind].image);
-        ui->player1_useItem3->setEnabled(true);
         ui->player1_aboutItem3->setEnabled(true);
     } else {
         ui->player1_item3inShop->setText("Пусто");
@@ -2702,7 +2670,6 @@ void MainWindow::updateInvent() {
         ui->player1_item3->setText("Пусто");
         ui->player1_about3_button->setEnabled(false);
         ui->player1_item3inBattle->setText("Пусто");
-        ui->player1_useItem3->setEnabled(false);
         ui->player1_aboutItem3->setEnabled(false);
     }
 
@@ -2713,7 +2680,6 @@ void MainWindow::updateInvent() {
         ui->player1_item2->setPixmap(items[ind].image);
         ui->player1_about2_button->setEnabled(true);
         ui->player1_item2inBattle->setPixmap(items[ind].image);
-        ui->player1_useItem2->setEnabled(true);
         ui->player1_aboutItem2->setEnabled(true);
     } else {
         ui->player1_item2inShop->setText("Пусто");
@@ -2721,7 +2687,6 @@ void MainWindow::updateInvent() {
         ui->player1_item2->setText("Пусто");
         ui->player1_about2_button->setEnabled(false);
         ui->player1_item2inBattle->setText("Пусто");
-        ui->player1_useItem2->setEnabled(false);
         ui->player1_aboutItem2->setEnabled(false);
     }
 
@@ -2732,7 +2697,6 @@ void MainWindow::updateInvent() {
         ui->player1_item1->setPixmap(items[ind].image);
         ui->player1_about1_button->setEnabled(true);
         ui->player1_item1inBattle->setPixmap(items[ind].image);
-        ui->player1_useItem1->setEnabled(true);
         ui->player1_aboutItem1->setEnabled(true);
     } else {
         ui->player1_item1inShop->setText("Пусто");
@@ -2740,7 +2704,6 @@ void MainWindow::updateInvent() {
         ui->player1_item1->setText("Пусто");
         ui->player1_about1_button->setEnabled(false);
         ui->player1_item1inBattle->setText("Пусто");
-        ui->player1_useItem1->setEnabled(false);
         ui->player1_aboutItem1->setEnabled(false);
     }
 
@@ -2756,7 +2719,6 @@ void MainWindow::updateInvent() {
         ui->player2_item3->setPixmap(items[ind].image);
         ui->player2_about3_button->setEnabled(true);
         ui->player2_item3inBattle->setPixmap(items[ind].image);
-        ui->player2_useItem3->setEnabled(true);
         ui->player2_aboutItem3->setEnabled(true);
     } else {
         ui->player2_item3inShop->setText("Пусто");
@@ -2764,7 +2726,6 @@ void MainWindow::updateInvent() {
         ui->player2_item3->setText("Пусто");
         ui->player2_about3_button->setEnabled(false);
         ui->player2_item3inBattle->setText("Пусто");
-        ui->player2_useItem3->setEnabled(false);
         ui->player2_aboutItem3->setEnabled(false);
     }
 
@@ -2775,7 +2736,6 @@ void MainWindow::updateInvent() {
         ui->player2_item2->setPixmap(items[ind].image);
         ui->player2_about2_button->setEnabled(true);
         ui->player2_item2inBattle->setPixmap(items[ind].image);
-        ui->player2_useItem2->setEnabled(true);
         ui->player2_aboutItem2->setEnabled(true);
     } else {
         ui->player2_item2inShop->setText("Пусто");
@@ -2783,7 +2743,6 @@ void MainWindow::updateInvent() {
         ui->player2_item2->setText("Пусто");
         ui->player2_about2_button->setEnabled(false);
         ui->player2_item2inBattle->setText("Пусто");
-        ui->player2_useItem2->setEnabled(false);
         ui->player2_aboutItem2->setEnabled(false);
     }
 
@@ -2794,7 +2753,6 @@ void MainWindow::updateInvent() {
         ui->player2_item1->setPixmap(items[ind].image);
         ui->player2_about1_button->setEnabled(true);
         ui->player2_item1inBattle->setPixmap(items[ind].image);
-        ui->player2_useItem1->setEnabled(true);
         ui->player2_aboutItem1->setEnabled(true);
     } else {
         ui->player2_item1inShop->setText("Пусто");
