@@ -853,7 +853,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if (stageCount % 3 == 1) {
                 farmStages = 0;
                 farmStageFinished = false;
-                ui->stackedWidget->setCurrentWidget(ui->farmStage);
+                ui->player1Status->clear();
+                ui->player2Status->clear();
+
                 isStageAnnouncement = false;
                 processLabel->clear();
 
@@ -862,6 +864,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 
                 ui->gold->setText("Золото за попадание: " + QString::number(goldFarm));
+
+                ui->stackedWidget->setCurrentWidget(ui->farmStage);
 
                 count = 3;
                 timer->start(1000);
@@ -925,34 +929,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                     heroes[0].getDamage(heroes[0].getPeriodicDamage());
                     ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" получает периодический урон в размере "+QString::number(heroes[0].getPeriodicDamage())+"\n");
                     heroes[0].decreasePeriodic();
+                    ui->player2_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
                 }
-
-                /*if (P1ab1CD) {
-                    P1ab1CD--;
-                    if (!P1ab1CD) {
-                        ui->player1_ab1CD->clear();
-                    } else {
-                        ui->player1_ab1CD->setText(QString::number(P1ab1CD));
-                    }
-                }
-
-                if (P1ab2CD) {
-                    P1ab2CD--;
-                    if (!P1ab2CD) {
-                        ui->player1_ab2CD->clear();
-                    } else {
-                        ui->player1_ab2CD->setText(QString::number(P1ab2CD));
-                    }
-                }
-
-                if (P1ab3CD) {
-                    P1ab3CD--;
-                    if (!P1ab3CD) {
-                        ui->player1_ab3CD->clear();
-                    } else {
-                        ui->player1_ab3CD->setText(QString::number(P1ab3CD));
-                    }
-                }*/
 
                 if (!(heroes[0].getIsSilenced() || heroes[0].getIsStanned())) {
                     if (!P1ab1CD){
@@ -1046,7 +1024,6 @@ void MainWindow::countdown()
         ui->player2Gold->setText("Золото: "+QString::number(heroes[1].getGold()));
 
         isFarmStage = false;
-        isStageAnnouncement = true;
 
         isPlayer1Ready = false;
         ui->player1Ready->setText("НЕ ГОТОВ");
@@ -1857,7 +1834,7 @@ void MainWindow::on_player1_useAb1_clicked()
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[1]+"\n");
         if (heroes[1].getCurrentHP() <= 0) {
             heroes[1].setCurrentHP(0);
-            // TODO: сделать штуку, что челик победил
+            winner(0);
         }
         ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
         ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
@@ -1907,7 +1884,7 @@ void MainWindow::on_player1_useAb2_clicked()
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[1]+"\n");
         if (heroes[1].getCurrentHP() <= 0) {
             heroes[1].setCurrentHP(0);
-            // TODO: сделать штуку, что челик победил
+            winner(0);
         }
         ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
         ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
@@ -1959,7 +1936,7 @@ void MainWindow::on_player1_useAb3_clicked()
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[1]+"\n");
         if (heroes[1].getCurrentHP() <= 0) {
             heroes[1].setCurrentHP(0);
-            // TODO: сделать штуку, что челик победил
+            winner(0);
         }
         ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
         ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
@@ -2009,7 +1986,7 @@ void MainWindow::on_player2_useAb1_clicked()
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[0]+"\n");
         if (heroes[0].getCurrentHP() <= 0) {
             heroes[0].setCurrentHP(0);
-            // TODO: сделать штуку, что челик победил
+            winner(1);
         }
         ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
         ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
@@ -2061,7 +2038,7 @@ void MainWindow::on_player2_useAb2_clicked()
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[0]+"\n");
         if (heroes[0].getCurrentHP() <= 0) {
             heroes[0].setCurrentHP(0);
-            // TODO: сделать штуку, что челик победил
+            winner(1);
         }
         ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
         ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
@@ -2109,7 +2086,7 @@ void MainWindow::on_player2_useAb3_clicked()
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[0]+"\n");
         if (heroes[0].getCurrentHP() <= 0) {
             heroes[0].setCurrentHP(0);
-            // TODO: сделать штуку, что челик победил
+            winner(1);
         }
         ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
         ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
@@ -2128,6 +2105,7 @@ void MainWindow::on_player2_useAb3_clicked()
             ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" наложил периодический урон в размере"+QString::number(ab.periodic)+" на "+selectedProfilesForGame[0]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
             heroes[0].setPeriodic(ab.periodicFor);
             heroes[0].addPeriodicDamage(ab.periodic);
+
         }
 
         P2ab3CD = ab.cooldown;
@@ -2233,8 +2211,8 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
                 heroes[1].getDamage(heroes[1].getPeriodicDamage());
                 ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" получает периодический урон в размере "+QString::number(heroes[1].getPeriodicDamage())+"\n");
                 heroes[1].decreasePeriodic();
+                ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
             }
-            // ########## TEST
 
             if (P1ab1CD && !P1ab1used) {
                 P1ab1CD--;
@@ -2268,35 +2246,6 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
             } else {
                 P1ab3used = false;
             }
-
-            // ##########
-
-            /*if (P2ab1CD) {
-                P2ab1CD--;
-                if (!P2ab1CD) {
-                    ui->player2_ab1CD->clear();
-                } else {
-                    ui->player2_ab1CD->setText(QString::number(P2ab1CD));
-                }
-            }
-
-            if (P2ab2CD) {
-                P2ab2CD--;
-                if (!P2ab2CD) {
-                    ui->player2_ab2CD->clear();
-                } else {
-                    ui->player2_ab2CD->setText(QString::number(P2ab2CD));
-                }
-            }
-
-            if (P2ab3CD) {
-                P2ab3CD--;
-                if (!P2ab3CD) {
-                    ui->player2_ab3CD->clear();
-                } else {
-                    ui->player2_ab3CD->setText(QString::number(P2ab3CD));
-                }
-            }*/
 
             if (!(heroes[1].getIsSilenced() || heroes[1].getIsStanned())) {
                 if (!P2ab1CD){
@@ -2348,9 +2297,8 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
                 heroes[0].getDamage(heroes[0].getPeriodicDamage());
                 ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" получает периодический урон в размере "+QString::number(heroes[0].getPeriodicDamage())+"\n");
                 heroes[0].decreasePeriodic();
+                ui->player2_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
             }
-
-            //########### TEST
 
             if (P2ab1CD && !P2ab1used) {
                 P2ab1CD--;
@@ -2384,33 +2332,6 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
             } else {
                 P2ab3used = false;
             }
-
-            /*if (P1ab1CD) {
-                P1ab1CD--;
-                if (!P1ab1CD) {
-                    ui->player1_ab1CD->clear();
-                } else {
-                    ui->player1_ab1CD->setText(QString::number(P1ab1CD));
-                }
-            }
-
-            if (P1ab2CD) {
-                P1ab2CD--;
-                if (!P1ab2CD) {
-                    ui->player1_ab2CD->clear();
-                } else {
-                    ui->player1_ab2CD->setText(QString::number(P1ab2CD));
-                }
-            }
-
-            if (P1ab3CD) {
-                P1ab3CD--;
-                if (!P1ab3CD) {
-                    ui->player1_ab3CD->clear();
-                } else {
-                    ui->player1_ab3CD->setText(QString::number(P1ab3CD));
-                }
-            }*/
 
             if (!(heroes[0].getIsSilenced() || heroes[0].getIsStanned())) {
                 if (!P1ab1CD){
@@ -2453,6 +2374,9 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
 
     if (ind == 0) {
         heroes[player].addHP(100);
+        if (heroes[player].getCurrentHP()>heroes[player].getHealth()) {
+            heroes[player].setCurrentHP(heroes[player].getHealth());
+        }
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" восстановил 100 HP\n");
         if (player == 0) {
             ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
@@ -2461,6 +2385,9 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
         }
     } else if (ind == 1) {
         heroes[player].addMana(100);
+        if (heroes[player].getCurrentMana()>heroes[player].getMana()) {
+            heroes[player].setCurrentMana(heroes[player].getMana());
+        }
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" восстановил 100 маны\n");
         if (player == 0) {
             ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
@@ -2501,7 +2428,7 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
          ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" нанёс "+selectedProfilesForGame[enemy]+" 100 урона\n");
         if (heroes[enemy].getCurrentHP() < 0) {
             heroes[enemy].setCurrentHP(0);
-            // Обработать победу челика
+            winner(player);
         }
 
         if (enemy == 0) {
@@ -2656,8 +2583,9 @@ void MainWindow::on_player2_useItem3_clicked()
 void MainWindow::updateInvent() {
     int sz = heroes[0].items.size();
 
-    int ind = heroes[0].items[2];
+    int ind;
     if (2 < sz) {
+        ind = heroes[0].items[2];
         ui->player1_item3inShop->setPixmap(items[ind].image);
         ui->player1_about3_buttonInShop->setEnabled(true);
         ui->player1_item3->setPixmap(items[ind].image);
@@ -2673,8 +2601,9 @@ void MainWindow::updateInvent() {
         ui->player1_aboutItem3->setEnabled(false);
     }
 
-    ind = heroes[0].items[1];
+
     if (1 < sz) {
+        ind = heroes[0].items[1];
         ui->player1_item2inShop->setPixmap(items[ind].image);
         ui->player1_about2_buttonInShop->setEnabled(true);
         ui->player1_item2->setPixmap(items[ind].image);
@@ -2690,8 +2619,9 @@ void MainWindow::updateInvent() {
         ui->player1_aboutItem2->setEnabled(false);
     }
 
-    ind = heroes[0].items[0];
+
     if (0 < sz) {
+        ind = heroes[0].items[0];
         ui->player1_item1inShop->setPixmap(items[ind].image);
         ui->player1_about1_buttonInShop->setEnabled(true);
         ui->player1_item1->setPixmap(items[ind].image);
@@ -2712,8 +2642,8 @@ void MainWindow::updateInvent() {
 
     sz = heroes[1].items.size();
 
-    ind = heroes[1].items[2];
     if (2 < sz) {
+        ind = heroes[1].items[2];
         ui->player2_item3inShop->setPixmap(items[ind].image);
         ui->player2_about3_buttonInShop->setEnabled(true);
         ui->player2_item3->setPixmap(items[ind].image);
@@ -2729,8 +2659,8 @@ void MainWindow::updateInvent() {
         ui->player2_aboutItem3->setEnabled(false);
     }
 
-    ind = heroes[1].items[1];
     if (1 < sz) {
+        ind = heroes[1].items[1];
         ui->player2_item2inShop->setPixmap(items[ind].image);
         ui->player2_about2_buttonInShop->setEnabled(true);
         ui->player2_item2->setPixmap(items[ind].image);
@@ -2746,8 +2676,8 @@ void MainWindow::updateInvent() {
         ui->player2_aboutItem2->setEnabled(false);
     }
 
-    ind = heroes[1].items[0];
     if (0 < sz) {
+        ind = heroes[1].items[0];
         ui->player2_item1inShop->setPixmap(items[ind].image);
         ui->player2_about1_buttonInShop->setEnabled(true);
         ui->player2_item1->setPixmap(items[ind].image);
@@ -2763,8 +2693,26 @@ void MainWindow::updateInvent() {
         ui->player2_useItem1->setEnabled(false);
         ui->player2_aboutItem1->setEnabled(false);
     }
+}
+
+void MainWindow::winner(int win) {
+    ui->winnerName->setText("Победитель: "+selectedProfilesForGame[win]);
+    ui->winnerHero->setText("Играяя за "+heroes[win].getName());
+
+    QMovie *hero = new QMovie(heroes[win].getImage());
+    ui->winerHeroGIf->setScaledContents(true);
+    ui->winerHeroGIf->setMovie(hero);
+    hero->start();
+
+    ui->winnerHP->setText(QString::number(heroes[win].getCurrentHP())+" / "+QString::number(heroes[win].getHealth()));
+    ui->winnerMana->setText(QString::number(heroes[win].getCurrentMana())+" / "+QString::number(heroes[win].getMana()));
+
+    ui->stackedWidget->setCurrentWidget(ui->winner);
+}
 
 
-
+void MainWindow::on_pushButton_15_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->startMenu);
 }
 

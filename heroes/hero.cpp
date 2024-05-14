@@ -1,6 +1,6 @@
 #include "hero.h"
 
-Hero::Hero(QString name, QDir image, int health, int mana, Ability* abilities) {
+Hero::Hero(QString name, QString image, int health, int mana, Ability* abilities) {
     this->name = name;
     this->image = image;
     this->health = health;
@@ -12,7 +12,7 @@ QString Hero::getName() {
     return this->name;
 }
 
-QDir Hero::getImage() {
+QString Hero::getImage() {
     return this->image;
 }
 

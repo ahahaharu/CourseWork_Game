@@ -205,6 +205,12 @@ private slots:
 
     void on_player2_useItem3_clicked();
 
+    void winner(int);
+
+    void updateInvent();
+
+    void on_pushButton_15_clicked();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
@@ -295,9 +301,6 @@ private:
 
     int battleOrder = 0;
 
-    void winner(int);
-
-    void updateInvent();
 
 
 };

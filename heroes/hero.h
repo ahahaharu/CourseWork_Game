@@ -21,7 +21,7 @@ struct Ability {
 class Hero {
 private:
     QString name;
-    QDir image;
+    QString image;
 
     int health = 500;
     int mana = 300;
@@ -40,10 +40,10 @@ private:
     bool linked = false;
 
 public:
-    Hero(QString name, QDir image, int health, int mana, Ability* abilities);
+    Hero(QString name, QString image, int health, int mana, Ability* abilities);
 
     QString getName();
-    QDir getImage();
+    QString getImage();
     int getHealth();
     int getMana();
     Ability* getAbilities();
