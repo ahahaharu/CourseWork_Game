@@ -929,7 +929,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                     heroes[0].getDamage(heroes[0].getPeriodicDamage());
                     ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" получает периодический урон в размере "+QString::number(heroes[0].getPeriodicDamage())+"\n");
                     heroes[0].decreasePeriodic();
-                    ui->player2_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+                    ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
                 }
 
                 if (!(heroes[0].getIsSilenced() || heroes[0].getIsStanned())) {
@@ -1816,11 +1816,9 @@ void MainWindow::on_player2_aboutAb3_clicked()
 }
 
 
-void MainWindow::on_player1_useAb1_clicked()
+void MainWindow::on_player1_useAb1_clicked() // первый игрок использует способность 1
 {
-
-
-    Ability ab = heroes[0].getAbilities()[0];
+    Ability ab = heroes[0].getAbilities()[0]; // способность 1
 
     if (ab.manaCost <= heroes[0].getCurrentMana()) {
         ui->player1_useAb1->setEnabled(false);
@@ -1829,15 +1827,15 @@ void MainWindow::on_player1_useAb1_clicked()
 
         P1ab1used = true;
 
-        heroes[0].removeMana(ab.manaCost);
-        heroes[1].getDamage(ab.damage);
+        heroes[0].removeMana(ab.manaCost); // отнимается мана у игрока 1
+        heroes[1].getDamage(ab.damage); // второй игрок получает урон
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" нанёс "+QString::number(ab.damage)+" урона игроку "+selectedProfilesForGame[1]+"\n");
         if (heroes[1].getCurrentHP() <= 0) {
             heroes[1].setCurrentHP(0);
             winner(0);
         }
-        ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
-        ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+        ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth())); // показ здоровья второго игрока
+        ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana())); // показ здоровья второго игрока
         if (ab.silence != 0) {
             heroes[1].setSilence(ab.silence);
             ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
@@ -1850,7 +1848,7 @@ void MainWindow::on_player1_useAb1_clicked()
         }
 
         if (ab.periodic != 0) {
-            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил периодический урон в размере"+QString::number(ab.periodic)+" на "+selectedProfilesForGame[1]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил периодический урон в размере "+QString::number(ab.periodic)+" на "+selectedProfilesForGame[1]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
             heroes[1].setPeriodic(ab.periodicFor);
             heroes[1].addPeriodicDamage(ab.periodic);
         }
@@ -1868,8 +1866,6 @@ void MainWindow::on_player1_useAb1_clicked()
 
 void MainWindow::on_player1_useAb2_clicked()
 {
-
-
     Ability ab = heroes[0].getAbilities()[1];
 
     if (ab.manaCost <= heroes[0].getCurrentMana()) {
@@ -1900,7 +1896,7 @@ void MainWindow::on_player1_useAb2_clicked()
         }
 
         if (ab.periodic != 0) {
-            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил периодический урон в размере"+QString::number(ab.periodic)+" на "+selectedProfilesForGame[1]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил периодический урон в размере "+QString::number(ab.periodic)+" на "+selectedProfilesForGame[1]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
             heroes[1].setPeriodic(ab.periodicFor);
             heroes[1].addPeriodicDamage(ab.periodic);
         }
@@ -1920,8 +1916,6 @@ void MainWindow::on_player1_useAb2_clicked()
 
 void MainWindow::on_player1_useAb3_clicked()
 {
-
-
     Ability ab = heroes[0].getAbilities()[2];
 
     if (ab.manaCost <= heroes[0].getCurrentMana()) {
@@ -1952,7 +1946,7 @@ void MainWindow::on_player1_useAb3_clicked()
         }
 
         if (ab.periodic != 0) {
-            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил периодический урон в размере"+QString::number(ab.periodic)+" на "+selectedProfilesForGame[1]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
+            ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" наложил периодический урон в размере "+QString::number(ab.periodic)+" на "+selectedProfilesForGame[1]+" на количество раундов: "+QString::number(ab.periodicFor)+"\n");
             heroes[1].setPeriodic(ab.periodicFor);
             heroes[1].addPeriodicDamage(ab.periodic);
         }
@@ -2209,6 +2203,10 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
 
             if (heroes[1].getIsPeriodic()) {
                 heroes[1].getDamage(heroes[1].getPeriodicDamage());
+                if (heroes[1].getCurrentHP() <= 0) {
+                    heroes[1].setCurrentHP(0);
+                    winner(0);
+                }
                 ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" получает периодический урон в размере "+QString::number(heroes[1].getPeriodicDamage())+"\n");
                 heroes[1].decreasePeriodic();
                 ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
@@ -2297,7 +2295,11 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
                 heroes[0].getDamage(heroes[0].getPeriodicDamage());
                 ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" получает периодический урон в размере "+QString::number(heroes[0].getPeriodicDamage())+"\n");
                 heroes[0].decreasePeriodic();
-                ui->player2_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+                ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+                if (heroes[0].getCurrentHP() <= 0) {
+                    heroes[0].setCurrentHP(0);
+                    winner(1);
+                }
             }
 
             if (P2ab1CD && !P2ab1used) {
