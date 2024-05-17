@@ -139,6 +139,14 @@ MainWindow::~MainWindow()
 void MainWindow::readFromFile() { // чтение информации с файла db.txt
     QFile file("../../db/PlayersDataBase.txt");
 
+    if (playersCount) {
+        for (int i = 0; i <playersCount; i++) {
+            ui->tableWidget_2->removeRow(i);
+            ui->profilesTable->removeRow(i);
+        }
+        playersCount = 0;
+    }
+
     if (!file.open(QIODevice::ReadOnly)) {
         return;
     } else {
@@ -539,6 +547,7 @@ void MainWindow::on_pushButton_5_clicked()
     int selectedRow = ui->tableWidget_2->currentRow();
 
     selectedProfilesForGame[currentChoosing] = players[selectedRow]->getName();
+    currentPlayers.push_back(players[selectedRow]);
     currentChoosing++;
 
     ui->playerChoosin_label->setText("Игрок #2 выбирает профиль игрока");
@@ -2710,6 +2719,18 @@ void MainWindow::winner(int win) {
     ui->winnerMana->setText(QString::number(heroes[win].getCurrentMana())+" / "+QString::number(heroes[win].getMana()));
 
     ui->stackedWidget->setCurrentWidget(ui->winner);
+
+    currentPlayers[win]->addGame();
+    currentPlayers[win]->addWin();
+
+    if (win == 0) {
+        currentPlayers[1]->addGame();
+    } else {
+        currentPlayers[0]->addGame();
+    }
+
+    rewriteFile();
+    readFromFile();
 }
 
 

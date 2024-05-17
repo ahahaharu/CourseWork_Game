@@ -301,7 +301,7 @@ private:
 
     int battleOrder = 0;
 
-
+    std::vector<Player*> currentPlayers;
 
 };
 

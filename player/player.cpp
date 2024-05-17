@@ -31,9 +31,17 @@ int Player::getWinGames() {
 
 QString Player::winRate() {
     if (gamePlayed) {
-        double winRate = (double)(int)winGames / gamePlayed;
+        double winRate = (double)(int)winGames / gamePlayed * 100;
         return QString::number(winRate) + "%";
     } else {
         return "0%";
     }
+}
+
+void Player::addWin() {
+    this->winGames++;
+}
+
+void Player::addGame() {
+    this->gamePlayed++;
 }

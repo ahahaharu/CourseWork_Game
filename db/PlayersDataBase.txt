@@ -1,2 +1,2 @@
-haru;0;0;
-hxppy;0;0;
+haru;1;1;
+hxppy;1;0;

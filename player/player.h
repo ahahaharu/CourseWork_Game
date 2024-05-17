@@ -16,6 +16,9 @@ public:
     void setGamePLayed(int gamePlayed);
     void setWinGames(int winGames);
 
+    void addWin();
+    void addGame();
+
     QString getName();
     int getGamePlayed();
     int getWinGames();
