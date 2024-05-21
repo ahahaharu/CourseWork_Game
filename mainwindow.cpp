@@ -936,10 +936,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 ui->rounds->setText("Раунд "+QString::number(currentRound)+" / "+QString::number(rounds));
 
                 ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+                ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
                 ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+                ui->player2_HP->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
 
                 ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+                ui->player1_Mana->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
                 ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+                ui->player2_Mana->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
 
                 ui->player1_ab1inBattle->setPixmap(heroes[0].getAbilities()[0].image);
                 ui->player1_ab2inBattle->setPixmap(heroes[0].getAbilities()[1].image);
@@ -959,6 +963,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                     ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" получает периодический урон в размере "+QString::number(heroes[0].getPeriodicDamage())+"\n");
                     heroes[0].decreasePeriodic();
                     ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+                    ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+
                 }
 
                 if (!(heroes[0].getIsSilenced() || heroes[0].getIsStanned())) {
@@ -1864,7 +1870,9 @@ void MainWindow::on_player1_useAb1_clicked() // первый игрок испо
             winner(0);
         }
         ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth())); // показ здоровья второго игрока
+        ui->player2_HP->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
         ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana())); // показ здоровья второго игрока
+        ui->player1_Mana->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
         if (ab.silence != 0) {
             heroes[1].setSilence(ab.silence);
             ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
@@ -1912,7 +1920,9 @@ void MainWindow::on_player1_useAb2_clicked()
             winner(0);
         }
         ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+        ui->player2_HP->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
         ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+        ui->player1_Mana->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
         if (ab.silence != 0) {
             heroes[1].setSilence(ab.silence);
             ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
@@ -1962,7 +1972,9 @@ void MainWindow::on_player1_useAb3_clicked()
             winner(0);
         }
         ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+        ui->player2_HP->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
         ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+        ui->player1_Mana->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
         if (ab.silence != 0) {
             heroes[1].setSilence(ab.silence);
             ui->player2_Status->setText("Наложено безмолвие на 1 раунд");
@@ -2012,7 +2024,9 @@ void MainWindow::on_player2_useAb1_clicked()
             winner(1);
         }
         ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+        ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
         ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+        ui->player2_Mana->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
         if (ab.silence != 0) {
             heroes[0].setSilence(ab.silence);
             ui->player1_Status->setText("Наложено безмолвие на 1 раунд");
@@ -2064,7 +2078,9 @@ void MainWindow::on_player2_useAb2_clicked()
             winner(1);
         }
         ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+        ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
         ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+        ui->player2_Mana->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
         if (ab.silence != 0) {
             heroes[0].setSilence(ab.silence);
             ui->player1_Status->setText("Наложено безмолвие на 1 раунд");
@@ -2112,7 +2128,9 @@ void MainWindow::on_player2_useAb3_clicked()
             winner(1);
         }
         ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+        ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
         ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+        ui->player2_Mana->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
         if (ab.silence) {
             heroes[0].setSilence(ab.silence);
             ui->player1_Status->setText("Наложено безмолвие на 1 раунд");
@@ -2239,6 +2257,7 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
                 ui->logs->setText(ui->logs->text()+selectedProfilesForGame[1]+" получает периодический урон в размере "+QString::number(heroes[1].getPeriodicDamage())+"\n");
                 heroes[1].decreasePeriodic();
                 ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+                ui->player2_HP->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
             }
 
             if (P1ab1CD && !P1ab1used) {
@@ -2325,6 +2344,7 @@ void MainWindow::on_pushButton_14_clicked() // закончить ход
                 ui->logs->setText(ui->logs->text()+selectedProfilesForGame[0]+" получает периодический урон в размере "+QString::number(heroes[0].getPeriodicDamage())+"\n");
                 heroes[0].decreasePeriodic();
                 ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+                ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
                 if (heroes[0].getCurrentHP() <= 0) {
                     heroes[0].setCurrentHP(0);
                     winner(1);
@@ -2411,8 +2431,10 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" восстановил 100 HP\n");
         if (player == 0) {
             ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+            ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
         } else {
             ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+            ui->player2_HP->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
         }
     } else if (ind == 1) {
         heroes[player].addMana(100);
@@ -2422,8 +2444,10 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" восстановил 100 маны\n");
         if (player == 0) {
             ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+            ui->player1_Mana->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
         } else {
             ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+            ui->player2_Mana->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
         }
     } else if (ind == 2) {
         heroes[player].addHP(75);
@@ -2431,8 +2455,10 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" увеличил максимальное здоровье на 75\n");
         if (player == 0) {
             ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+            ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
         } else {
             ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+            ui->player2_HP->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
         }
     } else if (ind == 3) {
         heroes[player].addMana(75);
@@ -2440,8 +2466,10 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" увеличил максимальную ману на 75\n");
         if (player == 0) {
             ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+            ui->player1_Mana->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
         } else {
             ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+            ui->player2_Mana->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
         }
     } else if (ind == 4) {
         heroes[enemy].removeMana(100);
@@ -2451,8 +2479,10 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
         }
         if (enemy == 0) {
             ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+            ui->player1_Mana->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
         } else {
             ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+            ui->player2_Mana->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
         }
     } else if (ind == 5) {
         heroes[enemy].getDamage(100);
@@ -2464,8 +2494,10 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
 
         if (enemy == 0) {
             ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+            ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
         } else {
             ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+            ui->player2_HP->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
         }
 
     } else if (ind == 6) {
@@ -2474,8 +2506,10 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" увеличил максимальную ману на 250\n");
         if (player == 0) {
             ui->player1_ManaInBattle->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+            ui->player1_Mana->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
         } else {
             ui->player2_ManaInBattle->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+            ui->player2_Mana->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
         }
     } else if (ind == 7) {
         heroes[player].addHP(250);
@@ -2483,8 +2517,10 @@ void MainWindow::useItem(int player, int item, int enemy, int button) {
         ui->logs->setText(ui->logs->text()+selectedProfilesForGame[player]+" увеличил максимальное здоровье на 250\n");
         if (player == 0) {
             ui->player1_HPInBattle->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+            ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
         } else {
             ui->player2_HPInBattle->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+            ui->player2_HP->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
         }
     } else if (ind == 8) {
         heroes[player].turnLinked();
@@ -2848,6 +2884,7 @@ void MainWindow::clearGame() {
     currentHeroChoosing = 0;
     currentChoosing = 0;
     stageCount = 1;
+    isFarmStage = false;
 
     rect1 = nullptr;
     rect2 = nullptr;

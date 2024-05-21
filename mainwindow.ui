@@ -2229,7 +2229,7 @@ text-shadow: -1px 0 black;</string>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QLabel" name="player2_HP">
+        <widget class="QLabel" name="player1_Mana">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -2269,7 +2269,7 @@ text-shadow: -1px 0 black;</string>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QLabel" name="label_27">
+        <widget class="QLabel" name="player2_Mana">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -2309,7 +2309,7 @@ text-shadow: -1px 0 black;</string>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QLabel" name="label_28">
+        <widget class="QLabel" name="player2_HP">
          <property name="geometry">
           <rect>
            <x>12</x>
