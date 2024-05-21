@@ -42,7 +42,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>4</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="startMenu">
        <widget class="QWidget" name="widget" native="true">
@@ -157,7 +157,7 @@
           </rect>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="selectPLayer">
           <widget class="QPushButton" name="pushButton_4">
@@ -252,6 +252,27 @@
              <string>Процент побед</string>
             </property>
            </column>
+          </widget>
+          <widget class="QLabel" name="profilesStatus">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>220</y>
+             <width>1201</width>
+             <height>131</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>24</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Профиля отсутствуют. Добавьте новые, чтобы начать играть</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </widget>
          <widget class="QWidget" name="addPLayer">
@@ -407,7 +428,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="profiles_SelectPlayer">
          <widget class="QFrame" name="frame_3">
@@ -562,6 +583,27 @@
              <string>Процент побед</string>
             </property>
            </column>
+          </widget>
+          <widget class="QLabel" name="profilesStatus_2">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>230</y>
+             <width>1201</width>
+             <height>131</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>24</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Профиля отсутствуют. Добавьте новые, чтобы начать играть</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </widget>
         </widget>

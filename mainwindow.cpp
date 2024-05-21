@@ -165,6 +165,7 @@ void MainWindow::readFromFile() { // чтение информации с фай
 
     }
 
+
     QTextStream in(&file);
     while (!in.atEnd()) {
 
@@ -228,7 +229,8 @@ void MainWindow::readFromFile() { // чтение информации с фай
 
         playersCount++;
 
-
+        ui->profilesStatus->hide();
+        ui->profilesStatus_2->hide();
     }
 }
 
@@ -387,7 +389,8 @@ void MainWindow::on_pushButton_2_clicked() //добавление игрока +
         QTableWidgetItem *col3Item2 = new QTableWidgetItem(players[playersCount]->winRate());
         ui->profilesTable->setItem(playersCount,2,col3Item2);
 
-
+        ui->profilesStatus->hide();
+        ui->profilesStatus_2->hide();
 
         QFile file("../../db/PlayersDataBase.txt");
 
@@ -451,6 +454,9 @@ void MainWindow::on_deleteProfile_button_clicked() // удаление проф�
         ui->editProfile_button->setEnabled(false);
         ui->deleteProfile_button->setEnabled(false);
         ui->sort_button->setEnabled(false);
+
+        ui->profilesStatus->show();
+        ui->profilesStatus_2->show();
     }
 }
 
@@ -499,7 +505,8 @@ void MainWindow::on_playersProfiles_addButton_clicked() // добавление 
         QTableWidgetItem *col3Item2 = new QTableWidgetItem(players[playersCount]->winRate());
         ui->profilesTable->setItem(playersCount,2,col3Item2);
 
-
+        ui->profilesStatus->hide();
+        ui->profilesStatus_2->hide();
 
         QFile file("../../db/PlayersDataBase.txt");
 
