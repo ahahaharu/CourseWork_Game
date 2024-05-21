@@ -127,6 +127,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->item1sold->hide();
     ui->item2sold->hide();
     ui->item3sold->hide();
+
+    ui->profilesTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->profilesTable->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+    ui->tableWidget_2->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tableWidget_2->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
 }
 
 MainWindow::~MainWindow()
@@ -139,13 +146,18 @@ MainWindow::~MainWindow()
 void MainWindow::readFromFile() { // чтение информации с файла db.txt
     QFile file("../../db/PlayersDataBase.txt");
 
+    int n = ui->tableWidget_2->rowCount();
+
     if (playersCount) {
-        for (int i = 0; i <playersCount; i++) {
-            ui->tableWidget_2->removeRow(i);
-            ui->profilesTable->removeRow(i);
+        for (int i = 0; i < n; i++) {
+            ui->tableWidget_2->removeRow(0);
+            ui->profilesTable->removeRow(0);
         }
         playersCount = 0;
+        players.clear();
     }
+
+
 
     if (!file.open(QIODevice::ReadOnly)) {
         return;
@@ -155,10 +167,11 @@ void MainWindow::readFromFile() { // чтение информации с фай
 
     QTextStream in(&file);
     while (!in.atEnd()) {
+
         QString line = in.readLine();
 
         if (line.isEmpty()) {
-            return;
+            continue;
         }
 
         QString name = "";
@@ -189,15 +202,16 @@ void MainWindow::readFromFile() { // чтение информации с фай
 
         i++;
 
+
         players.push_back(new Player(name, gamePlayed.toInt(), winGames.toInt()));
 
         ui->tableWidget_2->insertRow(playersCount);
         ui->profilesTable->insertRow(playersCount);
 
-        QTableWidgetItem *col1Item1 = new QTableWidgetItem(name);
+        QTableWidgetItem *col1Item1 = new QTableWidgetItem(players[playersCount]->getName());
         ui->tableWidget_2->setItem(playersCount,0,col1Item1);
 
-        QTableWidgetItem *col1Item2 = new QTableWidgetItem(name);
+        QTableWidgetItem *col1Item2 = new QTableWidgetItem(players[playersCount]->getName());
         ui->profilesTable->setItem(playersCount,0,col1Item2);
 
         QTableWidgetItem *col2Item1 = new QTableWidgetItem(QString::number(players[playersCount]->getGamePlayed()));
@@ -213,6 +227,8 @@ void MainWindow::readFromFile() { // чтение информации с фай
         ui->profilesTable->setItem(playersCount,2,col3Item2);
 
         playersCount++;
+
+
     }
 }
 
@@ -263,7 +279,7 @@ void MainWindow::rewriteFile() { // перезапись файла
 
     QTextStream out(&file);
 
-    for (int i = 0; i < playersCount; i++) {
+    for (int i = 0; i < players.size(); i++) {
         out << players[i]->getName() << ";" << players[i]->getGamePlayed() << ";" << players[i]->getWinGames() << ";\n";
     }
 }
@@ -293,6 +309,8 @@ void MainWindow::on_pushButton_clicked() // выход в главное мен�
 
     ui->profileStackedWidget->setCurrentWidget(ui->selectPLayer);
     ui->lineEdit->clear();
+
+    clearGame();
 }
 
 void MainWindow::on_pushButton_4_clicked() // переход на вкладку добавления игрока
@@ -393,7 +411,7 @@ void MainWindow::on_profilesTable_cellClicked(int row, int column) // актив
 {
     ui->editProfile_button->setEnabled(true);
     ui->deleteProfile_button->setEnabled(true);
-    ui->stats_button->setEnabled(true);
+    ui->sort_button->setEnabled(true);
 
     selectedProfile = row;
 }
@@ -414,7 +432,7 @@ void MainWindow::on_deleteProfile_button_clicked() // удаление проф�
     if (playersCount == 0) {
         ui->editProfile_button->setEnabled(false);
         ui->deleteProfile_button->setEnabled(false);
-        ui->stats_button->setEnabled(false);
+        ui->sort_button->setEnabled(false);
     }
 }
 
@@ -546,7 +564,7 @@ void MainWindow::on_pushButton_5_clicked()
 {
     int selectedRow = ui->tableWidget_2->currentRow();
 
-    selectedProfilesForGame[currentChoosing] = players[selectedRow]->getName();
+    selectedProfilesForGame.push_back(players[selectedRow]->getName());
     currentPlayers.push_back(players[selectedRow]);
     currentChoosing++;
 
@@ -587,6 +605,7 @@ void MainWindow::on_pushButton_5_clicked()
                 }
             }
         }
+
         ui->player1_label->setText(selectedProfilesForGame[0]);
         ui->player2_label->setText(selectedProfilesForGame[1]);
         ui->playerChoosingHero_label->setText("Игрок '"+selectedProfilesForGame[0]+"' выбирает персонажа");
@@ -813,6 +832,7 @@ void MainWindow::on_pushButton_7_clicked()
 
     heroes.clear();
     currentHeroChoosing = 0;
+    clearGame();
 }
 
 
@@ -2610,6 +2630,7 @@ void MainWindow::updateInvent() {
         ui->player1_about3_button->setEnabled(false);
         ui->player1_item3inBattle->setText("Пусто");
         ui->player1_aboutItem3->setEnabled(false);
+        ui->player1_useItem3->setEnabled(false);
     }
 
 
@@ -2628,6 +2649,7 @@ void MainWindow::updateInvent() {
         ui->player1_about2_button->setEnabled(false);
         ui->player1_item2inBattle->setText("Пусто");
         ui->player1_aboutItem2->setEnabled(false);
+        ui->player1_useItem2->setEnabled(false);
     }
 
 
@@ -2646,6 +2668,7 @@ void MainWindow::updateInvent() {
         ui->player1_about1_button->setEnabled(false);
         ui->player1_item1inBattle->setText("Пусто");
         ui->player1_aboutItem1->setEnabled(false);
+        ui->player1_useItem1->setEnabled(false);
     }
 
 
@@ -2668,6 +2691,7 @@ void MainWindow::updateInvent() {
         ui->player2_about3_button->setEnabled(false);
         ui->player2_item3inBattle->setText("Пусто");
         ui->player2_aboutItem3->setEnabled(false);
+        ui->player2_useItem3->setEnabled(false);
     }
 
     if (1 < sz) {
@@ -2685,6 +2709,7 @@ void MainWindow::updateInvent() {
         ui->player2_about2_button->setEnabled(false);
         ui->player2_item2inBattle->setText("Пусто");
         ui->player2_aboutItem2->setEnabled(false);
+        ui->player2_useItem2->setEnabled(false);
     }
 
     if (0 < sz) {
@@ -2703,6 +2728,7 @@ void MainWindow::updateInvent() {
         ui->player2_item1inBattle->setText("Пусто");
         ui->player2_useItem1->setEnabled(false);
         ui->player2_aboutItem1->setEnabled(false);
+        ui->player2_useItem1->setEnabled(false);
     }
 }
 
@@ -2737,5 +2763,199 @@ void MainWindow::winner(int win) {
 void MainWindow::on_pushButton_15_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->startMenu);
+    clearGame();
+}
+
+
+void MainWindow::on_sort_button_clicked()
+{
+
+    if (sortState == 0) {
+        tempPlayers.clear();
+        for (Player* player : players) {
+            tempPlayers.push_back(new Player(*player));
+        }
+        shellSortDescending();
+        sortState = 1;
+        ui->sort_button->setText("Сортировать (по возрастанию)");
+    } else if (sortState == 1) {
+        shellSortAscending();
+        sortState = 2;
+        ui->sort_button->setText("Отменить сортировку");
+    } else {
+        players.clear();
+        for (Player* tempPlayer : tempPlayers) {
+            players.push_back(new Player(*tempPlayer));
+        }
+        sortState = 0;
+        ui->sort_button->setText("Сортировать (по убыванию)");
+    }
+
+    rewriteFile();
+    readFromFile();
+}
+
+
+void MainWindow::shellSortDescending()
+{
+    int n = players.size();
+
+
+    for (int gap = n/2; gap > 0; gap /= 2)
+    {
+
+        for (int i = gap; i < n; i += 1)
+        {
+
+            Player* temp = players[i];
+
+            int j;
+            for (j = i; j >= gap && players[j - gap]->winRate() < temp->winRate(); j -= gap)
+                players[j] = players[j - gap];
+
+            players[j] = temp;
+        }
+    }
+
+}
+
+void MainWindow::shellSortAscending() {
+    int n = players.size();
+
+    for (int gap = n/2; gap > 0; gap /= 2)
+    {
+        for (int i = gap; i < n; i += 1)
+        {
+            Player* temp = players[i];
+
+            int j;
+            // Измените условие здесь, чтобы сортировать по возрастанию
+            for (j = i; j >= gap && players[j - gap]->winRate() > temp->winRate(); j -= gap)
+                players[j] = players[j - gap];
+
+            players[j] = temp;
+        }
+    }
+}
+
+void MainWindow::clearGame() {
+    selectedProfilesForGame.clear();
+    currentShop.clear();
+    currentPlayers.clear();
+    tempPlayers.clear();
+    heroes.clear();
+
+    currentHeroChoosing = 0;
+    currentChoosing = 0;
+    stageCount = 1;
+
+    rect1 = nullptr;
+    rect2 = nullptr;
+    animationGroup1 = nullptr;
+    animationGroup2 = nullptr;
+    isFinished1 = false;
+    isFinished2 = false;
+    farmStageFinished = false;
+    goldFarm = 100;
+    player1Received = 0;
+    player2Received = 0;
+    yellowRectSize = 70;
+    currentlyBuying = 0;
+    currentRound = 1;
+    rounds = 2;
+    P1ab1CD = 0;
+    P1ab2CD = 0;
+    P1ab3CD = 0;
+
+    P1ab1used = false;
+    P1ab2used = false;
+    P1ab3used = false;
+
+    P2ab1CD = 0;
+    P2ab2CD = 0;
+    P2ab3CD = 0;
+
+    P2ab1used = false;
+    P2ab2used = false;
+    P2ab3used = false;
+
+    battleOrder = 0;
+
+    int rowCount = ui->tableWidget_2->rowCount();
+    int columnCount = ui->tableWidget_2->columnCount();
+
+    for (int row = 0; row < rowCount; ++row)
+    {
+        for (int column = 0; column < columnCount; ++column)
+        {
+            QTableWidgetItem* item = ui->tableWidget_2->item(row, column);
+
+            if (item != nullptr)
+            {
+                item->setFlags(item->flags() | Qt::ItemIsEnabled);
+                item->setForeground(Qt::black);
+            }
+        }
+    }
+
+    ui->LinaChoosed->hide();
+    ui->PhoenixChoosed->hide();
+    ui->VenomancerChoosed->hide();
+    ui->DRChoosed->hide();
+    ui->DKChoosed->hide();
+
+    ui->pushButton_3->setEnabled(true);
+    ui->PhoenixChoose_button->setEnabled(true);
+    ui->VenomancerChoose_button->setEnabled(true);
+    ui->DRChoose_button->setEnabled(true);
+    ui->DKChoose_button->setEnabled(true);
+
+    heroes[0].items.clear();
+    heroes[1].items.clear();
+
+    updateInvent();
+}
+
+void MainWindow::on_player1Sur_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Подтверждение", selectedProfilesForGame[0]+", вы уверены, что хотите сдаться? Игра будет засчитана как поражение.",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        winner(1);
+    }
+}
+
+
+void MainWindow::on_player2Sur_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Подтверждение", selectedProfilesForGame[1]+", вы уверены, что хотите сдаться? Игра будет засчитана как поражение.",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        winner(0);
+    }
+}
+
+
+void MainWindow::on_pushButton_10_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Подтверждение", selectedProfilesForGame[0]+", вы уверены, что хотите сдаться? Игра будет засчитана как поражение.",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        winner(1);
+    }
+}
+
+
+void MainWindow::on_pushButton_13_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Подтверждение", selectedProfilesForGame[1]+", вы уверены, что хотите сдаться? Игра будет засчитана как поражение.",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        winner(0);
+    }
 }
 

@@ -211,6 +211,19 @@ private slots:
 
     void on_pushButton_15_clicked();
 
+    void on_sort_button_clicked();
+
+    void shellSortDescending();
+    void shellSortAscending();
+
+    void on_player1Sur_clicked();
+
+    void on_player2Sur_clicked();
+
+    void on_pushButton_10_clicked();
+
+    void on_pushButton_13_clicked();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
@@ -225,7 +238,7 @@ private:
     int selectedProfile;
     int playersCount = 0;
 
-    QString* selectedProfilesForGame = new QString[2];
+    std::vector<QString> selectedProfilesForGame;
     int currentChoosing = 0;
 
     std::vector<Hero> heroes;
@@ -302,7 +315,11 @@ private:
     int battleOrder = 0;
 
     std::vector<Player*> currentPlayers;
+    std::vector<Player*> tempPlayers;
 
+    int sortState = 0;
+
+    void clearGame();
 };
 
 

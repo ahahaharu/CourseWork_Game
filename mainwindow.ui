@@ -42,7 +42,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>8</number>
       </property>
       <widget class="QWidget" name="startMenu">
        <widget class="QWidget" name="widget" native="true">
@@ -503,9 +503,9 @@
             <string>Выбранный профиль:</string>
            </property>
           </widget>
-          <widget class="QPushButton" name="stats_button">
+          <widget class="QPushButton" name="sort_button">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="geometry">
             <rect>
@@ -517,11 +517,11 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>16</pointsize>
+             <pointsize>12</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>Посмотреть статистику</string>
+            <string>Сортировать (по убыванию)</string>
            </property>
           </widget>
           <widget class="QTableWidget" name="profilesTable">
@@ -541,6 +541,9 @@
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
+           <attribute name="horizontalHeaderCascadingSectionResizes">
+            <bool>false</bool>
+           </attribute>
            <attribute name="horizontalHeaderDefaultSectionSize">
             <number>403</number>
            </attribute>
