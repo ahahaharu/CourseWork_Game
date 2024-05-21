@@ -290,6 +290,7 @@ void MainWindow::rewriteFile() { // перезапись файла
 
 void MainWindow::on_pushButton_11_clicked() // начать игру
 {
+    ui->playerChoosin_label->setText("Игрок #1 выбирает профиль игрока");
     ui->stackedWidget->setCurrentWidget(ui->playersScreen);
 }
 
