@@ -3069,17 +3069,3 @@ void MainWindow::on_player2_about3_button_clicked()
 {
     aboutItem(1, 2);
 }
-
-void MainWindow::restartApplication() {
-    // Сохраняем имя программы
-    QString program = qApp->arguments()[0];
-
-    // Сохраняем аргументы, удалив первый аргумент (имя программы)
-    QStringList arguments = qApp->arguments().mid(1);
-
-    // Завершаем текущее приложение
-    qApp->quit();
-
-    // Запускаем новый экземпляр приложения
-    QProcess::startDetached(program, arguments);
-}

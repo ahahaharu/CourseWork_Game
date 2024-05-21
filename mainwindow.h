@@ -18,7 +18,6 @@
 #include <QTime>
 #include <QKeyEvent>
 #include <QTimer>
-#include <QProcess>
 
 #include "player/player.h"
 #include "heroes/hero.h"
@@ -251,7 +250,6 @@ private slots:
 
     void on_player2_about3_button_clicked();
 
-    void restartApplication();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
