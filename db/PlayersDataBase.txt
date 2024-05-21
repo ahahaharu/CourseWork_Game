@@ -1,2 +1,2 @@
-hxppy;8;2;
-haru;8;6;
+haru;23;12;
+hxppy;23;11;

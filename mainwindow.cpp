@@ -307,10 +307,28 @@ void MainWindow::on_pushButton_clicked() // выход в главное мен�
 {
     ui->stackedWidget->setCurrentWidget(ui->startMenu);
 
-    ui->profileStackedWidget->setCurrentWidget(ui->selectPLayer);
     ui->lineEdit->clear();
 
-    clearGame();
+    int rowCount = ui->tableWidget_2->rowCount();
+    int columnCount = ui->tableWidget_2->columnCount();
+
+    for (int row = 0; row < rowCount; ++row)
+    {
+        for (int column = 0; column < columnCount; ++column)
+        {
+            QTableWidgetItem* item = ui->tableWidget_2->item(row, column);
+
+            if (item != nullptr)
+            {
+                item->setFlags(item->flags() | Qt::ItemIsEnabled);
+                item->setForeground(Qt::black);
+            }
+        }
+    }
+
+    selectedProfilesForGame.clear();
+    currentPlayers.clear();
+    currentChoosing = 0;
 }
 
 void MainWindow::on_pushButton_4_clicked() // переход на вкладку добавления игрока
@@ -816,6 +834,8 @@ void MainWindow::on_pushButton_7_clicked()
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         ui->stackedWidget->setCurrentWidget(ui->startMenu);
+    } else {
+        return;
     }
 
     ui->LinaChoosed->hide();
@@ -861,6 +881,13 @@ void MainWindow::on_startGame_clicked()
     ui->nextStage->setText("Cтадия "+QString::number(stageCount)+": ФАРМ");
     ui->player1Name->setText(selectedProfilesForGame[0]);
     ui->player2Name->setText(selectedProfilesForGame[1]);
+
+    ui->player1_HP->setText(QString::number(heroes[0].getCurrentHP())+" / "+QString::number(heroes[0].getHealth()));
+    ui->player1_Mana->setText(QString::number(heroes[0].getCurrentMana())+" / "+QString::number(heroes[0].getMana()));
+    ui->player2_HP->setText(QString::number(heroes[1].getCurrentHP())+" / "+QString::number(heroes[1].getHealth()));
+    ui->player2_Mana->setText(QString::number(heroes[1].getCurrentMana())+" / "+QString::number(heroes[1].getMana()));
+
+    stageCount = 1;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -890,7 +917,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
                 ui->farm_player1->setText(selectedProfilesForGame[0]);
                 ui->farm_player2->setText(selectedProfilesForGame[1]);
-
 
                 ui->gold->setText("Золото за попадание: " + QString::number(goldFarm));
 
@@ -1481,17 +1507,7 @@ void MainWindow::on_shop_item1buy_clicked()
 
 void MainWindow::on_player1_about1_buttonInShop_clicked()
 {
-    int ind = heroes[0].items[0];
-    QMessageBox details;
-
-    details.setWindowTitle(items[ind].name);
-
-    QPixmap pixmap(items[ind].image);
-    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
-
-    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
-
-    details.exec();
+    aboutItem(0, 0);
 }
 
 
@@ -1675,85 +1691,32 @@ void MainWindow::on_shop_item3buy_clicked()
 
 void MainWindow::on_player1_about2_buttonInShop_clicked()
 {
-    int ind = heroes[0].items[1];
-    QMessageBox details;
-
-    details.setWindowTitle(items[ind].name);
-
-    QPixmap pixmap(items[ind].image);
-    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
-
-    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
-
-    details.exec();
+    aboutItem(0, 1);
 }
 
 
 void MainWindow::on_player1_about3_buttonInShop_clicked()
 {
-    int ind = heroes[0].items[2];
-    QMessageBox details;
-
-    details.setWindowTitle(items[ind].name);
-
-    QPixmap pixmap(items[ind].image);
-    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
-
-    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
-
-    details.exec();
+    aboutItem(0, 2);
 }
 
 
 void MainWindow::on_player2_about1_buttonInShop_clicked()
 {
-    int ind = heroes[1].items[0];
-    QMessageBox details;
-
-    details.setWindowTitle(items[ind].name);
-
-    QPixmap pixmap(items[ind].image);
-    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
-
-    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
-
-    details.exec();
+    aboutItem(1, 0);
 }
 
 
 void MainWindow::on_player2_about2_buttonInShop_clicked()
 {
-    int ind = heroes[1].items[1];
-    QMessageBox details;
-
-    details.setWindowTitle(items[ind].name);
-
-    QPixmap pixmap(items[ind].image);
-    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
-
-    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
-
-    details.exec();
+    aboutItem(1, 1);
 }
 
 
 void MainWindow::on_player2_about3_buttonInShop_clicked()
 {
-    int ind = heroes[1].items[2];
-    QMessageBox details;
-
-    details.setWindowTitle(items[ind].name);
-
-    QPixmap pixmap(items[ind].image);
-    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
-
-    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
-
-    details.exec();
+    aboutItem(1, 2);
 }
-
-
-
 
 void MainWindow::on_player1_aboutAb1_clicked()
 {
@@ -2879,19 +2842,26 @@ void MainWindow::clearGame() {
     currentShop.clear();
     currentPlayers.clear();
     tempPlayers.clear();
-    heroes.clear();
+
+    timer->stop();
+
 
     currentHeroChoosing = 0;
     currentChoosing = 0;
-    stageCount = 1;
-    isFarmStage = false;
+    stageCount = 0;
 
+
+    rect1->stopPaint();
+    delete rect1;
     rect1 = nullptr;
+
+    rect2->stopPaint();
+    delete rect2;
     rect2 = nullptr;
     animationGroup1 = nullptr;
     animationGroup2 = nullptr;
-    isFinished1 = false;
-    isFinished2 = false;
+    //isFinished1 = false;
+    //isFinished2 = false;
     farmStageFinished = false;
     goldFarm = 100;
     player1Received = 0;
@@ -2947,10 +2917,13 @@ void MainWindow::clearGame() {
     ui->DRChoose_button->setEnabled(true);
     ui->DKChoose_button->setEnabled(true);
 
-    heroes[0].items.clear();
-    heroes[1].items.clear();
+
+
+    heroes.clear();
 
     updateInvent();
+    isFarmStage = false;
+    isStageAnnouncement = false;
 }
 
 void MainWindow::on_player1Sur_clicked()
@@ -2960,6 +2933,8 @@ void MainWindow::on_player1Sur_clicked()
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         winner(1);
+    } else {
+        return;
     }
 }
 
@@ -2971,6 +2946,8 @@ void MainWindow::on_player2Sur_clicked()
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         winner(0);
+    } else {
+        return;
     }
 }
 
@@ -2982,6 +2959,8 @@ void MainWindow::on_pushButton_10_clicked()
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         winner(1);
+    } else {
+        return;
     }
 }
 
@@ -2993,6 +2972,106 @@ void MainWindow::on_pushButton_13_clicked()
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         winner(0);
+    } else {
+        return;
     }
 }
 
+
+void MainWindow::on_player1_aboutItem1_clicked()
+{
+    aboutItem(0, 0);
+}
+
+
+void MainWindow::on_player1_aboutItem2_clicked()
+{
+    aboutItem(0, 1);
+}
+
+
+void MainWindow::on_player1_aboutItem3_clicked()
+{
+    aboutItem(0, 2);
+}
+
+
+void MainWindow::on_player2_aboutItem1_clicked()
+{
+    aboutItem(1, 0);
+}
+
+
+void MainWindow::on_player2_aboutItem2_clicked()
+{
+    aboutItem(1, 1);
+}
+
+
+void MainWindow::on_player2_aboutItem3_clicked()
+{
+    aboutItem(1, 2);
+}
+
+void MainWindow::aboutItem(int player, int item) {
+    int ind = heroes[player].items[item];
+    QMessageBox details;
+
+    details.setWindowTitle(items[ind].name);
+
+    QPixmap pixmap(items[ind].image);
+    details.setIconPixmap(pixmap.scaled(64, 64, Qt::KeepAspectRatio));
+
+    details.setText(items[ind].desc+"\nСтоимость: "+QString::number(items[ind].cost));
+
+    details.exec();
+}
+
+void MainWindow::on_player1_about1_button_clicked()
+{
+    aboutItem(0, 0);
+}
+
+
+void MainWindow::on_player1_about2_button_clicked()
+{
+    aboutItem(0, 1);
+}
+
+
+void MainWindow::on_player1_about3_button_clicked()
+{
+    aboutItem(0, 2);
+}
+
+
+void MainWindow::on_player2_about1_button_clicked()
+{
+    aboutItem(1, 0);
+}
+
+
+void MainWindow::on_player2_about2_button_clicked()
+{
+    aboutItem(1, 1);
+}
+
+
+void MainWindow::on_player2_about3_button_clicked()
+{
+    aboutItem(1, 2);
+}
+
+void MainWindow::restartApplication() {
+    // Сохраняем имя программы
+    QString program = qApp->arguments()[0];
+
+    // Сохраняем аргументы, удалив первый аргумент (имя программы)
+    QStringList arguments = qApp->arguments().mid(1);
+
+    // Завершаем текущее приложение
+    qApp->quit();
+
+    // Запускаем новый экземпляр приложения
+    QProcess::startDetached(program, arguments);
+}

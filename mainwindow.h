@@ -18,6 +18,7 @@
 #include <QTime>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QProcess>
 
 #include "player/player.h"
 #include "heroes/hero.h"
@@ -223,6 +224,34 @@ private slots:
     void on_pushButton_10_clicked();
 
     void on_pushButton_13_clicked();
+
+    void on_player1_aboutItem1_clicked();
+
+    void on_player1_aboutItem2_clicked();
+
+    void on_player1_aboutItem3_clicked();
+
+    void on_player2_aboutItem1_clicked();
+
+    void on_player2_aboutItem2_clicked();
+
+    void on_player2_aboutItem3_clicked();
+
+    void aboutItem(int, int);
+
+    void on_player1_about1_button_clicked();
+
+    void on_player1_about2_button_clicked();
+
+    void on_player1_about3_button_clicked();
+
+    void on_player2_about1_button_clicked();
+
+    void on_player2_about2_button_clicked();
+
+    void on_player2_about3_button_clicked();
+
+    void restartApplication();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
