@@ -935,7 +935,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             } else if (stageCount % 3 == 2) {
                 isStageAnnouncement = false;
 
-                std::vector<int> numbers {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+                std::vector<int> numbers {0, 1, 2, 3, 4, 5, 6, 7, 9, 10}; // нужно добавить 8, чтобы вернуть линкен сферу
 
                 std::random_shuffle(numbers.begin(), numbers.end());
 
@@ -1392,7 +1392,7 @@ void MainWindow::on_pushButton_6_clicked()
     } else {
         currentShop.clear();
         currentlyBuying++;
-        std::vector<int> numbers {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        std::vector<int> numbers {0, 1, 2, 3, 4, 5, 6, 7, 9, 10}; // тоже нужно вернуть 8, чтобы вернуть линкен сферу
 
         std::random_shuffle(numbers.begin(), numbers.end());
 
