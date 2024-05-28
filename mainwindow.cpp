@@ -1026,6 +1026,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                     ui->player1_aboutItem3->setEnabled(true);
                 }
 
+                ui->player2_useItem1->setEnabled(false);
+                ui->player2_useItem2->setEnabled(false);
+                ui->player2_useItem3->setEnabled(false);
+
                 ui->stackedWidget->setCurrentWidget(ui->battleStage);
             }
         }
@@ -1439,28 +1443,7 @@ void MainWindow::on_shop_item1buy_clicked()
                 heroes[0].items.push_back(ind);
                 sz++;
 
-                if (sz == 1) {
-                    ui->player1_item1inShop->setPixmap(items[ind].image);
-                    ui->player1_item1->setPixmap(items[ind].image);
-                    ui->player1_item1inBattle->setPixmap(items[ind].image);
-                    ui->player1_about1_buttonInShop->setEnabled(true);
-                    ui->player1_about1_button->setEnabled(true);
-                    ui->player1_aboutItem1->setEnabled(true);
-                } else if (sz == 2) {
-                    ui->player1_item2inShop->setPixmap(items[ind].image);
-                    ui->player1_item2->setPixmap(items[ind].image);
-                    ui->player1_item2inBattle->setPixmap(items[ind].image);
-                    ui->player1_about2_buttonInShop->setEnabled(true);
-                    ui->player1_about2_button->setEnabled(true);
-                    ui->player1_aboutItem2->setEnabled(true);
-                } else {
-                    ui->player1_item3inShop->setPixmap(items[ind].image);
-                    ui->player1_item3->setPixmap(items[ind].image);
-                    ui->player1_item3inBattle->setPixmap(items[ind].image);
-                    ui->player1_about3_buttonInShop->setEnabled(true);
-                    ui->player1_about3_button->setEnabled(true);
-                    ui->player1_aboutItem3->setEnabled(true);
-                }
+                updateInvent();
 
                 ui->item1sold->show();
                 ui->shop_item1buy->setEnabled(false);
@@ -1480,28 +1463,7 @@ void MainWindow::on_shop_item1buy_clicked()
                 heroes[1].items.push_back(ind);
                 sz++;
 
-                if (sz == 1) {
-                    ui->player2_item1inShop->setPixmap(items[ind].image);
-                    ui->player2_item1->setPixmap(items[ind].image);
-                    ui->player2_item1inBattle->setPixmap(items[ind].image);
-                    ui->player2_about1_buttonInShop->setEnabled(true);
-                    ui->player2_about1_button->setEnabled(true);
-                    ui->player2_aboutItem1->setEnabled(true);
-                } else if (sz == 2) {
-                    ui->player2_item2inShop->setPixmap(items[ind].image);
-                    ui->player2_item2->setPixmap(items[ind].image);
-                    ui->player2_item2inBattle->setPixmap(items[ind].image);
-                    ui->player2_about2_buttonInShop->setEnabled(true);
-                    ui->player2_about2_button->setEnabled(true);
-                    ui->player2_aboutItem2->setEnabled(true);
-                } else {
-                    ui->player2_item3inShop->setPixmap(items[ind].image);
-                    ui->player2_item3->setPixmap(items[ind].image);
-                    ui->player2_item3inBattle->setPixmap(items[ind].image);
-                    ui->player2_about3_buttonInShop->setEnabled(true);
-                    ui->player2_about3_button->setEnabled(true);
-                    ui->player2_aboutItem3->setEnabled(true);
-                }
+                updateInvent();
 
                 ui->item1sold->show();
                 ui->shop_item1buy->setEnabled(false);
@@ -1534,28 +1496,7 @@ void MainWindow::on_shop_item2buy_clicked()
                 heroes[0].items.push_back(ind);
                 sz++;
 
-                if (sz == 1) {
-                    ui->player1_item1inShop->setPixmap(items[ind].image);
-                    ui->player1_item1->setPixmap(items[ind].image);
-                    ui->player1_item1inBattle->setPixmap(items[ind].image);
-                    ui->player1_about1_buttonInShop->setEnabled(true);
-                    ui->player1_about1_button->setEnabled(true);
-                    ui->player1_aboutItem1->setEnabled(true);
-                } else if (sz == 2) {
-                    ui->player1_item2inShop->setPixmap(items[ind].image);
-                    ui->player1_item2->setPixmap(items[ind].image);
-                    ui->player1_item2inBattle->setPixmap(items[ind].image);
-                    ui->player1_about2_buttonInShop->setEnabled(true);
-                    ui->player1_about2_button->setEnabled(true);
-                    ui->player1_aboutItem2->setEnabled(true);
-                } else {
-                    ui->player1_item3inShop->setPixmap(items[ind].image);
-                    ui->player1_item3->setPixmap(items[ind].image);
-                    ui->player1_item3inBattle->setPixmap(items[ind].image);
-                    ui->player1_about3_buttonInShop->setEnabled(true);
-                    ui->player1_about3_button->setEnabled(true);
-                    ui->player1_aboutItem3->setEnabled(true);
-                }
+                updateInvent();
 
                 ui->item2sold->show();
                 ui->shop_item2buy->setEnabled(false);
@@ -1575,28 +1516,7 @@ void MainWindow::on_shop_item2buy_clicked()
                 heroes[1].items.push_back(ind);
                 sz++;
 
-                if (sz == 1) {
-                    ui->player2_item1inShop->setPixmap(items[ind].image);
-                    ui->player2_item1->setPixmap(items[ind].image);
-                    ui->player2_item1inBattle->setPixmap(items[ind].image);
-                    ui->player2_about1_buttonInShop->setEnabled(true);
-                    ui->player2_about1_button->setEnabled(true);
-                    ui->player2_aboutItem1->setEnabled(true);
-                } else if (sz == 2) {
-                    ui->player2_item2inShop->setPixmap(items[ind].image);
-                    ui->player2_item2->setPixmap(items[ind].image);
-                    ui->player2_item2inBattle->setPixmap(items[ind].image);
-                    ui->player2_about2_buttonInShop->setEnabled(true);
-                    ui->player2_about2_button->setEnabled(true);
-                    ui->player2_aboutItem2->setEnabled(true);
-                } else {
-                    ui->player2_item3inShop->setPixmap(items[ind].image);
-                    ui->player2_item3->setPixmap(items[ind].image);
-                    ui->player2_item3inBattle->setPixmap(items[ind].image);
-                    ui->player2_about3_buttonInShop->setEnabled(true);
-                    ui->player2_about3_button->setEnabled(true);
-                    ui->player2_aboutItem3->setEnabled(true);
-                }
+                updateInvent();
 
                 ui->item2sold->show();
                 ui->shop_item2buy->setEnabled(false);
@@ -1623,28 +1543,7 @@ void MainWindow::on_shop_item3buy_clicked()
                 heroes[0].items.push_back(ind);
                 sz++;
 
-                if (sz == 1) {
-                    ui->player1_item1inShop->setPixmap(items[ind].image);
-                    ui->player1_item1->setPixmap(items[ind].image);
-                    ui->player1_item1inBattle->setPixmap(items[ind].image);
-                    ui->player1_about1_buttonInShop->setEnabled(true);
-                    ui->player1_about1_button->setEnabled(true);
-                    ui->player1_aboutItem1->setEnabled(true);
-                } else if (sz == 2) {
-                    ui->player1_item2inShop->setPixmap(items[ind].image);
-                    ui->player1_item2->setPixmap(items[ind].image);
-                    ui->player1_item2inBattle->setPixmap(items[ind].image);
-                    ui->player1_about2_buttonInShop->setEnabled(true);
-                    ui->player1_about2_button->setEnabled(true);
-                    ui->player1_aboutItem2->setEnabled(true);
-                } else {
-                    ui->player1_item3inShop->setPixmap(items[ind].image);
-                    ui->player1_item3->setPixmap(items[ind].image);
-                    ui->player1_item3inBattle->setPixmap(items[ind].image);
-                    ui->player1_about3_buttonInShop->setEnabled(true);
-                    ui->player1_about3_button->setEnabled(true);
-                    ui->player1_aboutItem3->setEnabled(true);
-                }
+                updateInvent();
 
                 ui->item3sold->show();
                 ui->shop_item3buy->setEnabled(false);
@@ -1664,28 +1563,7 @@ void MainWindow::on_shop_item3buy_clicked()
                 heroes[1].items.push_back(ind);
                 sz++;
 
-                if (sz == 1) {
-                    ui->player2_item1inShop->setPixmap(items[ind].image);
-                    ui->player2_item1->setPixmap(items[ind].image);
-                    ui->player2_item1inBattle->setPixmap(items[ind].image);
-                    ui->player2_about1_buttonInShop->setEnabled(true);
-                    ui->player2_about1_button->setEnabled(true);
-                    ui->player2_aboutItem1->setEnabled(true);
-                } else if (sz == 2) {
-                    ui->player2_item2inShop->setPixmap(items[ind].image);
-                    ui->player2_item2->setPixmap(items[ind].image);
-                    ui->player2_item2inBattle->setPixmap(items[ind].image);
-                    ui->player2_about2_buttonInShop->setEnabled(true);
-                    ui->player2_about2_button->setEnabled(true);
-                    ui->player2_aboutItem2->setEnabled(true);
-                } else {
-                    ui->player2_item3inShop->setPixmap(items[ind].image);
-                    ui->player2_item3->setPixmap(items[ind].image);
-                    ui->player2_item3inBattle->setPixmap(items[ind].image);
-                    ui->player2_about3_buttonInShop->setEnabled(true);
-                    ui->player2_about3_button->setEnabled(true);
-                    ui->player2_aboutItem3->setEnabled(true);
-                }
+                updateInvent();
 
                 ui->item3sold->show();
                 ui->shop_item3buy->setEnabled(false);
@@ -2925,11 +2803,16 @@ void MainWindow::clearGame() {
     ui->DRChoose_button->setEnabled(true);
     ui->DKChoose_button->setEnabled(true);
 
-
-
+    if (heroes.size() >= 1) {
+        heroes[0].items.clear();
+    }
+    if  (heroes.size() == 2) {
+        heroes[1].items.clear();
+    }
+    updateInvent();
     heroes.clear();
 
-    updateInvent();
+
     isFarmStage = false;
     isStageAnnouncement = false;
 }
@@ -3069,3 +2952,19 @@ void MainWindow::on_player2_about3_button_clicked()
 {
     aboutItem(1, 2);
 }
+
+void MainWindow::on_pushButton_9_clicked()
+{
+    if (heroes[1].getName() == "Lina") {
+        linaDetails.exec();
+    } else if (heroes[1].getName() == "Phoenix") {
+        phoenixDetails.exec();
+    } else if (heroes[1].getName() == "Venomancer") {
+        venomancerDetails.exec();
+    } else if (heroes[1].getName() == "Drow Ranger") {
+        drowRangerDetails.exec();
+    } else {
+        dragonKnightDetails.exec();
+    }
+}
+

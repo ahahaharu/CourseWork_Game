@@ -251,6 +251,8 @@ private slots:
     void on_player2_about3_button_clicked();
 
 
+    void on_pushButton_9_clicked();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
